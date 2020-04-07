@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "^3.1.4",
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -14,8 +16,10 @@
     "apollo-boost": "^0.4.7",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
+    "modern-normalize": "^0.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-helmet": "^5.2.1",
     "react-scripts": "3.4.1",
     "reselect": "^4.0.0",
     "typescript": "^3.7.5"
@@ -40,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-helmet": "^5.0.15"
   }
 }

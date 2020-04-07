@@ -1,4 +1,4 @@
-import { getAllOrtalioMediaDataResolver } from './Pages/HomePage/HomePage.resolvers';
+import { getAllOrtalioMediaDataResolver } from '../Pages/HomePage/HomePage.resolvers';
 
 const appResolvers = {
     Query: {
