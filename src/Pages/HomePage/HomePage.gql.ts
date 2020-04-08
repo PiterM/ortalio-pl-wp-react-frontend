@@ -22,3 +22,19 @@ export const GET_ORTALIO_MEDIA_QUERY = gql`
     }
 } 
 `;
+
+export const GET_SITE_GLOBAL_DATA_QUERY = gql`
+{
+    globalData @client
+    ortalioSettingBy(slug: "site-global-data") {
+      ortalioSettingsField {
+        metaDescription
+        metaKeywords
+        metaTitle
+        siteDescription
+        siteIntro
+        siteTitle
+      }
+    }
+  }
+`;

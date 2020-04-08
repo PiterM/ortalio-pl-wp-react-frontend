@@ -13,3 +13,14 @@ interface OrtalioMediaItem {
 }
 
 export type OrtalioMedia = OrtalioMediaItem;
+
+interface GlobalDataItem {
+    metaTitle: string;
+    metaDescription: string;
+    metaKeywords: string;
+    siteTitle: string;
+    siteIntro: string;
+    siteDescription: string;
+}
+
+export type GlobalData = GlobalDataItem;

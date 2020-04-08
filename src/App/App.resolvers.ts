@@ -1,8 +1,9 @@
-import { getAllOrtalioMediaDataResolver } from '../Pages/HomePage/HomePage.resolvers';
+import { getAllOrtalioMediaDataResolver, getSiteGlobalDataResolver } from '../Pages/HomePage/HomePage.resolvers';
 
 const appResolvers = {
     Query: {
-      data: getAllOrtalioMediaDataResolver
+      globalData: getSiteGlobalDataResolver,
+      data: getAllOrtalioMediaDataResolver,
     }
 };
 

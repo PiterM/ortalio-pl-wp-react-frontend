@@ -7,20 +7,22 @@ import LayoutMain from '../LayoutMain'
 // import SocialIcons from '../components/SocialIcons/SocialIcons';
 import 'modern-normalize'
 import '../../Common/normalize'
+import { GlobalData } from '../../Pages/HomePage/HomePage.models';
 
 interface IndexLayoutProps {
-  intro: string;
-  description: string;
+  globalData: GlobalData;
 }
 
-const HomePageLayout: React.FC<IndexLayoutProps> = ({ children }) => (
+const HomePageLayout: React.FC<IndexLayoutProps> = ({
+    globalData,
+    children 
+}) => (
     <LayoutRoot>
         <Helmet
-            title={'tytuł strony'}
+            title={globalData.metaTitle}
             meta={[
-            { name: 'description', content: 'description strony' },
-            { name: 'keywords', content: 'keywords strony' },
-            { name: 'viewport', content: "width=device-width" }
+                { name: 'description', content: globalData.metaDescription },
+                { name: 'keywords', content: globalData.metaKeywords },
             ]}
             link={[
             {
@@ -31,9 +33,9 @@ const HomePageLayout: React.FC<IndexLayoutProps> = ({ children }) => (
             ]}
         />
         <Header
-            intro={'moje intro'}
-            title={'ORTALIO'}
-            description={'jakiś description pod spodem'}
+            intro={globalData.siteIntro}
+            title={globalData.siteTitle}
+            description={globalData.siteDescription.replace('{%param%}',(new Date()).toLocaleDateString())}
         />
         {/* <SocialIcons /> */}
         <LayoutMain>{children}</LayoutMain>
