@@ -28,6 +28,9 @@ const ErrorMessage = styled.div`
     height: 100px;
     & > p {
         margin-top: 85px;
+        font-size: 16px;
+        text-align: center;
+        width: 100%;
     }
 `;
 
