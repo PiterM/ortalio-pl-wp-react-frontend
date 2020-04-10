@@ -38,3 +38,28 @@ export const GET_SITE_GLOBAL_DATA_QUERY = gql`
     }
   }
 `;
+
+export const GET_SOCIAL_MEDIA_DATA_QUERY = gql`
+{
+  socialMediaData @client
+  ortalioSocialMedia {
+    nodes {
+      ortalioSocialMediaField {
+        url
+      }
+      featuredImage {
+        altText
+        sourceUrl
+      }
+    }
+  }
+}
+`;
+
+const GQL_QUERIES = {
+  GET_SITE_GLOBAL_DATA_QUERY,
+  GET_SOCIAL_MEDIA_DATA_QUERY,
+  GET_ORTALIO_MEDIA_QUERY,
+};
+
+export default GQL_QUERIES;

@@ -24,3 +24,11 @@ interface GlobalDataItem {
 }
 
 export type GlobalData = GlobalDataItem;
+
+interface SocialMedia {
+    url: string;
+    imageAltText: string;
+    imageSourceUrl: string;
+}
+
+export type SocialMediaData = SocialMedia;

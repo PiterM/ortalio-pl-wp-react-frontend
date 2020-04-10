@@ -1,7 +1,9 @@
 import { 
     getGlobalDataItemsArray,
     getOrtalioMediaItemsArray, 
-    getOrtalioMediaItemData 
+    getOrtalioMediaItemData,
+    getOrtalioSocialMediaArray,
+    getOrtalioSocialMediaData
 } from './HomePage.selectors';
 
 export const getAllOrtalioMediaDataResolver = (root: any) => {
@@ -10,4 +12,8 @@ export const getAllOrtalioMediaDataResolver = (root: any) => {
 
 export const getSiteGlobalDataResolver = (root: any) => {
     return getGlobalDataItemsArray(root);
+}
+
+export const getSocialMediaDataResolver = (root: any) => {
+    return getOrtalioSocialMediaArray(root).map((item: any) => getOrtalioSocialMediaData(item));
 }
