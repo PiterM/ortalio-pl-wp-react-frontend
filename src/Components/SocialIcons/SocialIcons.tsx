@@ -16,7 +16,7 @@ const StyledSocialIconsSection = styled.section`
     -webkit-transition: all 0s ease-in-out 0.07s;
     -moz-transition: all 0s ease-in-out 0.07s;
     -o-transition: all 0s ease-in-out 0.07s;
-    transition: all 0s ease-in-out 0.07s !important;
+    transition: all 0s ease-in-out 0.1s !important;
     margin: 0 3px;
     opacity: 0.8;
     width: ${dimensions.socialIcon.edge}px;
@@ -28,7 +28,7 @@ const StyledSocialIconsSection = styled.section`
     -webkit-transition: all 0s ease-in-out 0s;
     -moz-transition: all 0s ease-in-out 0s;
     -o-transition: all 0s ease-in-out 0s;
-    transition: all 0s ease-out 0s !important;
+    transition: all 0s ease-out 0.1s !important;
     max-width: none;
     width: ${2 * dimensions.socialIcon.edge}px
     height: ${dimensions.socialIcon.edge}px;
