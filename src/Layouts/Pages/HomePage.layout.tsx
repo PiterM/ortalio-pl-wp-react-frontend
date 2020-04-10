@@ -16,31 +16,40 @@ interface IndexLayoutProps {
 const HomePageLayout: React.FC<IndexLayoutProps> = ({
     globalData,
     children 
-}) => (
-    <LayoutRoot>
-        <Helmet
-            title={globalData.metaTitle}
-            meta={[
-                { name: 'description', content: globalData.metaDescription },
-                { name: 'keywords', content: globalData.metaKeywords },
-            ]}
-            link={[
-            {
-                href: 'https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic',
-                rel: 'stylesheet',
-                type: 'text/css'
-            }
-            ]}
-        />
-        <Header
-            intro={globalData.siteIntro}
-            title={globalData.siteTitle}
-            description={globalData.siteDescription.replace('{%param%}',(new Date()).toLocaleDateString())}
-        />
-        {/* <SocialIcons /> */}
-        <LayoutMain>{children}</LayoutMain>
-        {/* <AudioItemPlayer /> */}
-    </LayoutRoot>
-)
+}) => { 
+    const description = globalData.siteDescription
+        .replace('{%param%}',(new Date()).toLocaleDateString('pl-PL', {  
+            day : 'numeric',
+            month : 'long',
+            year : 'numeric'
+        }
+    ));
+
+    return (
+        <LayoutRoot>
+            <Helmet
+                title={globalData.metaTitle}
+                meta={[
+                    { name: 'description', content: globalData.metaDescription },
+                    { name: 'keywords', content: globalData.metaKeywords },
+                ]}
+                link={[
+                {
+                    href: 'https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic',
+                    rel: 'stylesheet',
+                    type: 'text/css'
+                }
+                ]}
+            />
+            <Header
+                intro={globalData.siteIntro}
+                title={globalData.siteTitle}
+                description={description}
+            />
+            <LayoutMain>{children}</LayoutMain>
+            {/* <AudioItemPlayer /> */}
+        </LayoutRoot>
+    )
+};
 
 export default HomePageLayout;
