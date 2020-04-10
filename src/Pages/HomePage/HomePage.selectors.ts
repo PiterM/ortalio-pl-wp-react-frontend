@@ -30,8 +30,6 @@ export const getOrtalioSocialMediaFeaturedImageData = (node: any) => node.featur
 export const getOrtalioSocialMediaData = createSelector(
     [getOrtalioSocialMediaFieldData, getOrtalioSocialMediaFeaturedImageData],
     (socialMediaFieldData, featuredImageData) => {
-        console.log('1', socialMediaFieldData);
-        console.log('2', featuredImageData);
         return {
             url: socialMediaFieldData.url,
             imageAltText: featuredImageData.altText,

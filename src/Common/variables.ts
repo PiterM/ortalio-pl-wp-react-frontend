@@ -77,6 +77,9 @@ export const dimensions = {
   containerPadding: 1.5,
   audioItemPlayer: {
     height: 50,
+  },
+  socialIcon: {
+    edge: 50
   }
 }
 

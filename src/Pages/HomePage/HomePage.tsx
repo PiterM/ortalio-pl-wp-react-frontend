@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled'
+import SocialIcons from '../../Components/SocialIcons/SocialIcons';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
 import { 
     GlobalData, 
@@ -17,7 +18,7 @@ const StyledPage = styled.div`
 
 interface HomePageOwnProps {
     globalData: GlobalData;
-    socialMediaData: SocialMediaData;
+    socialMediaData: SocialMediaData[];
     data: OrtalioMedia;
 }
 
@@ -27,10 +28,15 @@ export default class HomePage extends React.Component<HomePageOwnProps> {
     }
 
     render() {
+        const { globalData, socialMediaData } = this.props;
+
         return (
             <HomePageLayout
-                globalData={this.props.globalData}
+                globalData={globalData}
             >
+                <SocialIcons 
+                    socialMediaData={socialMediaData}
+                />
                 <StyledPage>
                     <p>Moja stronka</p>
                 </StyledPage>
