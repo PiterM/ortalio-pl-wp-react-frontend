@@ -61,7 +61,7 @@ const HomePageContainer = () => {
         <HomePage 
             globalData={globalData.data.globalData as GlobalData}
             socialMediaData={socialMediaData.data.socialMediaData as SocialMediaData[]}
-            data={ortalioMediaData.data.data as OrtalioMedia}
+            data={ortalioMediaData.data.data as OrtalioMedia[]}
         />
     );
 };
