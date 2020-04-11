@@ -6,13 +6,12 @@ import AudioItemContent from './AudioItemContent';
 
 const StyledAudioItem = styled.div`
   line-height: ${dimensions.lineHeight.regular};
-  width: ${dimensions.width.headline};
   padding: 0 1% 0 1%;
   padding-bottom: 50px;
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
+  width: 100%;
   transition: all ${transition.duration};
-  flex: 0 1;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -26,10 +25,6 @@ const StyledAudioItem = styled.div`
     border-top: 1px solid ${colors.newspaperText};
     border-bottom: 1px solid ${colors.newspaperText};
     color: #000;
-  }
-
-  & + & {
-    border-left: 1px solid ${colors.newspaperText};
   }
 `;
 

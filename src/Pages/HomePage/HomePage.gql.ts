@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 export const GET_ORTALIO_MEDIA_QUERY = gql`
 {
     data @client
-    ortalioMedia {
+    ortalioMedia(first:100) {
       edges {
         node {
           ortalioMediaField {
@@ -42,7 +42,7 @@ export const GET_SITE_GLOBAL_DATA_QUERY = gql`
 export const GET_SOCIAL_MEDIA_DATA_QUERY = gql`
 {
   socialMediaData @client
-  ortalioSocialMedia {
+  ortalioSocialMedia(first:20) {
     nodes {
       ortalioSocialMediaField {
         url

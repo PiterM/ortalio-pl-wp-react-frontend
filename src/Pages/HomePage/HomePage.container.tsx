@@ -42,7 +42,6 @@ const HomePageContainer = () => {
     const socialMediaData = useQuery(GQL_QUERIES.GET_SOCIAL_MEDIA_DATA_QUERY);
     const ortalioMediaData = useQuery(GQL_QUERIES.GET_ORTALIO_MEDIA_QUERY);
 
-    console.log('socialMediaData', socialMediaData); 
     if (globalData.loading || socialMediaData.loading || ortalioMediaData.loading) {
         return <LoaderScreen />;
     }

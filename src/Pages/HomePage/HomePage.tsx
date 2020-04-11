@@ -1,20 +1,32 @@
 import React from 'react';
 import styled from '@emotion/styled'
+import { colors, dimensions } from '../../Common/variables';
 import AudioItem from '../../Components/AudioItem/AudioItem';
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
-import { 
-    GlobalData, 
+import {
+    GlobalData,
     OrtalioMedia,
     SocialMediaData
 } from './HomePage.models';
 
 const StyledPage = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  align-items: flex-start;
-`
+  display: grid;
+  grid-template-columns: repeat(${dimensions.homePage.columnsNumber}, 2fr);
+  text-align: center;
+`;
+
+const StyledPageColumn = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    
+    & + & {
+        border-left: 1px solid ${colors.newspaperText};
+    }
+`;
 
 interface HomePageOwnProps {
     globalData: GlobalData;
@@ -25,18 +37,15 @@ interface HomePageOwnProps {
 export default class HomePage extends React.Component<HomePageOwnProps> {
     render() {
         const { globalData, socialMediaData, data } = this.props;
-        const pageHeight = data.length 
-            ? (Math.floor((data.length-1) / 5) + 1) * 1000
-            : 1000;
 
         return (
             <HomePageLayout
                 globalData={globalData}
             >
-                <SocialIcons 
+                <SocialIcons
                     socialMediaData={socialMediaData}
                 />
-                <StyledPage style={{height: pageHeight}}>
+                <StyledPage>
                     {this.renderAudioItems(data)}
                 </StyledPage>
             </HomePageLayout>
@@ -45,25 +54,50 @@ export default class HomePage extends React.Component<HomePageOwnProps> {
 
     private renderAudioItems(items: OrtalioMedia[]) {
         if (!items || !items.length) {
-          return null;
+            return null;
         }
-    
-        return items.map((item, i) => {
-          return this.renderAudioItem(i, item);
-        });
-      }
-    
-    private renderAudioItem(i: number, item: OrtalioMedia) {
+
+        const { columnsNumber } = dimensions.homePage;
+
+        const rowsNumber = Math.floor(items.length / columnsNumber) + 1;
+        let result: any[] = [];
+
+        for (let j=0; j<columnsNumber; j++) {
+            let columnIndices: number[] = [];
+            for (let i=0; i<rowsNumber; i++) {
+                if (items[j + i * columnsNumber] !== undefined) {
+                    columnIndices.push(j + i * 5);
+                }
+            }
+
+            const columnItems: OrtalioMedia[] = items.filter((item, index) => columnIndices.indexOf(index) !== -1)
+            const columnItemsResult = (
+                <StyledPageColumn key={columnIndices.reduce((a: number, b: number) => a * b)}>
+                    {this.renderAudioItemsColumn(columnItems)}
+                </StyledPageColumn>
+            );
+            result = result.concat(columnItemsResult);
+            columnIndices = [];
+        }
+
+        return result;
+    }
+
+    private renderAudioItemsColumn(columnItems: OrtalioMedia[]): any[] {
+        return columnItems.map((item, index) => this.renderAudioItem(index, item));
+    }
+
+    private renderAudioItem(index: number, item: OrtalioMedia) {
         const { title, shortDescription, content } = item;
-    
+
         return (
-          <AudioItem
-            key={i}
-            index={i}
-            title={title}
-            shortDescription={shortDescription}
-            content={content}
-          />
+            <AudioItem
+                key={index}
+                index={index}
+                title={title}
+                shortDescription={shortDescription}
+                content={content}
+            />
         );
-      }
+    }
 }

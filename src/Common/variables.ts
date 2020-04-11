@@ -80,6 +80,9 @@ export const dimensions = {
   },
   socialIcon: {
     edge: 50
+  },
+  homePage: {
+    columnsNumber: 5,
   }
 }
 
@@ -112,7 +115,7 @@ export const audioItemHeaderTextVariants = [
     top: {
       font: fonts.headline,
       fontWeight: dimensions.fontWeight.semiBold,
-      fontSize: dimensions.fontSize.bigTitle,
+      fontSize: dimensions.fontSize.smallTitle,
       fontStyle: 'italic',
       textTransform: 'uppercase',
     },
