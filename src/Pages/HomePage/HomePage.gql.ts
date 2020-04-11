@@ -3,20 +3,19 @@ export const GET_ORTALIO_MEDIA_QUERY = gql`
 {
     data @client
     ortalioMedia(first:100) {
-      edges {
-        node {
-          ortalioMediaField {
-            title
-            content
-            fieldGroupName
-            shortDescription
-            soundcloudUrl
-            youtubeUrl
-          }
-          featuredImage {
-            altText
-            sourceUrl
-          }
+      nodes {
+        id
+        ortalioMediaField {
+          title
+          content
+          fieldGroupName
+          shortDescription
+          soundcloudUrl
+          youtubeUrl
+        }
+        featuredImage {
+          altText
+          sourceUrl
         }
       }
     }

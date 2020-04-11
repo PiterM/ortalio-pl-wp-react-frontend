@@ -10,6 +10,7 @@ interface OrtalioMediaItem {
     soundcloudUrl: string;
     youtubeUrl?: string;
     featuredImage: FeaturedImage;
+    id: string;
 }
 
 export type OrtalioMedia = OrtalioMediaItem;

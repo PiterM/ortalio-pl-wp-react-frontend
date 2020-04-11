@@ -15,6 +15,7 @@ interface AudioItemHeadlineProps {
 }
 
 const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, children }) => {
+  console.log('index', index);
   const textVariantIndex = index % audioItemHeaderTextVariants.length;
   const textVariant = audioItemHeaderTextVariants[textVariantIndex];
 

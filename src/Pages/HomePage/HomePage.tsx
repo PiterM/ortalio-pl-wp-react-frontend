@@ -22,7 +22,7 @@ const StyledPageColumn = styled.div`
     align-items: flex-start;
     flex-direction: column;
     width: 100%;
-    
+
     & + & {
         border-left: 1px solid ${colors.newspaperText};
     }
@@ -84,15 +84,19 @@ export default class HomePage extends React.Component<HomePageOwnProps> {
     }
 
     private renderAudioItemsColumn(columnItems: OrtalioMedia[]): any[] {
-        return columnItems.map((item, index) => this.renderAudioItem(index, item));
+        return columnItems.map((item) => this.renderAudioItem(item));
     }
 
-    private renderAudioItem(index: number, item: OrtalioMedia) {
-        const { title, shortDescription, content } = item;
+    private renderAudioItem(item: OrtalioMedia) {
+        const { id, title, shortDescription, content } = item;
+        let index = 0;
+        for (let i=0; i<id.length; i++) {
+            index += id.charCodeAt(i)
+        }
 
         return (
             <AudioItem
-                key={index}
+                key={id}
                 index={index}
                 title={title}
                 shortDescription={shortDescription}

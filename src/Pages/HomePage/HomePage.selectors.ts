@@ -1,15 +1,17 @@
 import { createSelector } from 'reselect';
 
 export const getOrtalioMediaItemsArray = (data: any) => 
-    data.ortalioMedia.edges;
+    data.ortalioMedia.nodes;
 
-export const getOrtalioMediaFieldData = (item: any) => item.node.ortalioMediaField;
-export const getOrtalioMediaFeatureImageData = (item: any) => item.node.featuredImage;
+export const getOrtalioMediaFieldData = (item: any) => item.ortalioMediaField;
+export const getOrtalioMediaFeatureImageData = (item: any) => item.featuredImage;
+export const getOrtalioMediaItem = (item: any) => item;
 
 export const getOrtalioMediaItemData = createSelector(
-    [getOrtalioMediaFieldData, getOrtalioMediaFeatureImageData],
-    (mediaFieldData, featuredImageData) => {
+    [getOrtalioMediaItem, getOrtalioMediaFieldData, getOrtalioMediaFeatureImageData],
+    (mediaItem, mediaFieldData, featuredImageData) => {
         return {
+            id: mediaItem.id,
             ...mediaFieldData,
             featuredImage: {
                 ...featuredImageData
