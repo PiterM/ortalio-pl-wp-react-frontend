@@ -5,6 +5,8 @@ import {
   colors,
 } from '../../Common/variables';
 
+import './AudioItemHeader.scss';
+
 const StyledAudioItemHeadline = styled.div`
   text-align: center;
   position: relative;
@@ -15,7 +17,6 @@ interface AudioItemHeadlineProps {
 }
 
 const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, children }) => {
-  console.log('index', index);
   const textVariantIndex = index % audioItemHeaderTextVariants.length;
   const textVariant = audioItemHeaderTextVariants[textVariantIndex];
 
@@ -84,7 +85,7 @@ interface AudioItemHeaderProps {
 const AudioItemHeader: React.FC<AudioItemHeaderProps> = ({ index, title, shortDescription }) => (
   <StyledAudioItemHeadline>
     <AudioItemHeadlineTop index={index}>
-      {title}
+      <div className="audio-item__title" data-text={title}>{title}</div>
     </AudioItemHeadlineTop>
     <AudioItemHeadlineBottom index={index}>
       <div dangerouslySetInnerHTML={{ __html: shortDescription }} />

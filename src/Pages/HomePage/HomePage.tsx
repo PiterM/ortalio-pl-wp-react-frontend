@@ -4,6 +4,7 @@ import { colors, dimensions } from '../../Common/variables';
 import AudioItem from '../../Components/AudioItem/AudioItem';
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
+import { getRandomNumberFromString } from './HomePage.helpers';
 import {
     GlobalData,
     OrtalioMedia,
@@ -89,15 +90,11 @@ export default class HomePage extends React.Component<HomePageOwnProps> {
 
     private renderAudioItem(item: OrtalioMedia) {
         const { id, title, shortDescription, content } = item;
-        let index = 0;
-        for (let i=0; i<id.length; i++) {
-            index += id.charCodeAt(i)
-        }
 
         return (
             <AudioItem
                 key={id}
-                index={index}
+                index={getRandomNumberFromString(id)}
                 title={title}
                 shortDescription={shortDescription}
                 content={content}

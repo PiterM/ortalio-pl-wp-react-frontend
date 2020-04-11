@@ -1,0 +1,7 @@
+@import '../../Common/AudioItem.glitch.scss';
+
+.site-header {
+    &:hover {
+      @include textGlitch("title-glitch", 17, black, #f3f1ea, green, yellow, 20, 20);
+    }
+}

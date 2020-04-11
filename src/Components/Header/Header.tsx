@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 import { colors, fonts } from '../../Common/variables';
+import './Header.scss';
 
 const StyledHeaderDiv = styled.div`
   text-align: center;
@@ -61,7 +62,13 @@ const Header: React.FC<HeaderProps> = ({ description, intro, title }) => (
         <div dangerouslySetInnerHTML={{ __html: intro }} />
       </StyledHeaderWeatherForcastBox>
       <StyledHeaderTitle>
-        <StyledHomePageLink href="/">{title}</StyledHomePageLink>
+        <StyledHomePageLink 
+          href="/" 
+          className="site-header"
+          data-text={title}
+        >
+          {title}
+        </StyledHomePageLink>
       </StyledHeaderTitle>
     </HeaderWrapperDiv>
     <StyledSubHeader>

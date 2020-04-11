@@ -38,6 +38,7 @@ interface AudioItemProps {
 const AudioItem: React.FC<AudioItemProps> = ({ index, title, shortDescription, content }) => (
   <StyledAudioItem
     key={index}
+    className="audio-item"
   >
     <AudioItemHeader
       index={index}

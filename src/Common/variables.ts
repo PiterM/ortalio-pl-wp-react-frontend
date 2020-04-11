@@ -91,7 +91,7 @@ export const heights = {
 }
 
 export const transition = {
-  duration: '.7s'
+  duration: '.1s'
 }
 
 export const audioItemHeaderTextVariants = [
