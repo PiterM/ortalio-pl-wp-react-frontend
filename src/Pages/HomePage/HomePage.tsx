@@ -14,7 +14,6 @@ const StyledPage = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   align-items: flex-start;
-  height: 5000px;
 `
 
 interface HomePageOwnProps {
@@ -26,6 +25,9 @@ interface HomePageOwnProps {
 export default class HomePage extends React.Component<HomePageOwnProps> {
     render() {
         const { globalData, socialMediaData, data } = this.props;
+        const pageHeight = data.length 
+            ? (Math.floor((data.length-1) / 5) + 1) * 1000
+            : 1000;
 
         return (
             <HomePageLayout
@@ -34,7 +36,7 @@ export default class HomePage extends React.Component<HomePageOwnProps> {
                 <SocialIcons 
                     socialMediaData={socialMediaData}
                 />
-                <StyledPage>
+                <StyledPage style={{height: pageHeight}}>
                     {this.renderAudioItems(data)}
                 </StyledPage>
             </HomePageLayout>
@@ -56,6 +58,7 @@ export default class HomePage extends React.Component<HomePageOwnProps> {
     
         return (
           <AudioItem
+            key={i}
             index={i}
             title={title}
             shortDescription={shortDescription}

@@ -8,11 +8,11 @@ const StyledAudioItem = styled.div`
   line-height: ${dimensions.lineHeight.regular};
   width: ${dimensions.width.headline};
   padding: 0 1% 0 1%;
-  margin-bottom: 50px;
+  padding-bottom: 50px;
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
   transition: all ${transition.duration};
-  flex: 0 1 20%;
+  flex: 0 1;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
