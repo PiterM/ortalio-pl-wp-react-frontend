@@ -25,6 +25,7 @@ const StyledAudioItem = styled.div`
     border-top: 1px solid ${colors.newspaperText};
     border-bottom: 1px solid ${colors.newspaperText};
     color: #000;
+    cursor: pointer;
   }
 `;
 

@@ -22,7 +22,12 @@ export const colors = {
   newspaperPaper: '#f9f7f1',
   newspaperPaperHovered: '#f3f1ea',
   newspaperText: '#2f2f2f',
-  audioItemPlayerBackground: '#fff'
+  audioItemPlayerBackground: '#fff',
+  glitchyTitleEffect: {
+    main: '#2f2f2f',
+    firstAdditional: 'yellow',
+    secondAdditional: 'orange'
+  }
 }
 
 export const fonts = {
