@@ -3,5 +3,5 @@ import { AudioItemState } from '../../AudioItem/AudioItem.state';
 
 export interface StoreState {
   media: MediaState | null;
-  hoveredMediaId: string | null;
+  selectedMediaId: string | null;
 }

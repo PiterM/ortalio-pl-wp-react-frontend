@@ -19,21 +19,21 @@ const StyledMediaPlayer = styled.div`
 
 interface MediaPlayerMappedProps {
     media?: MediaState;
-    id?: string;
-    hoveredMediaItem?: AudioItemState;
+    selectedMediaId?: string;
+    selectedMediaItem?: AudioItemState;
 }
 
 type MediaPlayerProps = MediaPlayerMappedProps;
 
 export class MediaPlayer extends React.Component<MediaPlayerProps> {
     render() {
-        const { hoveredMediaItem } = this.props;
+        const { selectedMediaItem } = this.props;
 
-        if (!hoveredMediaItem) {
+        if (!selectedMediaItem) {
             return null;
         }
 
-        const { title } = hoveredMediaItem
+        const { title } = selectedMediaItem
         return (
             <StyledMediaPlayer>
                 {title}
@@ -43,15 +43,15 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
 }
 
 const mapStateToProps: any = (store: StoreState): MediaPlayerMappedProps => {
-    const hoveredAudioItemKey: any = store.hoveredMediaId && store.media
-        ? Object.keys(store.media).find((key: any) => store.media![key].id === store.hoveredMediaId)
+    const selectedAudioItemKey: any = store.selectedMediaId && store.media
+        ? Object.keys(store.media).find((key: any) => store.media![key].id === store.selectedMediaId)
         : null;
 
     return {
         media: store.media ? store.media : undefined,
-        id: store.hoveredMediaId ? store.hoveredMediaId : undefined,
-        hoveredMediaItem: hoveredAudioItemKey && store.media
-            ? store.media[hoveredAudioItemKey] 
+        selectedMediaId: store.selectedMediaId ? store.selectedMediaId : undefined,
+        selectedMediaItem: selectedAudioItemKey && store.media
+            ? store.media[selectedAudioItemKey] 
             : undefined
     }
 };

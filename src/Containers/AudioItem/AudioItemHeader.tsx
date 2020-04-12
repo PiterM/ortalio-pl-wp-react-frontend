@@ -57,7 +57,7 @@ const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, childre
           z-index: -2;
       }
       
-      &:hover, .audio-item:not(:active):hover & {
+      .audio-item:not(.selected) &:hover, .audio-item:not(.selected):hover & {
           &:before {
               animation: glitchy 0.3s ease 0.3s infinite;
           }
@@ -65,6 +65,10 @@ const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, childre
           &:after {
               animation: glitchy 0.3s ease infinite reverse;
           }
+      }
+
+      .audio-item:active &:before, .audio-item:active &:after {
+        display: none;
       }
     }
   }

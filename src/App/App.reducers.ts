@@ -6,7 +6,7 @@ import mediaPlayerReducer from '../Containers/MediaPlayer/MediaPlayer.reducers';
 const applicationReducers: Reducer<StoreState> =
   combineReducers({
     media: mediaReducer,
-    hoveredMediaId: mediaPlayerReducer,
+    selectedMediaId: mediaPlayerReducer,
   });
 
 export default applicationReducers;
