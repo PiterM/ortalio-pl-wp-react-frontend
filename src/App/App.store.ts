@@ -8,9 +8,10 @@ import { EnvironmentMode } from '../Utils/Constants';
 
 let store: Store<StoreState>;
 const composeEnhancers = composeWithDevTools({});
-const sagaMiddleware = createSagaMiddleware();
+// const sagaMiddleware = createSagaMiddleware();
 
-const middlewares = [sagaMiddleware];
+// const middlewares = [sagaMiddleware];
+const middlewares: any[] = [];
 
 if (process.env.NODE_ENV === EnvironmentMode.Production) {
   store = createStore<StoreState>(applicationReducers, applyMiddleware(...middlewares));
@@ -18,6 +19,6 @@ if (process.env.NODE_ENV === EnvironmentMode.Production) {
   store = createStore<StoreState>(applicationReducers, composeEnhancers(applyMiddleware(...middlewares)));
 }
 
-sagaMiddleware.run(saga);
+// sagaMiddleware.run(saga);
 
 export default store;

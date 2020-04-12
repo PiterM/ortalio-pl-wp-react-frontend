@@ -1,9 +1,15 @@
 import React from 'react';
+import { connect, Dispatch } from 'react-redux';
 import styled from '@emotion/styled'
+import { StoreState } from '../../App/App.store.d';
 import { colors, dimensions } from '../../Common/variables';
 import AudioItem from '../../Components/AudioItem/AudioItem';
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
+import { MediaState } from '../../Containers/Pages/HomePage/HomePage.state';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
+import {
+    setAllMediaDataSuccessAction,
+} from '../../Containers/Pages/HomePage/HomePage.actions';
 import { getRandomNumberFromString } from './HomePage.helpers';
 import {
     GlobalData,
@@ -29,13 +35,36 @@ const StyledPageColumn = styled.div`
     }
 `;
 
+interface HomePageDispatchProps {
+    saveAllMediaData: (mediaState: MediaState) => void;
+}
+
 interface HomePageOwnProps {
     globalData: GlobalData;
     socialMediaData: SocialMediaData[];
     data: OrtalioMedia[];
 }
 
-export default class HomePage extends React.Component<HomePageOwnProps> {
+type HomePageProps = HomePageOwnProps & HomePageDispatchProps;
+
+export class HomePage extends React.Component<HomePageProps> {
+    componentWillMount() {
+        const reduxData: MediaState = this.props.data.map((item: OrtalioMedia, index: number) => (
+            {
+                id: item.id,
+                title: item.title,
+                soundcloudUrl: item.soundcloudUrl,
+                youtubeUrl: item.youtubeUrl,
+                shortDescription: item.shortDescription,
+                content: item.content,
+                order: index,
+                isPlaying: false,
+                featuredImage: item.featuredImage
+            }
+        ));
+        this.props.saveAllMediaData(reduxData);
+    }
+
     render() {
         const { globalData, socialMediaData, data } = this.props;
 
@@ -102,3 +131,13 @@ export default class HomePage extends React.Component<HomePageOwnProps> {
         );
     }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch<StoreState>) => ({
+    saveAllMediaData: (mediaState: MediaState) => dispatch(setAllMediaDataSuccessAction(mediaState))
+});
+  
+export default connect<null, HomePageDispatchProps>(
+    null,
+    mapDispatchToProps
+)(HomePage);
+  

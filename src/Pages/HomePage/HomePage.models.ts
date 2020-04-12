@@ -4,13 +4,13 @@ interface FeaturedImage {
 }
 
 interface OrtalioMediaItem {
+    id: string;
     title: string;
     shortDescription: string;
     content?: string;
     soundcloudUrl: string;
     youtubeUrl?: string;
     featuredImage: FeaturedImage;
-    id: string;
 }
 
 export type OrtalioMedia = OrtalioMediaItem;
