@@ -11,7 +11,6 @@ const StyledAudioItem = styled.div`
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
   width: 100%;
-  transition: all ${transition.duration};
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -27,6 +26,11 @@ const StyledAudioItem = styled.div`
     color: #000;
     cursor: pointer;
   }
+
+  &:active {
+    background-color #fff;
+    color: ${colors.black};
+  }
 `;
 
 interface AudioItemProps {
@@ -36,20 +40,26 @@ interface AudioItemProps {
   content?: string;
 }
 
-const AudioItem: React.FC<AudioItemProps> = ({ index, title, shortDescription, content }) => (
-  <StyledAudioItem
-    key={index}
-    className="audio-item"
-  >
-    <AudioItemHeader
-      index={index}
-      title={title}
-      shortDescription={shortDescription}
-    />
-    <AudioItemContent
-      content={content}
-    />
-  </StyledAudioItem>
-);
+export class AudioItem extends React.Component<AudioItemProps> {
+  render() {
+    const { index, title, shortDescription, content } = this.props;
+    return (
+      <StyledAudioItem
+        key={index}
+        className="audio-item"
+        // onClick={() => this.onClick()}
+      >
+        <AudioItemHeader
+          index={index}
+          title={title}
+          shortDescription={shortDescription}
+        />
+        <AudioItemContent
+          content={content}
+        />
+      </StyledAudioItem>
+    );
+  }
+};
 
 export default AudioItem;
