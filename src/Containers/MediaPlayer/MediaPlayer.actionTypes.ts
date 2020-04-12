@@ -1,0 +1,5 @@
+enum ACTION_TYPES {
+    SET_HOVERED_AUDIO_ITEM = 'MediaPlayer@SET_HOVERED_AUDIO_ITEM',
+}
+export default ACTION_TYPES;
+  

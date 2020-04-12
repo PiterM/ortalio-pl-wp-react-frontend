@@ -27,6 +27,9 @@ export const colors = {
     main: '#2f2f2f',
     firstAdditional: 'yellow',
     secondAdditional: 'orange'
+  },
+  mediaPlayer: {
+    background: '#f9f7f1'
   }
 }
 
@@ -88,6 +91,9 @@ export const dimensions = {
   },
   homePage: {
     columnsNumber: 5,
+  },
+  mediaPlayer: {
+    height: 70
   }
 }
 

@@ -3,7 +3,8 @@ import { connect, Dispatch } from 'react-redux';
 import styled from '@emotion/styled'
 import { StoreState } from '../../App/App.store.d';
 import { colors, dimensions } from '../../Common/variables';
-import AudioItem from '../../Components/AudioItem/AudioItem';
+import AudioItem from '../../Containers/AudioItem/AudioItem';
+import MediaPlayer from '../../Containers/MediaPlayer/MediaPlayer';
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
 import { MediaState } from '../../Containers/Pages/HomePage/HomePage.state';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
@@ -21,6 +22,7 @@ const StyledPage = styled.div`
   display: grid;
   grid-template-columns: repeat(${dimensions.homePage.columnsNumber}, 2fr);
   text-align: center;
+  padding-bottom: ${dimensions.mediaPlayer.height}px;
 `;
 
 const StyledPageColumn = styled.div`
@@ -78,6 +80,7 @@ export class HomePage extends React.Component<HomePageProps> {
                 <StyledPage>
                     {this.renderAudioItems(data)}
                 </StyledPage>
+                <MediaPlayer />
             </HomePageLayout>
         );
     }
@@ -123,6 +126,7 @@ export class HomePage extends React.Component<HomePageProps> {
         return (
             <AudioItem
                 key={id}
+                id={id}
                 index={getRandomNumberFromString(id)}
                 title={title}
                 shortDescription={shortDescription}
