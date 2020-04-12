@@ -27,7 +27,6 @@ const StyledHeaderTitle = styled.header`
   font-size: 80px;
   text-transform: uppercase;
   display: inline-block;
-  line-height: 72px;
   margin-bottom: 20px;
   letter-spacing: 6px;
 `;
@@ -37,7 +36,6 @@ const StyledHomePageLink = styled.a`
   outline: none;
 
   &:hover {
-    color: #000;
     text-decoration: none;
   }
 `;

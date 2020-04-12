@@ -2,6 +2,6 @@
 
 .site-header {
     &:hover {
-      @include textGlitch("title-glitch", 17, black, #f3f1ea, green, yellow, 20, 20);
+      @include textGlitch("title-glitch", 17, black, #f3f1ea, green, yellow, 0, 0);
     }
 }
