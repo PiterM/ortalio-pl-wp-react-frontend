@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect} from 'react-redux';
+import { Dispatch } from 'redux';
 import styled from '@emotion/styled'
-import { StoreState } from '../../App/App.store.d';
 import { colors, dimensions } from '../../Common/variables';
 import AudioItem from '../../Containers/AudioItem/AudioItem';
 import MediaPlayer from '../../Containers/MediaPlayer/MediaPlayer';
@@ -9,6 +9,7 @@ import SocialIcons from '../../Components/SocialIcons/SocialIcons';
 import { MediaState } from '../../Containers/Pages/HomePage/HomePage.state';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
 import {
+    SetAllMediaDataSuccessAction,
     setAllMediaDataSuccessAction,
 } from '../../Containers/Pages/HomePage/HomePage.actions';
 import { getRandomNumberFromString } from './HomePage.helpers';
@@ -50,7 +51,7 @@ interface HomePageOwnProps {
 type HomePageProps = HomePageOwnProps & HomePageDispatchProps;
 
 export class HomePage extends React.Component<HomePageProps> {
-    componentWillMount() {
+    componentDidMount() {
         const reduxData: MediaState = this.props.data.map((item: OrtalioMedia, index: number) => (
             {
                 id: item.id,
@@ -136,11 +137,11 @@ export class HomePage extends React.Component<HomePageProps> {
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<StoreState>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<SetAllMediaDataSuccessAction>) => ({
     saveAllMediaData: (mediaState: MediaState) => dispatch(setAllMediaDataSuccessAction(mediaState))
 });
   
-export default connect<null, HomePageDispatchProps>(
+export default connect<{}, HomePageDispatchProps>(
     null,
     mapDispatchToProps
 )(HomePage);

@@ -1,5 +1,5 @@
 import applicationReducers from './App.reducers';
-import { applyMiddleware, createStore, Store } from 'redux';
+import { AnyAction, applyMiddleware, createStore, Reducer, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import saga from './App.sagas';
@@ -14,9 +14,9 @@ const composeEnhancers = composeWithDevTools({});
 const middlewares: any[] = [];
 
 if (process.env.NODE_ENV === EnvironmentMode.Production) {
-  store = createStore<StoreState>(applicationReducers, applyMiddleware(...middlewares));
+  store = createStore<StoreState, AnyAction, any, any>(applicationReducers, applyMiddleware(...middlewares));
 } else {
-  store = createStore<StoreState>(applicationReducers, composeEnhancers(applyMiddleware(...middlewares)));
+  store = createStore<StoreState, AnyAction, any, any>(applicationReducers, composeEnhancers(applyMiddleware(...middlewares)));
 }
 
 // sagaMiddleware.run(saga);

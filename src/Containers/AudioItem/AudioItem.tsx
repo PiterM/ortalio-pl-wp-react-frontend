@@ -1,11 +1,14 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
-import { connect, Dispatch } from 'react-redux';
-import { StoreState } from '../../App/App.store.d';
+import { connect} from 'react-redux';
+import { Dispatch } from 'redux';
 import { colors, dimensions } from '../../Common/variables';
 import AudioItemHeader from './AudioItemHeader';
 import AudioItemContent from './AudioItemContent';
-import { setHoveredAudioItemAction } from '../MediaPlayer/MediaPlayer.actions';
+import { 
+  SetHoveredAudioItemAction,
+  setHoveredAudioItemAction 
+} from '../MediaPlayer/MediaPlayer.actions';
 
 const StyledAudioItem = styled.div`
   line-height: ${dimensions.lineHeight.regular};
@@ -73,7 +76,7 @@ export class AudioItem extends React.Component<AudioItemProps> {
   private onClick = () => this.props.setHoveredAudioItem(this.props.id);
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<StoreState>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<SetHoveredAudioItemAction>) => ({
   setHoveredAudioItem: (id: string) => dispatch(setHoveredAudioItemAction(id))
 });
 
