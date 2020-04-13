@@ -92,8 +92,10 @@ export const dimensions = {
   homePage: {
     columnsNumber: 5,
   },
-  mediaPlayer: {
-    height: 70
+  mediaPlayerHeight: {
+    mini: 50,
+    small: 162,
+    medium: 400
   }
 }
 

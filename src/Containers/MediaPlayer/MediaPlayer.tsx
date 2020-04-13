@@ -1,21 +1,14 @@
 import * as React from 'react';
+import ReactPlayer from 'react-player';
 import styled from '@emotion/styled';
 import { connect} from 'react-redux';
 import { StoreState } from '../../App/App.store.d';
 import { AudioItemState } from '../AudioItem/AudioItem.state';
 import { MediaState } from '../Pages/HomePage/HomePage.state';
 import { colors, dimensions } from '../../Common/variables';
-
-const StyledMediaPlayer = styled.div`
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: ${dimensions.mediaPlayer.height}px;
-    width: 100%;
-    background-color: ${colors.mediaPlayer.background};
-    z-index: 2;
-`;
+import { soundcloudConfig, youtubeConfig } from './MediaPlayer.configs';
+import MediaPlayerSmall from './MediaPlayer.soundcloud';
+import MediaPlayerMedium from './MediaPlayer.youtube';
 
 interface MediaPlayerMappedProps {
     media?: MediaState;
@@ -25,7 +18,18 @@ interface MediaPlayerMappedProps {
 
 type MediaPlayerProps = MediaPlayerMappedProps;
 
-export class MediaPlayer extends React.Component<MediaPlayerProps> {
+enum MediaPlayerMode {
+    Soundcloud = 'Soundcloud',
+    Youtube = 'Youtube'
+}
+
+interface MediaPlayerState {
+    hovered: boolean;
+}
+
+export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerState> {
+    public state = { hovered: false };
+
     render() {
         const { selectedMediaItem } = this.props;
 
@@ -33,13 +37,49 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             return null;
         }
 
-        const { title } = selectedMediaItem
+        const { soundcloudUrl, youtubeUrl, title } = selectedMediaItem
+        const { hovered } = this.state;
+
+        const mediaPlayerMode: MediaPlayerMode = soundcloudUrl && !youtubeUrl
+            ? MediaPlayerMode.Soundcloud
+            : MediaPlayerMode.Youtube;
+
+        const playerHeight = hovered && mediaPlayerMode === MediaPlayerMode.Soundcloud
+            ? dimensions.mediaPlayerHeight.small
+            : (hovered && mediaPlayerMode === MediaPlayerMode.Youtube
+                ? dimensions.mediaPlayerHeight.medium
+                : dimensions.mediaPlayerHeight.mini)
+
         return (
-            <StyledMediaPlayer>
-                {title}
-            </StyledMediaPlayer>
+            <div
+                onMouseOver={() => this.onMouseOver()}
+                onMouseOut={() => this.onMouseOut()}
+            >
+
+            { youtubeUrl && 
+                <MediaPlayerMedium
+                    url={youtubeUrl}
+                    config={youtubeConfig}
+                    playerHeight={playerHeight}
+                    minimalMode={!hovered}
+                    title={title}
+                />                   
+            }
+            { soundcloudUrl && !youtubeUrl &&
+                <MediaPlayerSmall
+                    url={soundcloudUrl}
+                    config={soundcloudConfig}
+                    playerHeight={playerHeight}
+                    minimalMode={!hovered}
+                    title={title}
+                />  
+            }
+            </div>
         );
     }
+
+    private onMouseOver = () => this.setState({ hovered: true });
+    private onMouseOut = () => this.setState({ hovered: false });
 }
 
 const mapStateToProps: any = (store: StoreState): MediaPlayerMappedProps => {
