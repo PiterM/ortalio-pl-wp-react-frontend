@@ -23,7 +23,7 @@ const StyledPage = styled.div`
   display: grid;
   grid-template-columns: repeat(${dimensions.homePage.columnsNumber}, 2fr);
   text-align: center;
-  padding-bottom: ${dimensions.mediaPlayerHeight.small}px;
+  padding-bottom: ${dimensions.mediaPlayerHeight.mini}px;
 `;
 
 const StyledPageColumn = styled.div`
