@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
+import { colors, dimensions } from '../../Common/variables';
 
 const StyledMediaPlayerSmall = styled.div`
     display: flex;
@@ -7,28 +8,42 @@ const StyledMediaPlayerSmall = styled.div`
     justify-content: center;
     text-align: center;
     height: 100%;
+    padding: 10px;
+    background-color: ${colors.white};
+
+    & > img {
+        border: 3px solid ${colors.white};
+    }
 
     & > p {
         height: 100%;
         margin: 0;
-        padding: 20px;
         letter-spacing: 2px;
+        margin-left: 10px;
     }
 `;
 
 interface MediaPlayerMiniOwnProps {
     title: string;
-    thumbnail?: string;
+    thumbnailUrl: string;
     visible: boolean;
 }
 
 export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
     render() {
-        const { title, visible } = this.props;
+        const { title, visible, thumbnailUrl } = this.props;
 
         return visible ? (
             <StyledMediaPlayerSmall>
-                <p>{title}</p>
+                <img 
+                        src={thumbnailUrl} 
+                        width={dimensions.mediaPlayerHeight.mini - 16}
+                        height={dimensions.mediaPlayerHeight.mini - 16}
+                        alt={title} 
+                    />
+                <p>
+                    {title}
+                </p>
             </StyledMediaPlayerSmall>
         ): null;
     }

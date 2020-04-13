@@ -1,11 +1,9 @@
 import * as React from 'react';
-import ReactPlayer from 'react-player';
-import styled from '@emotion/styled';
 import { connect} from 'react-redux';
 import { StoreState } from '../../App/App.store.d';
 import { AudioItemState } from '../AudioItem/AudioItem.state';
 import { MediaState } from '../Pages/HomePage/HomePage.state';
-import { colors, dimensions } from '../../Common/variables';
+import { dimensions } from '../../Common/variables';
 import { soundcloudConfig, youtubeConfig } from './MediaPlayer.configs';
 import MediaPlayerSmall from './MediaPlayer.soundcloud';
 import MediaPlayerMedium from './MediaPlayer.youtube';
@@ -37,7 +35,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             return null;
         }
 
-        const { soundcloudUrl, youtubeUrl, title } = selectedMediaItem
+        const { soundcloudUrl, youtubeUrl, title, featuredImage } = selectedMediaItem
         const { hovered } = this.state;
 
         const mediaPlayerMode: MediaPlayerMode = soundcloudUrl && !youtubeUrl
@@ -63,6 +61,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                     playerHeight={playerHeight}
                     minimalMode={!hovered}
                     title={title}
+                    thumbnailUrl={featuredImage.sourceUrl}
                 />                   
             }
             { soundcloudUrl && !youtubeUrl &&
@@ -72,6 +71,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                     playerHeight={playerHeight}
                     minimalMode={!hovered}
                     title={title}
+                    thumbnailUrl={featuredImage.sourceUrl}
                 />  
             }
             </div>

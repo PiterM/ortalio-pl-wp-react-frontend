@@ -10,7 +10,7 @@ const StyledMediaPlayerSmall = styled.div`
     left: 0;
     right: 0;
     width: 100%;
-    background-color: ${colors.mediaPlayer.background};
+    background-color: ${colors.white};
     z-index: 2;
     min-height: ${dimensions.mediaPlayerHeight.mini}px;
 `;
@@ -18,6 +18,7 @@ const StyledMediaPlayerSmall = styled.div`
 interface MediaPlayerSmallOwnProps {
     title: string;
     url: string;
+    thumbnailUrl: string;
     config: any;
     playerHeight: any;
     minimalMode: boolean;
@@ -25,17 +26,26 @@ interface MediaPlayerSmallOwnProps {
 
 export class MediaPlayerSmall extends React.Component<MediaPlayerSmallOwnProps> {
     render() {
-        const { title, url, config, playerHeight, minimalMode } = this.props;
-        const playerDisplay = minimalMode ? 'none' : 'block';
+        const { 
+            title, 
+            url, 
+            thumbnailUrl,
+            config, 
+            minimalMode 
+        } = this.props;
+
+        const playerVisibility = minimalMode ? 'hidden' : 'visible';
+        const playerHeight = minimalMode ? 0 : this.props.playerHeight;
         
         return (
         <StyledMediaPlayerSmall>
             <MediaPlayerMini
                 visible={minimalMode} 
                 title={title}
+                thumbnailUrl={thumbnailUrl}
             />
             <ReactPlayer 
-                style={{ display: playerDisplay }}
+                style={{ visibility: playerVisibility }}
                 url={url}
                 playing={true}
                 width="100%"

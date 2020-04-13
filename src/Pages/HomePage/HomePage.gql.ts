@@ -15,7 +15,7 @@ export const GET_ORTALIO_MEDIA_QUERY = gql`
         }
         featuredImage {
           altText
-          sourceUrl
+          sourceUrl(size: THUMBNAIL)
         }
       }
     }
