@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import styled from '@emotion/styled'
 import { colors, dimensions } from '../../Common/variables';
 import AudioItem from '../../Containers/AudioItem/AudioItem';
-import MediaPlayer from '../../Containers/MediaPlayer/MediaPlayer';
+import MediaPlayerContainer from '../../Containers/MediaPlayer/MediaPlayer.container';
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
 import { MediaState } from '../../Containers/Pages/HomePage/HomePage.state';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
@@ -81,7 +81,7 @@ export class HomePage extends React.Component<HomePageProps> {
                 <StyledPage>
                     {this.renderAudioItems(data)}
                 </StyledPage>
-                <MediaPlayer />
+                <MediaPlayerContainer />
             </HomePageLayout>
         );
     }

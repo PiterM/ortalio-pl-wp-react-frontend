@@ -1,99 +1,72 @@
 import * as React from 'react';
-import { connect} from 'react-redux';
-import { StoreState } from '../../App/App.store.d';
-import { AudioItemState } from '../AudioItem/AudioItem.state';
-import { MediaState } from '../Pages/HomePage/HomePage.state';
-import { dimensions } from '../../Common/variables';
-import { soundcloudConfig, youtubeConfig } from './MediaPlayer.configs';
-import MediaPlayerSmall from './MediaPlayer.soundcloud';
-import MediaPlayerMedium from './MediaPlayer.youtube';
+import ReactPlayer from 'react-player';
+import styled from '@emotion/styled';
+import { colors, dimensions } from '../../Common/variables';
+import MediaPlayerMini from './MediaPlayer.mini';
+import { MediaPlayerMode } from './MediaPlayer.constants';
 
-interface MediaPlayerMappedProps {
-    media?: MediaState;
-    selectedMediaId?: string;
-    selectedMediaItem?: AudioItemState;
+const StyledMediaPlayer = styled.div`
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: ${colors.white};
+    z-index: 2;
+    min-height: ${dimensions.mediaPlayerHeight.mini}px;
+`;
+
+interface MediaPlayerOwnProps {
+    title: string;
+    url: string;
+    thumbnailUrl: string;
+    config: any;
+    playerHeight: any;
+    minimalMode: boolean;
+    playerMode: MediaPlayerMode;
 }
 
-type MediaPlayerProps = MediaPlayerMappedProps;
-
-enum MediaPlayerMode {
-    Soundcloud = 'Soundcloud',
-    Youtube = 'Youtube'
-}
-
-interface MediaPlayerState {
-    hovered: boolean;
-}
-
-export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerState> {
-    public state = { hovered: false };
-
+export class MediaPlayer extends React.Component<MediaPlayerOwnProps> {
     render() {
-        const { selectedMediaItem } = this.props;
+        const { 
+            title, 
+            url, 
+            thumbnailUrl,
+            config, 
+            minimalMode,
+            playerMode
+        } = this.props;
 
-        if (!selectedMediaItem) {
-            return null;
-        }
+        const playerVisibility = minimalMode ? 'hidden' : 'visible';
+        const playerHeight = minimalMode ? 0 : this.props.playerHeight;
 
-        const { soundcloudUrl, youtubeUrl, title, featuredImage } = selectedMediaItem
-        const { hovered } = this.state;
+        const soundcloudConfig = playerMode === MediaPlayerMode.Soundcloud 
+            ? config
+            : undefined;
 
-        const mediaPlayerMode: MediaPlayerMode = soundcloudUrl && !youtubeUrl
-            ? MediaPlayerMode.Soundcloud
-            : MediaPlayerMode.Youtube;
-
-        const playerHeight = hovered && mediaPlayerMode === MediaPlayerMode.Soundcloud
-            ? dimensions.mediaPlayerHeight.small
-            : (hovered && mediaPlayerMode === MediaPlayerMode.Youtube
-                ? dimensions.mediaPlayerHeight.medium
-                : dimensions.mediaPlayerHeight.mini)
-
+        const youtubeConfig = playerMode === MediaPlayerMode.Youtube 
+            ? config
+            : undefined;
+        
         return (
-            <div
-                onMouseOver={() => this.onMouseOver()}
-                onMouseOut={() => this.onMouseOut()}
-            >
-
-            { youtubeUrl && 
-                <MediaPlayerMedium
-                    url={youtubeUrl}
-                    config={youtubeConfig}
-                    playerHeight={playerHeight}
-                    minimalMode={!hovered}
-                    title={title}
-                    thumbnailUrl={featuredImage.sourceUrl}
-                />                   
-            }
-            { soundcloudUrl && !youtubeUrl &&
-                <MediaPlayerSmall
-                    url={soundcloudUrl}
-                    config={soundcloudConfig}
-                    playerHeight={playerHeight}
-                    minimalMode={!hovered}
-                    title={title}
-                    thumbnailUrl={featuredImage.sourceUrl}
-                />  
-            }
-            </div>
+        <StyledMediaPlayer>
+            <MediaPlayerMini
+                visible={minimalMode} 
+                title={title}
+                thumbnailUrl={thumbnailUrl}
+            />
+            <ReactPlayer 
+                style={{ visibility: playerVisibility }}
+                url={url}
+                playing={true}
+                width="100%"
+                height={playerHeight}
+                soundcloudConfig={soundcloudConfig}
+                youtubeConfig={youtubeConfig}
+            />
+        </StyledMediaPlayer>
         );
     }
-
-    private onMouseOver = () => this.setState({ hovered: true });
-    private onMouseOut = () => this.setState({ hovered: false });
 }
 
-const mapStateToProps: any = (store: StoreState): MediaPlayerMappedProps => {
-    const selectedAudioItemKey: any = store.selectedMediaId && store.media
-        ? Object.keys(store.media).find((key: any) => store.media![key].id === store.selectedMediaId)
-        : null;
-
-    return {
-        media: store.media ? store.media : undefined,
-        selectedMediaId: store.selectedMediaId ? store.selectedMediaId : undefined,
-        selectedMediaItem: selectedAudioItemKey && store.media
-            ? store.media[selectedAudioItemKey] 
-            : undefined
-    }
-};
-  
-export default connect<MediaPlayerMappedProps>(mapStateToProps)(MediaPlayer);
+export default MediaPlayer;
