@@ -8,20 +8,24 @@ import { soundcloudConfig, youtubeConfig } from './MediaPlayer.configs';
 import MediaPlayer from './MediaPlayer';
 import { MediaPlayerMode } from './MediaPlayer.constants';
 
-interface MediaPlayerMappedProps {
+interface MediaPlayerContainerMappedProps {
     media?: MediaState;
     selectedMediaId?: string;
     selectedMediaItem?: AudioItemState;
 }
 
-type MediaPlayerProps = MediaPlayerMappedProps;
+type MediaPlayerContainerProps = MediaPlayerContainerMappedProps;
 
-interface MediaPlayerState {
+interface MediaPlayerContainerState {
     hovered: boolean;
 }
 
-export class MediaPlayerContainer extends React.Component<MediaPlayerProps, MediaPlayerState> {
-    public state = { hovered: false };
+const initState: MediaPlayerContainerState = {
+    hovered: false,
+};
+
+export class MediaPlayerContainer extends React.Component<MediaPlayerContainerProps, MediaPlayerContainerState> {
+    public state: MediaPlayerContainerState = initState;
 
     render() {
         const { selectedMediaItem } = this.props;
@@ -43,34 +47,28 @@ export class MediaPlayerContainer extends React.Component<MediaPlayerProps, Medi
                 ? dimensions.mediaPlayerHeight.medium
                 : dimensions.mediaPlayerHeight.mini)
 
-        return (
-            <div
-                onMouseOver={() => this.onMouseOver()}
-                onMouseOut={() => this.onMouseOut()}
-            >
+        const mediaUrl = youtubeUrl 
+            ? youtubeUrl
+            : soundcloudUrl;
 
-            { youtubeUrl && 
+        const playerMode = youtubeUrl 
+            ? MediaPlayerMode.Youtube
+            : MediaPlayerMode.Soundcloud;
+
+        return (
+            <div>
                 <MediaPlayer
-                    url={youtubeUrl}
-                    config={youtubeConfig}
+                    url={mediaUrl}
+                    youtubeConfig={youtubeConfig}
+                    soundcloudConfig={soundcloudConfig}
                     playerHeight={playerHeight}
                     minimalMode={!hovered}
                     title={title}
                     thumbnailUrl={featuredImage.sourceUrl}
-                    playerMode={MediaPlayerMode.Youtube}
+                    playerMode={playerMode}
+                    onMouseOver={() => this.onMouseOver()}
+                    onMouseOut={() => this.onMouseOut()}
                 />                   
-            }
-            { soundcloudUrl && !youtubeUrl &&
-                <MediaPlayer
-                    url={soundcloudUrl}
-                    config={soundcloudConfig}
-                    playerHeight={playerHeight}
-                    minimalMode={!hovered}
-                    title={title}
-                    thumbnailUrl={featuredImage.sourceUrl}
-                    playerMode={MediaPlayerMode.Soundcloud}
-                />  
-            }
             </div>
         );
     }
@@ -79,7 +77,7 @@ export class MediaPlayerContainer extends React.Component<MediaPlayerProps, Medi
     private onMouseOut = () => this.setState({ hovered: false });
 }
 
-const mapStateToProps: any = (store: StoreState): MediaPlayerMappedProps => {
+const mapStateToProps: any = (store: StoreState): MediaPlayerContainerMappedProps => {
     const selectedAudioItemKey: any = store.selectedMediaId && store.media
         ? Object.keys(store.media).find((key: any) => store.media![key].id === store.selectedMediaId)
         : null;
@@ -93,4 +91,4 @@ const mapStateToProps: any = (store: StoreState): MediaPlayerMappedProps => {
     }
 };
   
-export default connect<MediaPlayerMappedProps>(mapStateToProps)(MediaPlayerContainer);
+export default connect<MediaPlayerContainerMappedProps>(mapStateToProps)(MediaPlayerContainer);

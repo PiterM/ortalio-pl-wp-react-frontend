@@ -13,60 +13,134 @@ const StyledMediaPlayer = styled.div`
     width: 100%;
     background-color: ${colors.white};
     z-index: 2;
-    min-height: ${dimensions.mediaPlayerHeight.mini}px;
+    background-color: ${colors.newspaperPaper};
+    display: flex;
+`;
+
+const StyledNotMediaPlayer = styled.div`
+    height: ${dimensions.mediaPlayerHeight.mini}px;
+    width: 100%;
 `;
 
 interface MediaPlayerOwnProps {
     title: string;
     url: string;
     thumbnailUrl: string;
-    config: any;
+    youtubeConfig: any;
+    soundcloudConfig: any;
     playerHeight: any;
     minimalMode: boolean;
     playerMode: MediaPlayerMode;
+    onMouseOver: () => void;
+    onMouseOut: () => void;
 }
 
+interface MediaPlayerState {
+    playing: boolean;
+    progress?: any;
+    duration?: number;
+}
+
+const initState: MediaPlayerState = {
+    playing: false,
+};
+
 export class MediaPlayer extends React.Component<MediaPlayerOwnProps> {
+    public state: MediaPlayerState = initState;
+    private player: any;
+
+    componentDidUpdate(prevProps: MediaPlayerOwnProps) {
+        if (prevProps.url !== this.props.url) {
+            this.resetTrackProgress();
+        }
+    }
+
     render() {
         const { 
             title, 
             url, 
             thumbnailUrl,
-            config, 
+            soundcloudConfig, 
+            youtubeConfig,
             minimalMode,
-            playerMode
         } = this.props;
 
         const playerVisibility = minimalMode ? 'hidden' : 'visible';
         const playerHeight = minimalMode ? 0 : this.props.playerHeight;
 
-        const soundcloudConfig = playerMode === MediaPlayerMode.Soundcloud 
-            ? config
-            : undefined;
-
-        const youtubeConfig = playerMode === MediaPlayerMode.Youtube 
-            ? config
-            : undefined;
-        
         return (
-        <StyledMediaPlayer>
-            <MediaPlayerMini
-                visible={minimalMode} 
-                title={title}
-                thumbnailUrl={thumbnailUrl}
-            />
-            <ReactPlayer 
-                style={{ visibility: playerVisibility }}
-                url={url}
-                playing={true}
-                width="100%"
-                height={playerHeight}
-                soundcloudConfig={soundcloudConfig}
-                youtubeConfig={youtubeConfig}
-            />
-        </StyledMediaPlayer>
+            <>
+                { minimalMode && 
+                    <StyledMediaPlayer>
+                        <MediaPlayerMini
+                            visible={minimalMode} 
+                            title={title}
+                            thumbnailUrl={thumbnailUrl}
+                            playing={this.state.playing}
+                            progress={this.state.progress}
+                        />
+                        <StyledNotMediaPlayer
+                            onMouseOver={() => this.props.onMouseOver()}
+                        />
+                    </StyledMediaPlayer>
+                }
+                <StyledMediaPlayer
+                    onMouseOut={() => this.props.onMouseOut()}
+                >
+                    <ReactPlayer 
+                        ref={this.ref}
+                        style={{ visibility: playerVisibility }}
+                        url={url}
+                        playing={true}
+                        width="100%"
+                        height={playerHeight}
+                        soundcloudConfig={soundcloudConfig}
+                        youtubeConfig={youtubeConfig}
+                        onReady={() => this.resetTrackProgress()}
+                        onStart={() => this.onPlay()}
+                        onPlay={() => this.onPlay()}
+                        onProgress={(progress: any) => this.onProgress(progress)}
+                        onPause={() => this.onPause()}
+                        // onEnded={() => this.onEnded()}
+                        // onError={() => this.onError()}
+                    />
+                </StyledMediaPlayer>
+            </>
         );
     }
+
+    private onPlay = () => this.trySetPlayinState(true);
+    private onPause = () => this.trySetPlayinState(false);
+
+    private onProgress = (progress: any) => {
+        const duration = this.player.getDuration();
+        if (duration) {
+            const trackLength = Math.floor(this.player.getDuration());
+            const played = Math.floor(progress.playedSeconds);
+            let secondsLeft = trackLength - played;
+            const minutesLeft = Math.floor(secondsLeft / 60);
+            secondsLeft = secondsLeft - minutesLeft * 60;
+            this.setState({ progress: { 
+                minutesLeft: `${minutesLeft}`.padStart(2, '0'), 
+                secondsLeft: `${secondsLeft}`.padStart(2, '0')
+            }});
+        }
+    }
+
+    private trySetPlayinState(playing: boolean) {
+        if (playing !== this.state.playing) {
+            this.setState({ playing });
+        }
+    }
+
+    private resetTrackProgress() {
+        this.setState({
+            progress: undefined,
+            duration: undefined
+       });
+    }
+
+    private ref = (player: any) => this.player = player;
 }
 
 export default MediaPlayer;
