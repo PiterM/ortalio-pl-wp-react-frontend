@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
-import { colors, dimensions } from '../../Common/variables';
+import { colors, dimensions, fonts } from '../../Common/variables';
 
 const StyledMediaPlayerMiniContainer = styled.div`
     display: inline-block;
@@ -15,6 +15,7 @@ const StyledMediaPlayerMini = styled.div`
     padding: 10px 30px;;
     min-width: 600px;
     background-color: ${colors.white};
+    border-right: 1px ${colors.newspaperPaperHovered} solid;
 
     & > img.thumbnail {
         border: 3px solid ${colors.newspaperPaperHovered};
@@ -22,14 +23,16 @@ const StyledMediaPlayerMini = styled.div`
 
     & > p {
         margin: 0;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
         margin-left: 10px;
+        font-family: ${fonts.sansSerif};
+        font-weight: bold;
     }
 `;
 
 const StyledPlayerPauseControlImage = styled.img`
-    width: 30px;
-    height: 30px;
+    width: ${dimensions.mediaPlayer.playPauseControlSize}px;
+    height: ${dimensions.mediaPlayer.playPauseControlSize}px;
     opacity: 0.8;
     margin-left: 10px;
     animation: blinking 1.5s infinite;
@@ -43,8 +46,8 @@ const StyledPlayerPauseControlImage = styled.img`
 `;
 
 const StyledPlayerPlayControlImage = styled.img`
-    width: 30px;
-    height: 30px;
+    width: ${dimensions.mediaPlayer.playPauseControlSize}px;
+    height: ${dimensions.mediaPlayer.playPauseControlSize}px;
     opacity: 0.8;
     margin-left: 10px;
 `;
@@ -80,15 +83,15 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     { playing && 
                         <StyledPlayerPlayControlImage 
                             src={playerImgSrc} 
-                            width="30"
-                            height="30"
+                            width={dimensions.mediaPlayer.playPauseControlSize}
+                            height={dimensions.mediaPlayer.playPauseControlSize}
                         />
                     }
                     { !playing && 
                         <StyledPlayerPauseControlImage 
                             src={playerImgSrc} 
-                            width="30"
-                            height="30"
+                            width={dimensions.mediaPlayer.playPauseControlSize}
+                            height={dimensions.mediaPlayer.playPauseControlSize}
                         />
                     }
                     {this.renderPlayerTimer()}
@@ -101,11 +104,11 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
         const { progress } = this.props;
         return progress && progress.minutesLeft && progress.secondsLeft ? (
             <p>
-                - <strong>{ progress.minutesLeft }</strong>:
-                <strong>{ progress.secondsLeft }</strong>
+                -<span>{ progress.minutesLeft }</span>:
+                <span>{ progress.secondsLeft }</span>
             </p>
         ): <p>
-            <strong>-</strong>:<strong>-</strong>
+            <span>-</span>:<span>-</span>
         </p>;
     }
 }

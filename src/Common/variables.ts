@@ -96,6 +96,9 @@ export const dimensions = {
     mini: 50,
     small: 162,
     medium: 400
+  },
+  mediaPlayer: {
+    playPauseControlSize: 20
   }
 }
 
