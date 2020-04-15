@@ -50,6 +50,7 @@ const StyledMediaPlayerMini = styled.div`
 
     & .timer {
         grid-column: 4;
+        border-left: 1px solid ${colors.newspaperText};
     }
 `;
 
@@ -72,13 +73,16 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
         return visible ? (
             <StyledMediaPlayerMiniContainer>
                 <StyledMediaPlayerMini>
-                    <img 
+                    <div
                         className="thumbnail"
-                        src={thumbnailUrl} 
-                        width={dimensions.mediaPlayerHeight.mini - 16}
-                        height={dimensions.mediaPlayerHeight.mini - 16}
-                        alt={title} 
-                    />
+                    >
+                        <img 
+                            src={thumbnailUrl} 
+                            width={dimensions.mediaPlayerHeight.mini - 16}
+                            height={dimensions.mediaPlayerHeight.mini - 16}
+                            alt={title} 
+                        />
+                    </div>
                     <p className="title">
                         {title}
                     </p>
@@ -107,7 +111,7 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                 <span>{ progress.secondsLeft }</span>
             </p>
         ): <p>
-            <span>-</span>:<span>-</span>
+            &nbsp;<span>--</span>:<span>--</span>
         </p>;
     }
 }
