@@ -42,7 +42,7 @@ interface MediaPlayerState {
 }
 
 const initState: MediaPlayerState = {
-    playing: false,
+    playing: true,
 };
 
 export class MediaPlayer extends React.Component<MediaPlayerOwnProps> {
@@ -78,6 +78,10 @@ export class MediaPlayer extends React.Component<MediaPlayerOwnProps> {
                             thumbnailUrl={thumbnailUrl}
                             playing={this.state.playing}
                             progress={this.state.progress}
+                            onPlayClick={this.onPlayClick}
+                            onPauseClick={this.onPauseClick}
+                            onPreviousClick={this.onPreviousClick}
+                            onNextClick={this.onNextClick}
                         />
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
@@ -91,7 +95,7 @@ export class MediaPlayer extends React.Component<MediaPlayerOwnProps> {
                         ref={this.ref}
                         style={{ visibility: playerVisibility }}
                         url={url}
-                        playing={true}
+                        playing={this.state.playing}
                         width="100%"
                         height={playerHeight}
                         soundcloudConfig={soundcloudConfig}
@@ -118,13 +122,26 @@ export class MediaPlayer extends React.Component<MediaPlayerOwnProps> {
             const trackLength = Math.floor(this.player.getDuration());
             const played = Math.floor(progress.playedSeconds);
             let secondsLeft = trackLength - played;
+
             const minutesLeft = Math.floor(secondsLeft / 60);
             secondsLeft = secondsLeft - minutesLeft * 60;
+
             this.setState({ progress: { 
                 minutesLeft: `${minutesLeft}`.padStart(2, '0'), 
                 secondsLeft: `${secondsLeft}`.padStart(2, '0')
             }});
         }
+    }
+
+    private onPlayClick = () => this.trySetPlayinState(true);
+    private onPauseClick = () => this.trySetPlayinState(false);
+
+    private onPreviousClick() {
+
+    }
+
+    private onNextClick() {
+
     }
 
     private trySetPlayinState(playing: boolean) {

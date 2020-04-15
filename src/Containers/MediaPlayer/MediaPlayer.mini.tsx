@@ -1,55 +1,56 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '../../Common/variables';
+import MediaPlayerMiniControls from './MediaPlayer.mini.controls';
 
 const StyledMediaPlayerMiniContainer = styled.div`
     display: inline-block;
 `;
 
 const StyledMediaPlayerMini = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: left;
+    display: grid;
+    grid-template-columns: 0.5fr 5.5fr 2fr 1fr;
+    text-align: center;
     height: 100%;
-    padding: 10px 30px;;
-    min-width: 600px;
+    padding: 0 30px;
+    min-width: 39.8vw;
     background-color: ${colors.white};
     border-right: 1px ${colors.newspaperPaperHovered} solid;
 
-    & > img.thumbnail {
+    & > div {
+        text-align: center;
+        align-self: center;
+        justify-self: center;
+    }
+
+    & img.thumbnail {
         border: 3px solid ${colors.newspaperPaperHovered};
+        grid-column: 1;
+        align-self: center;
+        justify-self: center;
     }
 
-    & > p {
+    & p {
         margin: 0;
-        letter-spacing: 1px;
         margin-left: 10px;
-        font-family: ${fonts.sansSerif};
+        font-family: ${fonts.monospace};
         font-weight: bold;
+        text-align: center;
+        align-self: center;
+        justify-self: center;
     }
-`;
 
-const StyledPlayerPauseControlImage = styled.img`
-    width: ${dimensions.mediaPlayer.playPauseControlSize}px;
-    height: ${dimensions.mediaPlayer.playPauseControlSize}px;
-    opacity: 0.8;
-    margin-left: 10px;
-    animation: blinking 1.5s infinite;
-    @keyframes blinking {
-        0% { opacity: 0.8; };
-        49% { opacity: 0.8; };
-        60% { opacity: 0; };
-        99% { opacity: 0; }
-        100% { opacity: 0.8; }
+    & .title {
+        grid-column: 2;
     }
-`;
 
-const StyledPlayerPlayControlImage = styled.img`
-    width: ${dimensions.mediaPlayer.playPauseControlSize}px;
-    height: ${dimensions.mediaPlayer.playPauseControlSize}px;
-    opacity: 0.8;
-    margin-left: 10px;
+    & .controls {
+        grid-column: 3;
+    }
+
+    & .timer {
+        grid-column: 4;
+    }
 `;
 
 interface MediaPlayerMiniOwnProps {
@@ -58,14 +59,15 @@ interface MediaPlayerMiniOwnProps {
     visible: boolean;
     playing: boolean;
     progress: any;
+    onPlayClick: () => void;
+    onPauseClick: () => void;
+    onPreviousClick: () => void;
+    onNextClick: () => void;
 }
 
 export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
     render() {
         const { title, visible, thumbnailUrl, playing } = this.props;
-        const playerImgSrc = playing
-            ? '/images/pause-icon.svg'
-            : '/images/play-icon.svg';
 
         return visible ? (
             <StyledMediaPlayerMiniContainer>
@@ -77,24 +79,21 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                         height={dimensions.mediaPlayerHeight.mini - 16}
                         alt={title} 
                     />
-                    <p>
+                    <p className="title">
                         {title}
                     </p>
-                    { playing && 
-                        <StyledPlayerPlayControlImage 
-                            src={playerImgSrc} 
-                            width={dimensions.mediaPlayer.playPauseControlSize}
-                            height={dimensions.mediaPlayer.playPauseControlSize}
+                    <div className="controls">
+                        <MediaPlayerMiniControls 
+                            playing={playing}
+                            onPlayClick={this.props.onPlayClick}
+                            onPauseClick={this.props.onPauseClick}
+                            onPreviousClick={this.props.onPreviousClick}
+                            onNextClick={this.props.onNextClick}
                         />
-                    }
-                    { !playing && 
-                        <StyledPlayerPauseControlImage 
-                            src={playerImgSrc} 
-                            width={dimensions.mediaPlayer.playPauseControlSize}
-                            height={dimensions.mediaPlayer.playPauseControlSize}
-                        />
-                    }
-                    {this.renderPlayerTimer()}
+                    </div>
+                    <div className="timer">
+                        {this.renderPlayerTimer()}
+                    </div>
                 </StyledMediaPlayerMini>
             </StyledMediaPlayerMiniContainer>
         ): null;
