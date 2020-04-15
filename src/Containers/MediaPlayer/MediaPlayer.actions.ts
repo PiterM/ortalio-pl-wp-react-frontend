@@ -13,5 +13,18 @@ export const setSelectedAudioItemAction: setSelectedAudioItemAction = (payload: 
   };
 };
 
+export interface SetSelectedNextAudioItemAction extends AnyAction {
+  payload: string;
+  type: ACTION_TYPE.SET_SELECTED_NEXT_AUDIO_ITEM;
+}
+export type setSelectedNextAudioItemAction = (payload: string) => SetSelectedNextAudioItemAction;
+export const setSelectedNextAudioItemAction: setSelectedNextAudioItemAction = (payload: string) => {
+  return {
+    payload,
+    type: ACTION_TYPE.SET_SELECTED_NEXT_AUDIO_ITEM
+  };
+};
+
 export type MediaPlayerActions =
-  | SetSelectedAudioItemAction;
+  | SetSelectedAudioItemAction
+  | SetSelectedNextAudioItemAction;
