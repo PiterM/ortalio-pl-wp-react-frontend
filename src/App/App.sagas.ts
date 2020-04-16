@@ -1,8 +1,8 @@
 import { all, CallEffect, fork, ForkEffect, TakeEffect } from 'redux-saga/effects';
-// import { watchMedia } from '../Containers/Pages/HomePage/HomePage.sagas';
+import { watchMediaPlayer } from '../Containers/MediaPlayer/MediaPlayer.sagas';
 
 const sagas: Array<() => IterableIterator<ForkEffect | CallEffect | TakeEffect>> = [
-  // watchMedia,
+  watchMediaPlayer,
 ];
 
 function* globalSagas() {

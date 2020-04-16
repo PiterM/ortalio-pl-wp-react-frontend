@@ -1,9 +1,15 @@
 import * as React from 'react';
 import ReactPlayer from 'react-player';
 import styled from '@emotion/styled';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { colors, dimensions } from '../../Common/variables';
 import MediaPlayerMini from './MediaPlayer.mini';
 import { MediaPlayerMode } from './MediaPlayer.constants';
+import { 
+    setSelectedNextAudioItemAction,
+    SetSelectedNextAudioItemAction
+} from './MediaPlayer.actions';
 
 const StyledMediaPlayer = styled.div`
     position: fixed;
@@ -35,6 +41,12 @@ interface MediaPlayerOwnProps {
     onMouseOut: () => void;
 }
 
+interface MediaPlayerDispatchProps {
+    selectNextMediaItem: () => void;
+}
+
+type MediaPlayerProps = MediaPlayerOwnProps & MediaPlayerDispatchProps;
+
 interface MediaPlayerState {
     playing: boolean;
     progress?: any;
@@ -45,7 +57,7 @@ const initState: MediaPlayerState = {
     playing: true,
 };
 
-export class MediaPlayer extends React.Component<MediaPlayerOwnProps> {
+export class MediaPlayer extends React.Component<MediaPlayerProps> {
     public state: MediaPlayerState = initState;
     private player: any;
 
@@ -140,9 +152,7 @@ export class MediaPlayer extends React.Component<MediaPlayerOwnProps> {
 
     }
 
-    private onNextClick() {
-
-    }
+    private onNextClick = () =>  this.props.selectNextMediaItem();
 
     private trySetPlayinState(playing: boolean) {
         if (playing !== this.state.playing) {
@@ -160,4 +170,10 @@ export class MediaPlayer extends React.Component<MediaPlayerOwnProps> {
     private ref = (player: any) => this.player = player;
 }
 
-export default MediaPlayer;
+const mapDispatchToProps: any = (dispatch: Dispatch<SetSelectedNextAudioItemAction>) => ({
+    selectNextMediaItem: () => dispatch(setSelectedNextAudioItemAction())
+});
+  
+export default connect<null, MediaPlayerDispatchProps>(
+    null, mapDispatchToProps
+)(MediaPlayer);

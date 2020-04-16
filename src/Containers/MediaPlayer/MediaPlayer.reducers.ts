@@ -7,7 +7,7 @@ export default (state: string | null = initState, action: AnyAction): string | n
   switch (action.type) {
     case ACTION_TYPES.SET_SELECTED_AUDIO_ITEM:
       return action.payload;
-    case ACTION_TYPES.SET_SELECTED_NEXT_AUDIO_ITEM:
+    case ACTION_TYPES.SET_SELECTED_NEXT_AUDIO_ITEM_SUCCESS:
       return action.payload;      
     default:
       return state;
