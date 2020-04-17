@@ -60,6 +60,7 @@ interface MediaPlayerMiniOwnProps {
     visible: boolean;
     playing: boolean;
     progress: any;
+    errorMessage: string | null;
     onPlayClick: () => void;
     onPauseClick: () => void;
     onPreviousClick: () => void;
@@ -68,7 +69,7 @@ interface MediaPlayerMiniOwnProps {
 
 export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
     render() {
-        const { title, visible, thumbnailUrl, playing } = this.props;
+        const { title, visible, thumbnailUrl, playing, errorMessage } = this.props;
 
         return visible ? (
             <StyledMediaPlayerMiniContainer>
@@ -83,21 +84,30 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                             alt={title} 
                         />
                     </div>
-                    <p className="title">
-                        {title}
-                    </p>
-                    <div className="controls">
-                        <MediaPlayerMiniControls 
-                            playing={playing}
-                            onPlayClick={this.props.onPlayClick}
-                            onPauseClick={this.props.onPauseClick}
-                            onPreviousClick={this.props.onPreviousClick}
-                            onNextClick={this.props.onNextClick}
-                        />
-                    </div>
-                    <div className="timer">
-                        {this.renderPlayerTimer()}
-                    </div>
+                    { errorMessage && 
+                        <p className="error-message">
+                            {errorMessage}
+                        </p>
+                    }
+                    { !errorMessage && 
+                        <>
+                            <p className="title">
+                                {title}
+                            </p>
+                            <div className="controls">
+                                <MediaPlayerMiniControls 
+                                    playing={playing}
+                                    onPlayClick={this.props.onPlayClick}
+                                    onPauseClick={this.props.onPauseClick}
+                                    onPreviousClick={this.props.onPreviousClick}
+                                    onNextClick={this.props.onNextClick}
+                                />
+                            </div>
+                            <div className="timer">
+                                {this.renderPlayerTimer()}
+                            </div>
+                        </>
+                    }
                 </StyledMediaPlayerMini>
             </StyledMediaPlayerMiniContainer>
         ): null;

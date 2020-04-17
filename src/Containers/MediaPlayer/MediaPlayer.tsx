@@ -3,12 +3,14 @@ import ReactPlayer from 'react-player';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { StoreState } from '../../App/App.store.d';
 import { colors, dimensions } from '../../Common/variables';
 import MediaPlayerMini from './MediaPlayer.mini';
 import { MediaPlayerMode } from './MediaPlayer.constants';
 import { 
+    MediaPlayerActions,
     setSelectedNextAudioItemAction,
-    SetSelectedNextAudioItemAction
+    setSelectedPreviousAudioItemAction,
 } from './MediaPlayer.actions';
 
 const StyledMediaPlayer = styled.div`
@@ -41,11 +43,16 @@ interface MediaPlayerOwnProps {
     onMouseOut: () => void;
 }
 
+interface MediaPlayerMappedProps {
+    errorMessage: string | null;
+}
+
 interface MediaPlayerDispatchProps {
+    selectPreviousMediaItem: () => void;
     selectNextMediaItem: () => void;
 }
 
-type MediaPlayerProps = MediaPlayerOwnProps & MediaPlayerDispatchProps;
+type MediaPlayerProps = MediaPlayerOwnProps & MediaPlayerMappedProps & MediaPlayerDispatchProps;
 
 interface MediaPlayerState {
     playing: boolean;
@@ -75,6 +82,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             soundcloudConfig, 
             youtubeConfig,
             minimalMode,
+            errorMessage
         } = this.props;
 
         const playerVisibility = minimalMode ? 'hidden' : 'visible';
@@ -85,6 +93,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                 { minimalMode && 
                     <StyledMediaPlayer>
                         <MediaPlayerMini
+                            errorMessage={errorMessage}
                             visible={minimalMode} 
                             title={title}
                             thumbnailUrl={thumbnailUrl}
@@ -117,7 +126,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         onPlay={() => this.onPlay()}
                         onProgress={(progress: any) => this.onProgress(progress)}
                         onPause={() => this.onPause()}
-                        // onEnded={() => this.onEnded()}
+                        onEnded={() => this.onEnded()}
                         // onError={() => this.onError()}
                     />
                 </StyledMediaPlayer>
@@ -148,11 +157,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private onPlayClick = () => this.trySetPlayinState(true);
     private onPauseClick = () => this.trySetPlayinState(false);
 
-    private onPreviousClick() {
+    private onPreviousClick = () => this.props.selectPreviousMediaItem();
+    private onNextClick = () => this.props.selectNextMediaItem();
 
-    }
-
-    private onNextClick = () =>  this.props.selectNextMediaItem();
+    private onEnded = () => this.props.selectNextMediaItem();
 
     private trySetPlayinState(playing: boolean) {
         if (playing !== this.state.playing) {
@@ -170,10 +178,15 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private ref = (player: any) => this.player = player;
 }
 
-const mapDispatchToProps: any = (dispatch: Dispatch<SetSelectedNextAudioItemAction>) => ({
+const mapStateToProps: any = (store: StoreState, props: MediaPlayerProps): MediaPlayerMappedProps => ({
+    errorMessage: store.errorMessage
+});
+
+const mapDispatchToProps: any = (dispatch: Dispatch<MediaPlayerActions>) => ({
+    selectPreviousMediaItem: () => dispatch(setSelectedPreviousAudioItemAction()),
     selectNextMediaItem: () => dispatch(setSelectedNextAudioItemAction())
 });
   
-export default connect<null, MediaPlayerDispatchProps>(
-    null, mapDispatchToProps
+export default connect<MediaPlayerMappedProps, MediaPlayerDispatchProps>(
+    mapStateToProps, mapDispatchToProps
 )(MediaPlayer);
