@@ -33,8 +33,6 @@ const StyledMediaPlayerMini = styled.div`
     & p {
         margin: 0;
         margin-left: 10px;
-        font-family: ${fonts.monospace};
-        font-weight: bold;
         text-align: center;
         align-self: center;
         justify-self: center;
@@ -42,6 +40,9 @@ const StyledMediaPlayerMini = styled.div`
 
     & .title {
         grid-column: 2;
+        font-family: ${fonts.serif};
+        font-weight: bold;
+        letter-spacing: 1px;
     }
 
     & .controls {
@@ -51,6 +52,8 @@ const StyledMediaPlayerMini = styled.div`
     & .timer {
         grid-column: 4;
         border-left: 1px solid ${colors.newspaperText};
+        font-family: ${fonts.monospace};
+        font-weight: bold;
     }
 `;
 

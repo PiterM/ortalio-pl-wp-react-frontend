@@ -56,31 +56,9 @@ const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, childre
         color: ${colors.glitchyTitleEffect.secondAdditional};
           z-index: -2;
       }
-      
-      .audio-item:not(.selected) &:hover, .audio-item:not(.selected):hover & {
-          &:before {
-              animation: glitchy 0.3s ease 0.3s infinite;
-          }
-          
-          &:after {
-              animation: glitchy 0.3s ease infinite reverse;
-          }
-      }
-
-      .audio-item:active &:before, .audio-item:active &:after {
-        display: none;
-      }
     }
   }
-
-  @keyframes glitchy {
-    0%   {transform: translate(-2px, 2px);}
-    25%  {transform: translate(-2px, -2px);}
-    50%  {transform: translate(2px, 2px);}
-    75%  {transform: translate(2px, -2px);}
-    100%  {transform: translate(-2px, 2px);}
-  }
-  `;
+`;
 
   return <StyledDiv>{children}</StyledDiv>;
 };
