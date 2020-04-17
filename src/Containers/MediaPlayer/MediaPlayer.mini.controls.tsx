@@ -22,6 +22,11 @@ const StyledPlayerPauseControlImage = styled.img`
         99% { opacity: 0; }
         100% { opacity: 0.8; }
     }
+
+    &:hover {
+        opacity: 1;
+        animation: none;
+    }
 `;
 
 const StyledPlayerSimpleControlImage = styled.img`
@@ -31,6 +36,10 @@ const StyledPlayerSimpleControlImage = styled.img`
     margin-left: 10px;
     display: inline-block;
     cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+    }
 `;
 
 interface MediaPlayerMiniControlsOwnProps {
