@@ -24,6 +24,7 @@ const StyledPage = styled.div`
   grid-template-columns: repeat(${dimensions.homePage.columnsNumber}, 2fr);
   text-align: center;
   padding-bottom: ${dimensions.mediaPlayerHeight.mini}px;
+  margin-top: 50px;
 `;
 
 const StyledPageColumn = styled.div`

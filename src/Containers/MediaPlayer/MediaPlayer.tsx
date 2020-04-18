@@ -118,10 +118,9 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     public state: MediaPlayerState = initState;
     private player: any;
 
-    componentDidUpdate(prevProps: MediaPlayerProps) {
+    componentDidUpdate(prevProps: MediaPlayerProps, prevState: MediaPlayerState) {
         if (prevProps.selectedMediaId !== this.props.selectedMediaId) {
             this.resetTrackProgress();
-            this.setState({ playing: true });
         }
     }
 
@@ -261,6 +260,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             if (this.state.loopMode === LoopMode.NoLoop) {
                 this.props.selectNextMediaItem();
             }
+            this.setState({ playing: true });
         });
     }
 
