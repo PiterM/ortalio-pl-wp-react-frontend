@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '../../Common/variables';
 import MediaPlayerMiniControls from './MediaPlayer.mini.controls';
+import { TimerMode, ProgressTime } from './MediaPlayer.constants';
 
 const StyledMediaPlayerMiniContainer = styled.div`
     display: inline-block;
@@ -57,17 +58,27 @@ const StyledMediaPlayerMini = styled.div`
     }
 `;
 
+const StyledTimerAnchor = styled.a`
+    text-decoration: none;
+    cursor: pointer;
+    &:hover, &:active {
+        text-decoration: none;
+    }
+`;
+
 interface MediaPlayerMiniOwnProps {
     title: string;
     thumbnailUrl: string;
     visible: boolean;
     playing: boolean;
-    progress: any;
+    progress: ProgressTime;
+    timerMode: TimerMode;
     errorMessage: string | null;
     onPlayClick: () => void;
     onPauseClick: () => void;
     onPreviousClick: () => void;
     onNextClick: () => void;
+    toggleTimerMode: () => void;
 }
 
 export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
@@ -117,15 +128,35 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
     }
 
     private renderPlayerTimer() {
-        const { progress } = this.props;
-        return progress && progress.minutesLeft && progress.secondsLeft ? (
+        const emptyTimer = (
             <p>
-                -<span>{ progress.minutesLeft }</span>:
-                <span>{ progress.secondsLeft }</span>
+                &nbsp;<span>--</span>:<span>--</span>
             </p>
-        ): <p>
-            &nbsp;<span>--</span>:<span>--</span>
-        </p>;
+        );
+
+        if (!this.props.progress) {
+            return emptyTimer;
+        }
+        
+        const { minutesDisplayed, secondsDisplayed, dashCharacter } = this.props.progress;
+
+        return minutesDisplayed && secondsDisplayed ? (
+            <p>
+                <StyledTimerAnchor
+                    onClick={() => this.props.toggleTimerMode()}
+                >
+                    <span 
+                        dangerouslySetInnerHTML={{__html: dashCharacter}} 
+                    ></span>
+                    <span
+                        dangerouslySetInnerHTML={{__html: minutesDisplayed}} 
+                    ></span>:
+                    <span
+                        dangerouslySetInnerHTML={{__html: secondsDisplayed}} 
+                    ></span>
+                </StyledTimerAnchor>
+            </p>
+        ): emptyTimer;
     }
 }
 

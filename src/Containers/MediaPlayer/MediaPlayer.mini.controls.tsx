@@ -27,6 +27,10 @@ const StyledPlayerPauseControlImage = styled.img`
         opacity: 1;
         animation: none;
     }
+
+    &:active {
+        border: 2px solid transparent;
+    }
 `;
 
 const StyledPlayerSimpleControlImage = styled.img`
@@ -39,6 +43,10 @@ const StyledPlayerSimpleControlImage = styled.img`
 
     &:hover {
         opacity: 1;
+    }
+
+    &:active {
+        border: 2px solid transparent;
     }
 `;
 

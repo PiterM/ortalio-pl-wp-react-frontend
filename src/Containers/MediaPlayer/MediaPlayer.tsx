@@ -6,7 +6,7 @@ import { Dispatch } from 'redux';
 import { StoreState } from '../../App/App.store.d';
 import { colors, dimensions } from '../../Common/variables';
 import MediaPlayerMini from './MediaPlayer.mini';
-import { MediaPlayerMode } from './MediaPlayer.constants';
+import { MediaPlayerMode, TimerMode, ProgressTime } from './MediaPlayer.constants';
 import { 
     MediaPlayerActions,
     setSelectedNextAudioItemAction,
@@ -56,12 +56,21 @@ type MediaPlayerProps = MediaPlayerOwnProps & MediaPlayerMappedProps & MediaPlay
 
 interface MediaPlayerState {
     playing: boolean;
-    progress?: any;
+    progress: ProgressTime;
     duration?: number;
+    timerMode: TimerMode;
 }
+
+const initProgressState = {
+    dashCharacter: '&nbsp;',
+    minutesDisplayed: '--',
+    secondsDisplayed: '--'
+};
 
 const initState: MediaPlayerState = {
     playing: true,
+    timerMode: TimerMode.RemainingTime,
+    progress: initProgressState
 };
 
 export class MediaPlayer extends React.Component<MediaPlayerProps> {
@@ -99,10 +108,12 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                             thumbnailUrl={thumbnailUrl}
                             playing={this.state.playing}
                             progress={this.state.progress}
+                            timerMode={this.state.timerMode}
                             onPlayClick={this.onPlayClick}
                             onPauseClick={this.onPauseClick}
                             onPreviousClick={this.onPreviousClick}
                             onNextClick={this.onNextClick}
+                            toggleTimerMode={this.toggleTimerMode}
                         />
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
@@ -134,35 +145,61 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         );
     }
 
-    private onPlay = () => this.trySetPlayinState(true);
-    private onPause = () => this.trySetPlayinState(false);
+    private onPlay = () => this.trySetPlayingState(true);
+    private onPause = () => this.trySetPlayingState(false);
 
     private onProgress = (progress: any) => {
         const duration = this.player.getDuration();
         if (duration) {
             const trackLength = Math.floor(this.player.getDuration());
             const played = Math.floor(progress.playedSeconds);
-            let secondsLeft = trackLength - played;
 
-            const minutesLeft = Math.floor(secondsLeft / 60);
-            secondsLeft = secondsLeft - minutesLeft * 60;
+            let minutes, seconds;
+            const { timerMode } = this.state;
+
+            if (timerMode === TimerMode.RemainingTime) {
+                seconds = trackLength - played;
+                minutes = Math.floor(seconds / 60);
+                seconds = seconds - minutes * 60;
+            } else {
+                minutes = Math.floor(played / 60);
+                seconds = played - minutes * 60;
+            }
+
+            const dashCharacter = timerMode === TimerMode.RemainingTime
+                ? '-'
+                : '&nbsp;';
 
             this.setState({ progress: { 
-                minutesLeft: `${minutesLeft}`.padStart(2, '0'), 
-                secondsLeft: `${secondsLeft}`.padStart(2, '0')
+                dashCharacter,
+                minutesDisplayed: `${minutes}`.padStart(2, '0'), 
+                secondsDisplayed: `${seconds}`.padStart(2, '0')
             }});
         }
     }
 
-    private onPlayClick = () => this.trySetPlayinState(true);
-    private onPauseClick = () => this.trySetPlayinState(false);
+    private onPlayClick = () => this.trySetPlayingState(true);
+    private onPauseClick = () => this.trySetPlayingState(false);
 
     private onPreviousClick = () => this.props.selectPreviousMediaItem();
     private onNextClick = () => this.props.selectNextMediaItem();
 
     private onEnded = () => this.props.selectNextMediaItem();
 
-    private trySetPlayinState(playing: boolean) {
+    private toggleTimerMode = () => this.toggleTimerModeState();
+
+    private toggleTimerModeState = () => {
+        const timerMode = this.state.timerMode === TimerMode.RemainingTime
+            ? TimerMode.PlayedTime
+            : TimerMode.RemainingTime;
+
+        this.setState({ 
+            timerMode,
+            progress: initProgressState
+        });
+    }
+
+    private trySetPlayingState(playing: boolean) {
         if (playing !== this.state.playing) {
             this.setState({ playing });
         }
