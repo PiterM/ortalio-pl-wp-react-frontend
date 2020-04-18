@@ -26,7 +26,8 @@ const StyledMediaPlayer = styled.div`
     width: 100%;
     z-index: 2;
     display: flex;
-    background-color: ${colors.white};
+    background: url('/images/pattern1.png') left top repeat ${colors.newspaperPaper};
+    border-top: 2px solid ${colors.white};
 `;
 
 const StyledNotMediaPlayer = styled.div`
@@ -44,9 +45,9 @@ const StyledNotMediaPlayer = styled.div`
         margin: 0;
         align-self: center;
         justify-self: right;
-        font-family: ${fonts.serif};
+        font-family: ${fonts.monospace};
+        font-size: ${dimensions.fontSize.regular}px;
         font-weight: bold;
-        letter-spacing: 1px;
         display: grid;
         grid-template-columns: 1f;
 

@@ -39,9 +39,10 @@ const StyledMediaPlayerMini = styled.div`
 
     & .title {
         grid-column: 2;
-        font-family: ${fonts.serif};
+        font-family: ${fonts.monospace};
+        font-size: ${dimensions.fontSize.regular}px;
         font-weight: bold;
-        letter-spacing: 1px;
+        color: #444;
     }
 
     & .controls {
