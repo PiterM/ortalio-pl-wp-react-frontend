@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 import { dimensions } from '../../Common/variables';
+import { LoopMode } from './MediaPlayer.constants';
 
 const StyledControlsWrapper = styled.div`
     display: flex;
@@ -50,24 +51,58 @@ const StyledPlayerSimpleControlImage = styled.img`
     }
 `;
 
+const StyledPlayerLoopModeControlImage = styled.img`
+    width: ${dimensions.mediaPlayer.playPauseControlSize}px;
+    height: ${dimensions.mediaPlayer.playPauseControlSize}px;
+    opacity: 0.3;
+    margin-left: 10px;
+    display: inline-block;
+    cursor: pointer;
+
+    &.looped {
+        opacity: 1;
+    }
+
+    &:hover {
+        opacity: 0.6;
+    }
+
+    &:active {
+        border: 2px solid transparent;
+    }
+`;
+
 interface MediaPlayerMiniControlsOwnProps {
     playing: boolean;
+    loopMode: LoopMode;
     onPlayClick: () => void;
     onPauseClick: () => void;
     onPreviousClick: () => void;
     onNextClick: () => void;
+    toggleLoopMode: () => void;
 }
 
 export default class MediaPlayerMiniControls extends React.Component<MediaPlayerMiniControlsOwnProps> {
 
     render() {
-        const { playing } = this.props;
+        const { playing, loopMode } = this.props;
         const playerImgSrc = playing
             ? '/images/pause-icon.svg'
             : '/images/play-icon.svg';
+
+        const LoopModeClassName = loopMode === LoopMode.LoopCurrent
+            ? 'looped'
+            : '';
         
         return (
             <StyledControlsWrapper>
+                <StyledPlayerLoopModeControlImage
+                        className={LoopModeClassName}
+                        src={'/images/loop-icon.svg'} 
+                        width={dimensions.mediaPlayer.playPauseControlSize}
+                        height={dimensions.mediaPlayer.playPauseControlSize}
+                        onClick={() => this.props.toggleLoopMode()}
+                />
                 <StyledPlayerSimpleControlImage 
                         src={'/images/arrow-left-icon.svg'} 
                         width={dimensions.mediaPlayer.playPauseControlSize}

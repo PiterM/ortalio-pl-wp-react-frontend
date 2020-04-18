@@ -6,12 +6,18 @@ import { Dispatch } from 'redux';
 import { StoreState } from '../../App/App.store.d';
 import { colors, dimensions } from '../../Common/variables';
 import MediaPlayerMini from './MediaPlayer.mini';
-import { MediaPlayerMode, TimerMode, ProgressTime } from './MediaPlayer.constants';
+import { 
+    MediaPlayerMode, 
+    TimerMode, 
+    ProgressTime,
+    LoopMode
+} from './MediaPlayer.constants';
 import { 
     MediaPlayerActions,
     setSelectedNextAudioItemAction,
     setSelectedPreviousAudioItemAction,
 } from './MediaPlayer.actions';
+import { setContext } from 'redux-saga/effects';
 
 const StyledMediaPlayer = styled.div`
     position: fixed;
@@ -59,6 +65,7 @@ interface MediaPlayerState {
     progress: ProgressTime;
     duration?: number;
     timerMode: TimerMode;
+    loopMode: LoopMode;
 }
 
 const initProgressState = {
@@ -70,7 +77,8 @@ const initProgressState = {
 const initState: MediaPlayerState = {
     playing: true,
     timerMode: TimerMode.RemainingTime,
-    progress: initProgressState
+    progress: initProgressState,
+    loopMode: LoopMode.NoLoop
 };
 
 export class MediaPlayer extends React.Component<MediaPlayerProps> {
@@ -109,11 +117,13 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                             playing={this.state.playing}
                             progress={this.state.progress}
                             timerMode={this.state.timerMode}
+                            loopMode={this.state.loopMode}
                             onPlayClick={this.onPlayClick}
                             onPauseClick={this.onPauseClick}
                             onPreviousClick={this.onPreviousClick}
                             onNextClick={this.onNextClick}
-                            toggleTimerMode={this.toggleTimerMode}
+                            toggleTimerMode={() => this.toggleTimerModeState()}
+                            toggleLoopMode={() => this.toggleLoopModeState()}
                         />
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
@@ -184,9 +194,14 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private onPreviousClick = () => this.props.selectPreviousMediaItem();
     private onNextClick = () => this.props.selectNextMediaItem();
 
-    private onEnded = () => this.props.selectNextMediaItem();
-
-    private toggleTimerMode = () => this.toggleTimerModeState();
+    private onEnded = () => { 
+        this.setState({ playing: false }, () => {
+            if (this.state.loopMode === LoopMode.NoLoop) {
+                this.props.selectNextMediaItem();
+            } 
+            this.setState({ playing: true });
+        });
+    }
 
     private toggleTimerModeState = () => {
         const timerMode = this.state.timerMode === TimerMode.RemainingTime
@@ -197,6 +212,14 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             timerMode,
             progress: initProgressState
         });
+    }
+
+    private toggleLoopModeState = () => {
+        const loopMode = this.state.loopMode === LoopMode.NoLoop
+            ? LoopMode.LoopCurrent
+            : LoopMode.NoLoop;
+
+        this.setState({ loopMode });
     }
 
     private trySetPlayingState(playing: boolean) {

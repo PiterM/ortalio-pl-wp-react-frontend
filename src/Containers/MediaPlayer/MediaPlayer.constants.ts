@@ -13,3 +13,8 @@ export interface ProgressTime {
     minutesDisplayed: string;
     secondsDisplayed: string;
 }
+
+export enum LoopMode {
+    NoLoop = 'NoLoop',
+    LoopCurrent = 'LoopCurrent'
+}

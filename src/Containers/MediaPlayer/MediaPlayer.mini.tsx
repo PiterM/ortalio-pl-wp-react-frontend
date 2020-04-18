@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '../../Common/variables';
 import MediaPlayerMiniControls from './MediaPlayer.mini.controls';
-import { TimerMode, ProgressTime } from './MediaPlayer.constants';
+import { TimerMode, ProgressTime, LoopMode } from './MediaPlayer.constants';
 
 const StyledMediaPlayerMiniContainer = styled.div`
     display: inline-block;
@@ -73,12 +73,14 @@ interface MediaPlayerMiniOwnProps {
     playing: boolean;
     progress: ProgressTime;
     timerMode: TimerMode;
+    loopMode: LoopMode;
     errorMessage: string | null;
     onPlayClick: () => void;
     onPauseClick: () => void;
     onPreviousClick: () => void;
     onNextClick: () => void;
     toggleTimerMode: () => void;
+    toggleLoopMode: () => void;
 }
 
 export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
@@ -115,6 +117,8 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                                     onPauseClick={this.props.onPauseClick}
                                     onPreviousClick={this.props.onPreviousClick}
                                     onNextClick={this.props.onNextClick}
+                                    toggleLoopMode={this.props.toggleLoopMode}
+                                    loopMode={this.props.loopMode}
                                 />
                             </div>
                             <div className="timer">
