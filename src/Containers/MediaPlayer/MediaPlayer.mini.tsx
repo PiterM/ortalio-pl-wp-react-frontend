@@ -10,7 +10,7 @@ const StyledMediaPlayerMiniContainer = styled.div`
 
 const StyledMediaPlayerMini = styled.div`
     display: grid;
-    grid-template-columns: 0.5fr 5.5fr 2fr 1fr;
+    grid-template-columns: 0.5fr 5.5fr 2fr 2fr;
     text-align: center;
     height: 100%;
     padding: 0 30px;
@@ -51,8 +51,15 @@ const StyledMediaPlayerMini = styled.div`
     & .timer {
         grid-column: 4;
         border-left: 1px solid ${colors.newspaperText};
+        border-right: 1px solid ${colors.newspaperText};
         font-family: ${fonts.monospace};
         font-weight: bold;
+        padding: 0 20px;
+
+        & > p {
+            padding: 0;
+            margin: 0;
+        }
     }
 `;
 
@@ -132,7 +139,15 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
     private renderPlayerTimer() {
         const emptyTimer = (
             <p>
-                &nbsp;<span>--</span>:<span>--</span>
+                <span
+                    dangerouslySetInnerHTML={{__html: '&nbsp;'}} 
+                ></span>
+                <span
+                    dangerouslySetInnerHTML={{__html: '--'}} 
+                ></span>:
+                <span
+                    dangerouslySetInnerHTML={{__html: '--'}} 
+                ></span>
             </p>
         );
 

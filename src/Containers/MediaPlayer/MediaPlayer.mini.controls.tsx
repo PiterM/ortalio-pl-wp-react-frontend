@@ -25,12 +25,12 @@ const StyledPlayerPauseControlImage = styled.img`
     }
 
     &:hover {
-        opacity: 1;
         animation: none;
     }
 
     &:active {
         border: 2px solid transparent;
+        opacity: 1;
     }
 `;
 
@@ -42,12 +42,9 @@ const StyledPlayerSimpleControlImage = styled.img`
     display: inline-block;
     cursor: pointer;
 
-    &:hover {
-        opacity: 1;
-    }
-
     &:active {
         border: 2px solid transparent;
+        opacity: 1;
     }
 `;
 
@@ -61,10 +58,6 @@ const StyledPlayerLoopModeControlImage = styled.img`
 
     &.looped {
         opacity: 1;
-    }
-
-    &:hover {
-        opacity: 0.6;
     }
 
     &:active {

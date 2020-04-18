@@ -17,7 +17,6 @@ import {
     setSelectedNextAudioItemAction,
     setSelectedPreviousAudioItemAction,
 } from './MediaPlayer.actions';
-import { setContext } from 'redux-saga/effects';
 
 const StyledMediaPlayer = styled.div`
     position: fixed;
@@ -26,8 +25,8 @@ const StyledMediaPlayer = styled.div`
     right: 0;
     width: 100%;
     z-index: 2;
-    background-color: ${colors.white};
     display: flex;
+    background-color: ${colors.white};
 `;
 
 const StyledNotMediaPlayer = styled.div`
@@ -154,10 +153,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
                         >
-                            <p>View on 
+                            <p>Play on 
                                 <img 
                                     src={moreIcon} 
-                                    alt={`View on ${playerMode}`} 
+                                    alt={`Play on ${playerMode}`} 
                                     width="auto"
                                     height={dimensions.mediaPlayerHeight.mini - 30}
                                 />
