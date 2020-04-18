@@ -17,6 +17,7 @@ import {
     setSelectedNextAudioItemAction,
     setSelectedPreviousAudioItemAction,
 } from './MediaPlayer.actions';
+import { stripIgnoredCharacters } from 'graphql';
 
 const StyledMediaPlayer = styled.div`
     position: fixed;
@@ -81,6 +82,7 @@ interface MediaPlayerOwnProps {
 
 interface MediaPlayerMappedProps {
     errorMessage: string | null;
+    selectedMediaId?: string | null;
 }
 
 interface MediaPlayerDispatchProps {
@@ -116,9 +118,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     public state: MediaPlayerState = initState;
     private player: any;
 
-    componentDidUpdate(prevProps: MediaPlayerOwnProps) {
-        if (prevProps.url !== this.props.url) {
+    componentDidUpdate(prevProps: MediaPlayerProps) {
+        if (prevProps.selectedMediaId !== this.props.selectedMediaId) {
             this.resetTrackProgress();
+            this.setState({ playing: true });
         }
     }
 
@@ -255,7 +258,6 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             if (this.state.loopMode === LoopMode.NoLoop) {
                 this.props.selectNextMediaItem();
             }
-            this.setState({ playing: true });
         });
     }
 
@@ -305,7 +307,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
 }
 
 const mapStateToProps: any = (store: StoreState, props: MediaPlayerProps): MediaPlayerMappedProps => ({
-    errorMessage: store.errorMessage
+    errorMessage: store.errorMessage,
+    selectedMediaId: store.selectedMediaId
 });
 
 const mapDispatchToProps: any = (dispatch: Dispatch<MediaPlayerActions>) => ({
