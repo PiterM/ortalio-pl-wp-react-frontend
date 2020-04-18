@@ -70,6 +70,7 @@ const StyledMediaPlayerMini = styled.div`
 
         &:hover {
             color: #000;
+            background-color: #fff;
         }
     }
 
