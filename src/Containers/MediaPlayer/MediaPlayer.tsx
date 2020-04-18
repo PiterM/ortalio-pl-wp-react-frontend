@@ -17,7 +17,6 @@ import {
     setSelectedNextAudioItemAction,
     setSelectedPreviousAudioItemAction,
 } from './MediaPlayer.actions';
-import { stripIgnoredCharacters } from 'graphql';
 
 const StyledMediaPlayer = styled.div`
     position: fixed;
@@ -70,6 +69,7 @@ const StyledNotMediaPlayer = styled.div`
 interface MediaPlayerOwnProps {
     title: string;
     url: string;
+    slug: string;
     thumbnailUrl: string;
     youtubeConfig: any;
     soundcloudConfig: any;
@@ -128,6 +128,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     render() {
         const {
             title,
+            slug,
             url,
             thumbnailUrl,
             soundcloudConfig,
@@ -155,6 +156,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                             errorMessage={activeErrorMessage}
                             visible={minimalMode}
                             title={title}
+                            slug={slug}
+                            url={url}
                             thumbnailUrl={thumbnailUrl}
                             playing={this.state.playing}
                             progress={this.state.progress}

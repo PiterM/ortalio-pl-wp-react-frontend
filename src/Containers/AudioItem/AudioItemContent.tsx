@@ -13,7 +13,7 @@ interface AudioItemTextProps {
 const AudioItemContent: React.FC<AudioItemTextProps> = ({ content }) => {
   return content ? (
     <StyledAudioItemText>
-      <div dangerouslySetInnerHTML={{ __html: content }} />
+      <p dangerouslySetInnerHTML={{ __html: content }} />
     </StyledAudioItemText>
   ): null;
 };

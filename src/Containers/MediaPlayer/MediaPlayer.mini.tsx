@@ -10,7 +10,7 @@ const StyledMediaPlayerMiniContainer = styled.div`
 
 const StyledMediaPlayerMini = styled.div`
     display: grid;
-    grid-template-columns: 0.5fr 5.5fr 2fr 2fr;
+    grid-template-columns: 0.7fr 5.5fr 2fr 2fr;
     text-align: center;
     height: 100%;
     padding: 0 30px;
@@ -29,11 +29,27 @@ const StyledMediaPlayerMini = styled.div`
         justify-self: center;
     }
 
-    & img.thumbnail {
-        border: 3px solid ${colors.newspaperPaperHovered};
+    & > .thumbnail {
         grid-column: 1;
-        align-self: center;
-        justify-self: center;
+
+        & a {
+            text-decoration: none;
+            padding: 0;
+            
+            &:hover img {
+                border-color: #fff;
+                opacity: 1;
+            }
+        }
+
+        & img {
+            border: 4px solid transparent;
+            opacity: 0.85;
+            -webkit-transition: all 0s ease-in-out 0.1s;
+            -moz-transition: all 0s ease-in-out 0.1s;
+            -o-transition: all 0s ease-in-out 0.1s;
+            transition: all 0s ease-in-out 0.1;
+        }
     }
 
     & p {
@@ -44,12 +60,17 @@ const StyledMediaPlayerMini = styled.div`
         justify-self: center;
     }
 
-    & .title {
+    & .title a {
+        text-decoration: none;
         grid-column: 2;
         font-family: ${fonts.monospace};
         font-size: ${dimensions.fontSize.regular}px;
         font-weight: bold;
         color: #444;
+
+        &:hover {
+            color: #000;
+        }
     }
 
     & .controls {
@@ -90,6 +111,8 @@ const StyledTimerAnchor = styled.a`
 
 interface MediaPlayerMiniOwnProps {
     title: string;
+    slug: string;
+    url: string;
     thumbnailUrl: string;
     visible: boolean;
     playing: boolean;
@@ -107,7 +130,7 @@ interface MediaPlayerMiniOwnProps {
 
 export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
     render() {
-        const { title, visible, thumbnailUrl, playing, errorMessage } = this.props;
+        const { title, slug, url, visible, thumbnailUrl, playing, errorMessage } = this.props;
 
         return visible ? (
             <StyledMediaPlayerMiniContainer>
@@ -115,12 +138,14 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     <div
                         className="thumbnail"
                     >
-                        <img 
-                            src={thumbnailUrl} 
-                            width={dimensions.mediaPlayerHeight.mini - 16}
-                            height={dimensions.mediaPlayerHeight.mini - 16}
-                            alt={title} 
-                        />
+                        <a href={url} target="_blank">
+                            <img 
+                                src={thumbnailUrl} 
+                                width={dimensions.mediaPlayerHeight.mini - 10}
+                                height={dimensions.mediaPlayerHeight.mini - 10}
+                                alt={title} 
+                            />
+                        </a>
                     </div>
                     { errorMessage && 
                         <p className="error-message">
@@ -129,7 +154,9 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     }
                     { !errorMessage && 
                         <p className="title">
-                            {title}
+                            <a href={`#${slug}`}>
+                                {title}
+                            </a>
                         </p>
                     }
                     <div className="controls">

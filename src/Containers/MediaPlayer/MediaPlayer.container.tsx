@@ -34,7 +34,7 @@ export class MediaPlayerContainer extends React.Component<MediaPlayerContainerPr
             return null;
         }
 
-        const { soundcloudUrl, youtubeUrl, title, featuredImage } = selectedMediaItem
+        const { soundcloudUrl, youtubeUrl, title, slug, featuredImage } = selectedMediaItem
         const { hovered } = this.state;
 
         const mediaPlayerMode: MediaPlayerMode = soundcloudUrl && !youtubeUrl
@@ -59,6 +59,7 @@ export class MediaPlayerContainer extends React.Component<MediaPlayerContainerPr
             <div>
                 <MediaPlayer
                     url={mediaUrl}
+                    slug={slug}
                     youtubeConfig={youtubeConfig}
                     soundcloudConfig={soundcloudConfig}
                     playerHeight={playerHeight}

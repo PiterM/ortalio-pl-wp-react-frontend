@@ -18,7 +18,7 @@ const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, childre
   const textVariantIndex = index % audioItemHeaderTextVariants.length;
   const textVariant = audioItemHeaderTextVariants[textVariantIndex];
 
-  const StyledDiv = styled.div`
+  const StyledHeader = styled.h2`
     text-align: center;
     line-height: normal;
     box-sizing: border-box;
@@ -36,37 +36,17 @@ const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, childre
       text-decoration: none;
       color: ${colors.glitchyTitleEffect.main};
       z-index: 1;
-    
-      &:before,
-      &:after {
-          content:attr(data-text);
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-      }
-      
-      &:before {
-          color: ${colors.glitchyTitleEffect.firstAdditional};
-          z-index: -1;
-      }
-
-      &:after {
-        color: ${colors.glitchyTitleEffect.secondAdditional};
-          z-index: -2;
-      }
     }
   }
 `;
 
-  return <StyledDiv>{children}</StyledDiv>;
+  return <StyledHeader>{children}</StyledHeader>;
 };
 
 const AudioItemHeadlineBottom: React.FC<AudioItemHeadlineProps> = ({ index, children }) => {
   const textVariantIndex = index % audioItemHeaderTextVariants.length;
   const textVariant = audioItemHeaderTextVariants[textVariantIndex];
-  const StyledDiv = styled.div`
+  const StyledParagraph = styled.p`
     text-align: center;
     line-height: normal;
     box-sizing: border-box;
@@ -99,7 +79,7 @@ const AudioItemHeadlineBottom: React.FC<AudioItemHeadlineProps> = ({ index, chil
     }
   `;
 
-  return <StyledDiv>{children}</StyledDiv>;
+  return <StyledParagraph>{children}</StyledParagraph>;
 };
 
 interface AudioItemHeaderProps {
@@ -111,10 +91,10 @@ interface AudioItemHeaderProps {
 const AudioItemHeader: React.FC<AudioItemHeaderProps> = ({ index, title, shortDescription }) => (
   <StyledAudioItemHeadline>
     <AudioItemHeadlineTop index={index}>
-      <div className="audio-item__title" data-text={title}>{title}</div>
+      <span>{title}</span>
     </AudioItemHeadlineTop>
     <AudioItemHeadlineBottom index={index}>
-      <div dangerouslySetInnerHTML={{ __html: shortDescription }} />
+      <span dangerouslySetInnerHTML={{ __html: shortDescription }} />
     </AudioItemHeadlineBottom>
   </StyledAudioItemHeadline>
 );

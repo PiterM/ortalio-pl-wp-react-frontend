@@ -11,7 +11,7 @@ import {
   setSelectedAudioItemAction 
 } from '../MediaPlayer/MediaPlayer.actions';
 
-const StyledAudioItem = styled.div`
+const StyledAudioItem = styled.section`
   line-height: ${dimensions.lineHeight.regular};
   padding: 0 1% 0 1%;
   padding-bottom: 50px;
