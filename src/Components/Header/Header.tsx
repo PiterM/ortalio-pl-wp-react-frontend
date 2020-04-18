@@ -22,13 +22,16 @@ const StyledHeaderWeatherForcastBox = styled.div`
 `;
 
 const StyledHeaderTitle = styled.header`
-  font-family: ${fonts.headline}, serif;
-  font-weight: 900;
-  font-size: 80px;
-  text-transform: uppercase;
   display: inline-block;
   margin-bottom: 20px;
   letter-spacing: 6px;
+
+  & h1 {
+    font-family: ${fonts.headline}, serif;
+    font-weight: 900;
+    font-size: 80px;
+    text-transform: uppercase;
+  }
 `;
 
 const StyledHomePageLink = styled.a`
@@ -60,13 +63,15 @@ const Header: React.FC<HeaderProps> = ({ description, intro, title }) => (
         <div dangerouslySetInnerHTML={{ __html: intro }} />
       </StyledHeaderWeatherForcastBox>
       <StyledHeaderTitle>
-        <StyledHomePageLink 
-          href="/" 
-          className="site-header"
-          data-text={title}
-        >
-          {title}
-        </StyledHomePageLink>
+        <h1>
+          <StyledHomePageLink 
+            href="/" 
+            className="site-header"
+            data-text={title}
+          >
+            {title}
+          </StyledHomePageLink>
+        </h1>
       </StyledHeaderTitle>
     </HeaderWrapperDiv>
     <StyledSubHeader>
