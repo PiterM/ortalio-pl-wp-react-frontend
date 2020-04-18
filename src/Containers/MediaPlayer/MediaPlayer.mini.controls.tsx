@@ -49,7 +49,7 @@ const StyledPlayerSimpleControlImage = styled.img`
 `;
 
 const StyledPlayerLoopModeControlImage = styled.img`
-    width: ${dimensions.mediaPlayer.playPauseControlSize}px;
+    width: ${dimensions.mediaPlayer.playPauseControlSize }px;
     height: ${dimensions.mediaPlayer.playPauseControlSize}px;
     opacity: 0.3;
     margin-left: 10px;
@@ -57,7 +57,7 @@ const StyledPlayerLoopModeControlImage = styled.img`
     cursor: pointer;
 
     &.looped {
-        opacity: 1;
+        opacity: 0.85;
     }
 
     &:active {

@@ -26,7 +26,7 @@ const StyledMediaPlayer = styled.div`
     width: 100%;
     z-index: 2;
     display: flex;
-    background: url('/images/pattern1.png') left top repeat ${colors.newspaperPaper};
+    background: url('/images/player-pattern.png') left top repeat ${colors.newspaperPaper};
     border-top: 2px solid ${colors.white};
 `;
 
