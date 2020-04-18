@@ -15,8 +15,6 @@ const StyledMediaPlayerMini = styled.div`
     height: 100%;
     padding: 0 30px;
     min-width: 39.8vw;
-    background-color: ${colors.white};
-    border-right: 1px ${colors.newspaperPaperHovered} solid;
 
     & > div {
         text-align: center;

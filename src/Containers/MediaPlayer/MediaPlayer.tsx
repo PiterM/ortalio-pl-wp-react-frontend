@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { StoreState } from '../../App/App.store.d';
-import { colors, dimensions } from '../../Common/variables';
+import { colors, dimensions, fonts } from '../../Common/variables';
 import MediaPlayerMini from './MediaPlayer.mini';
 import { 
     MediaPlayerMode, 
@@ -25,15 +25,37 @@ const StyledMediaPlayer = styled.div`
     left: 0;
     right: 0;
     width: 100%;
-    background-color: ${colors.white};
     z-index: 2;
-    background-color: ${colors.newspaperPaper};
+    background-color: ${colors.white};
     display: flex;
 `;
 
 const StyledNotMediaPlayer = styled.div`
     height: ${dimensions.mediaPlayerHeight.mini}px;
     width: 100%;
+    display: grid;
+    grid-template-columns: 10fr;
+    height: 100%;
+    padding: 10px 0;
+    margin: 0 30px;
+
+    & > p {
+        height: 100%;
+        pading: 0;
+        margin: 0;
+        align-self: center;
+        justify-self: right;
+        font-family: ${fonts.serif};
+        font-weight: bold;
+        letter-spacing: 1px;
+        display: grid;
+        grid-template-columns: 1f;
+
+        & > img {
+            align-self: center;
+            justify-self: center;
+        }
+    }
 `;
 
 interface MediaPlayerOwnProps {
@@ -99,11 +121,15 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             soundcloudConfig, 
             youtubeConfig,
             minimalMode,
+            playerMode,
             errorMessage
         } = this.props;
 
         const playerVisibility = minimalMode ? 'hidden' : 'visible';
         const playerHeight = minimalMode ? 0 : this.props.playerHeight;
+        const moreIcon = playerMode === MediaPlayerMode.Soundcloud
+            ? '/images/soundcloud200-logo.png'
+            : '/images/youtube200-logo.png';
 
         return (
             <>
@@ -127,7 +153,16 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         />
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
-                        />
+                        >
+                            <p>View on 
+                                <img 
+                                    src={moreIcon} 
+                                    alt={`View on ${playerMode}`} 
+                                    width="auto"
+                                    height={dimensions.mediaPlayerHeight.mini - 30}
+                                />
+                            </p>
+                        </StyledNotMediaPlayer>
                     </StyledMediaPlayer>
                 }
                 <StyledMediaPlayer
