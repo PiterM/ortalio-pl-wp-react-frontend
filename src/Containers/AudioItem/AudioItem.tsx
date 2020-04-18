@@ -57,6 +57,7 @@ interface AudioItemOwnProps {
   id: string;
   index: number;
   title: string;
+  slug: string;
   shortDescription: string;
   content?: string;
 }
@@ -73,11 +74,20 @@ type AudioItemProps = AudioItemOwnProps & AudioItemMappedProps & AudioItemDispat
 
 export class AudioItem extends React.Component<AudioItemProps> {
   render() {
-    const { index, title, shortDescription, content, selected } = this.props;
+    const { 
+      index, 
+      title, 
+      slug,
+      shortDescription, 
+      content, 
+      selected 
+    } = this.props;
+    
     return (
       <StyledAudioItem
         className={`audio-item${selected ? ' selected' : ''}`}
         onClick={() => this.onClick()}
+        id={slug}
       >
         <AudioItemHeader
           index={index}

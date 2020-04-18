@@ -53,6 +53,9 @@ export function* selectCurrentAudioItem(getKey: any): GetAllMediaDataIterator {
             let newKey = parseInt(currentKey) + getKey.vector;
             newKey = newKey < 0 ? itemsNumber + newKey : newKey;
             newKey = newKey % itemsNumber;
+
+            const element = document.getElementById(mediaData[newKey].slug);
+            if (element) element.scrollIntoView();
             
             yield put(getKey.actionSuccess(mediaData[newKey].id));
         }

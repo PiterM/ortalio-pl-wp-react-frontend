@@ -6,13 +6,13 @@ import { Dispatch } from 'redux';
 import { StoreState } from '../../App/App.store.d';
 import { colors, dimensions, fonts } from '../../Common/variables';
 import MediaPlayerMini from './MediaPlayer.mini';
-import { 
-    MediaPlayerMode, 
-    TimerMode, 
+import {
+    MediaPlayerMode,
+    TimerMode,
     ProgressTime,
     LoopMode
 } from './MediaPlayer.constants';
-import { 
+import {
     MediaPlayerActions,
     setSelectedNextAudioItemAction,
     setSelectedPreviousAudioItemAction,
@@ -96,6 +96,7 @@ interface MediaPlayerState {
     duration?: number;
     timerMode: TimerMode;
     loopMode: LoopMode;
+    errorMessage?: string;
 }
 
 const initProgressState = {
@@ -122,11 +123,11 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     }
 
     render() {
-        const { 
-            title, 
-            url, 
+        const {
+            title,
+            url,
             thumbnailUrl,
-            soundcloudConfig, 
+            soundcloudConfig,
             youtubeConfig,
             minimalMode,
             playerMode,
@@ -139,13 +140,17 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             ? '/images/soundcloud200-logo.png'
             : '/images/youtube200-logo.png';
 
+        const activeErrorMessage = this.state.errorMessage
+            ? this.state.errorMessage
+            : errorMessage;
+
         return (
             <>
-                { minimalMode && 
+                {minimalMode &&
                     <StyledMediaPlayer>
                         <MediaPlayerMini
-                            errorMessage={errorMessage}
-                            visible={minimalMode} 
+                            errorMessage={activeErrorMessage}
+                            visible={minimalMode}
                             title={title}
                             thumbnailUrl={thumbnailUrl}
                             playing={this.state.playing}
@@ -162,10 +167,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
                         >
-                            <p>See on 
-                                <img 
-                                    src={moreIcon} 
-                                    alt={`See on ${playerMode}`} 
+                            <p>See on
+                                <img
+                                    src={moreIcon}
+                                    alt={`See on ${playerMode}`}
                                     width="auto"
                                     height={dimensions.mediaPlayerHeight.mini - 30}
                                 />
@@ -176,7 +181,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                 <StyledMediaPlayer
                     onMouseOut={() => this.props.onMouseOut()}
                 >
-                    <ReactPlayer 
+                    <ReactPlayer
                         ref={this.ref}
                         style={{ visibility: playerVisibility }}
                         url={url}
@@ -191,7 +196,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         onProgress={(progress: any) => this.onProgress(progress)}
                         onPause={() => this.onPause()}
                         onEnded={() => this.onEnded()}
-                        // onError={() => this.onError()}
+                        onError={() => this.onError()}
                     />
                 </StyledMediaPlayer>
             </>
@@ -223,27 +228,45 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                 ? '-'
                 : '&nbsp;';
 
-            this.setState({ progress: { 
-                dashCharacter,
-                minutesDisplayed: `${minutes}`.padStart(2, '0'), 
-                secondsDisplayed: `${seconds}`.padStart(2, '0')
-            }});
+            this.setState({
+                progress: {
+                    dashCharacter,
+                    minutesDisplayed: `${minutes}`.padStart(2, '0'),
+                    secondsDisplayed: `${seconds}`.padStart(2, '0')
+                }
+            });
         }
     }
 
     private onPlayClick = () => this.trySetPlayingState(true);
     private onPauseClick = () => this.trySetPlayingState(false);
 
-    private onPreviousClick = () => this.props.selectPreviousMediaItem();
-    private onNextClick = () => this.props.selectNextMediaItem();
+    private onPreviousClick = () => {
+        this.resetEroroMessage();
+        this.props.selectPreviousMediaItem();
+    }
+    private onNextClick = () => {
+        this.resetEroroMessage();
+        this.props.selectNextMediaItem();
+    }
 
-    private onEnded = () => { 
+    private onEnded = () => {
         this.setState({ playing: false }, () => {
             if (this.state.loopMode === LoopMode.NoLoop) {
                 this.props.selectNextMediaItem();
-            } 
+            }
             this.setState({ playing: true });
         });
+    }
+
+    private onError = () => {
+        this.setState({
+            errorMessage: 'I am sorry. Error while streaming!'
+        });
+    }
+
+    private resetEroroMessage() {
+        this.setState({ errorMessage: undefined });
     }
 
     private toggleTimerModeState = () => {
@@ -251,7 +274,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             ? TimerMode.PlayedTime
             : TimerMode.RemainingTime;
 
-        this.setState({ 
+        this.setState({
             timerMode,
             progress: initProgressState
         });
@@ -275,7 +298,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         this.setState({
             progress: undefined,
             duration: undefined
-       });
+        });
     }
 
     private ref = (player: any) => this.player = player;
@@ -289,7 +312,7 @@ const mapDispatchToProps: any = (dispatch: Dispatch<MediaPlayerActions>) => ({
     selectPreviousMediaItem: () => dispatch(setSelectedPreviousAudioItemAction()),
     selectNextMediaItem: () => dispatch(setSelectedNextAudioItemAction())
 });
-  
+
 export default connect<MediaPlayerMappedProps, MediaPlayerDispatchProps>(
     mapStateToProps, mapDispatchToProps
 )(MediaPlayer);

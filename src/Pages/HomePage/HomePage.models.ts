@@ -6,6 +6,7 @@ interface FeaturedImage {
 interface OrtalioMediaItem {
     id: string;
     title: string;
+    slug: string;
     shortDescription: string;
     content?: string;
     soundcloudUrl: string;

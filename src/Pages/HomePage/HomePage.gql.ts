@@ -5,6 +5,7 @@ export const GET_ORTALIO_MEDIA_QUERY = gql`
     ortalioMedia(first:100) {
       nodes {
         id
+        slug
         ortalioMediaField {
           title
           content

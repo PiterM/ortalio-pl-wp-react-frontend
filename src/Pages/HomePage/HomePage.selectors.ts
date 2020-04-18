@@ -12,6 +12,7 @@ export const getOrtalioMediaItemData = createSelector(
     (mediaItem, mediaFieldData, featuredImageData) => {
         return {
             id: mediaItem.id,
+            slug: mediaItem.slug,
             ...mediaFieldData,
             featuredImage: {
                 ...featuredImageData

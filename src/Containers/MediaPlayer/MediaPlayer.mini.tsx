@@ -69,6 +69,15 @@ const StyledMediaPlayerMini = styled.div`
             margin: 0;
         }
     }
+
+    & .error-message {
+        grid-column: 2;
+        font-family: ${fonts.monospace};
+        font-size: ${dimensions.fontSize.regular}px;
+        font-weight: bold;
+        color: darkred;
+        background: white;
+    }
 `;
 
 const StyledTimerAnchor = styled.a`
@@ -119,26 +128,24 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                         </p>
                     }
                     { !errorMessage && 
-                        <>
-                            <p className="title">
-                                {title}
-                            </p>
-                            <div className="controls">
-                                <MediaPlayerMiniControls 
-                                    playing={playing}
-                                    onPlayClick={this.props.onPlayClick}
-                                    onPauseClick={this.props.onPauseClick}
-                                    onPreviousClick={this.props.onPreviousClick}
-                                    onNextClick={this.props.onNextClick}
-                                    toggleLoopMode={this.props.toggleLoopMode}
-                                    loopMode={this.props.loopMode}
-                                />
-                            </div>
-                            <div className="timer">
-                                {this.renderPlayerTimer()}
-                            </div>
-                        </>
+                        <p className="title">
+                            {title}
+                        </p>
                     }
+                    <div className="controls">
+                        <MediaPlayerMiniControls 
+                            playing={playing}
+                            onPlayClick={this.props.onPlayClick}
+                            onPauseClick={this.props.onPauseClick}
+                            onPreviousClick={this.props.onPreviousClick}
+                            onNextClick={this.props.onNextClick}
+                            toggleLoopMode={this.props.toggleLoopMode}
+                            loopMode={this.props.loopMode}
+                        />
+                    </div>
+                    <div className="timer">
+                        {this.renderPlayerTimer()}
+                    </div>
                 </StyledMediaPlayerMini>
             </StyledMediaPlayerMiniContainer>
         ): null;

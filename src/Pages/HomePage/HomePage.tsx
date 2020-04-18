@@ -55,6 +55,7 @@ export class HomePage extends React.Component<HomePageProps> {
         const reduxData: MediaState = this.props.data.map((item: OrtalioMedia, index: number) => (
             {
                 id: item.id,
+                slug: item.slug,
                 title: item.title,
                 soundcloudUrl: item.soundcloudUrl,
                 youtubeUrl: item.youtubeUrl,
@@ -122,12 +123,13 @@ export class HomePage extends React.Component<HomePageProps> {
     }
 
     private renderAudioItem(item: OrtalioMedia) {
-        const { id, title, shortDescription, content } = item;
+        const { id, title, slug, shortDescription, content } = item;
 
         return (
             <AudioItem
                 key={id}
                 id={id}
+                slug={slug}
                 index={getRandomNumberFromString(id)}
                 title={title}
                 shortDescription={shortDescription}
