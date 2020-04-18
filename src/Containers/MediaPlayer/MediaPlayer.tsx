@@ -26,8 +26,16 @@ const StyledMediaPlayer = styled.div`
     width: 100%;
     z-index: 2;
     display: flex;
-    background: url('/images/player-pattern.png') left top repeat ${colors.newspaperPaper};
     border-top: 2px solid ${colors.white};
+
+    background: -moz-radial-gradient(center, ellipse cover, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(255,175,75,1)), color-stop(100%, rgba(255,146,10,0.52)));
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
+    background: -o-radial-gradient(center, ellipse cover, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
+    background: -ms-radial-gradient(center, ellipse cover, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
+    background: radial-gradient(ellipse at center, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a', GradientType=1 );
+    background: url('/images/player-pattern.png') left top repeat rgba(249,247,241,0.9);
 `;
 
 const StyledNotMediaPlayer = styled.div`
@@ -154,10 +162,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
                         >
-                            <p>Play on 
+                            <p>See on 
                                 <img 
                                     src={moreIcon} 
-                                    alt={`Play on ${playerMode}`} 
+                                    alt={`See on ${playerMode}`} 
                                     width="auto"
                                     height={dimensions.mediaPlayerHeight.mini - 30}
                                 />

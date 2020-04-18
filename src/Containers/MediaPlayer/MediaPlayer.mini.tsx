@@ -15,6 +15,13 @@ const StyledMediaPlayerMini = styled.div`
     height: 100%;
     padding: 0 30px;
     min-width: 39.8vw;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                          supported by Chrome, Opera and Firefox */
 
     & > div {
         text-align: center;
