@@ -71,6 +71,10 @@ const StyledMediaPlayerMini = styled.div`
         &:hover {
             color: #000;
             background-color: #fff;
+            -webkit-transition: all 0s ease-in-out 0.1s;
+            -moz-transition: all 0s ease-in-out 0.1s;
+            -o-transition: all 0s ease-in-out 0.1s;
+            transition: all 0s ease-in-out 0.1;
         }
     }
 
