@@ -1,6 +1,7 @@
 import { put, takeLatest, PutEffect, select, SelectEffect } from 'redux-saga/effects';
 import { OrtalioMedia } from '../../Pages/HomePage/HomePage.models';
 import { StoreState } from '../../App/App.store.d'
+import { setWindowLocationHash } from '../../Common/CommonHelpers';
 import {
     SetSelectedNextAudioItemSuccessAction,
     setSelectedNextAudioItemSuccessAction,
@@ -53,10 +54,8 @@ export function* selectCurrentAudioItem(getKey: any): GetAllMediaDataIterator {
             let newKey = parseInt(currentKey) + getKey.vector;
             newKey = newKey < 0 ? itemsNumber + newKey : newKey;
             newKey = newKey % itemsNumber;
-
-            const element = document.getElementById(mediaData[newKey].slug);
-            if (element) element.scrollIntoView();
-            
+            setWindowLocationHash(mediaData[newKey].slug);
+                        
             yield put(getKey.actionSuccess(mediaData[newKey].id));
         }
     } catch (error) {

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
+import { setWindowLocationHash } from '../../Common/CommonHelpers';
 import { colors, dimensions, fonts } from '../../Common/variables';
 import MediaPlayerMiniControls from './MediaPlayer.mini.controls';
 import { TimerMode, ProgressTime, LoopMode } from './MediaPlayer.constants';
@@ -159,7 +160,9 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     }
                     { !errorMessage && 
                         <p className="title">
-                            <a href={`#${slug}`}>
+                            <a
+                                onClick={() => setWindowLocationHash(slug)}
+                            >
                                 {title}
                             </a>
                         </p>
