@@ -86,6 +86,14 @@ export default class MediaPlayerMiniControls extends React.Component<MediaPlayer
         const LoopModeClassName = loopMode === LoopMode.LoopCurrent
             ? 'looped'
             : '';
+
+        const pauseButtonCss: any = playing 
+            ? { display: 'none' }
+            : { display: 'inline-block' };
+
+        const playButtonCss: any = playing 
+            ? { display: 'inline-block' }
+            : { display: 'none' };
         
         return (
             <StyledControlsWrapper>
@@ -102,22 +110,20 @@ export default class MediaPlayerMiniControls extends React.Component<MediaPlayer
                         height={dimensions.mediaPlayer.playPauseControlSize}
                         onClick={() => this.props.onPreviousClick()}
                 />
-                { playing && 
-                    <StyledPlayerSimpleControlImage 
-                        src={playerImgSrc} 
-                        width={dimensions.mediaPlayer.playPauseControlSize}
-                        height={dimensions.mediaPlayer.playPauseControlSize}
-                        onClick={() => this.props.onPauseClick()}
-                    />
-                }
-                { !playing && 
-                    <StyledPlayerPauseControlImage 
-                        src={playerImgSrc} 
-                        width={dimensions.mediaPlayer.playPauseControlSize}
-                        height={dimensions.mediaPlayer.playPauseControlSize}
-                        onClick={() => this.props.onPlayClick()}
-                    />
-                }
+                <StyledPlayerSimpleControlImage 
+                    style={playButtonCss}
+                    src={playerImgSrc} 
+                    width={dimensions.mediaPlayer.playPauseControlSize}
+                    height={dimensions.mediaPlayer.playPauseControlSize}
+                    onClick={() => this.props.onPauseClick()}
+                />
+                <StyledPlayerPauseControlImage 
+                    style={pauseButtonCss}
+                    src={playerImgSrc} 
+                    width={dimensions.mediaPlayer.playPauseControlSize}
+                    height={dimensions.mediaPlayer.playPauseControlSize}
+                    onClick={() => this.props.onPlayClick()}
+                />
                 <StyledPlayerSimpleControlImage 
                         src={'/images/arrow-right-icon.svg'} 
                         width={dimensions.mediaPlayer.playPauseControlSize}
