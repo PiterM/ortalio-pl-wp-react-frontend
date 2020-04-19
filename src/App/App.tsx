@@ -8,7 +8,7 @@ import store from './App.store';
 import appResolvers from './App.resolvers';
 
 const client = new ApolloClient({
-  uri: "http://ortl.local/graphql",
+  uri: "http://ortl.net.pl/graphql",  // ortl.local for local
   resolvers: appResolvers
 });
 
