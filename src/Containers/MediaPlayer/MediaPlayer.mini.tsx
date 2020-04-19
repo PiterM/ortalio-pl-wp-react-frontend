@@ -149,7 +149,6 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                                 src={thumbnailUrl} 
                                 width={dimensions.mediaPlayerHeight.mini - 10}
                                 height={dimensions.mediaPlayerHeight.mini - 10}
-                                alt={title} 
                             />
                         </a>
                     </div>

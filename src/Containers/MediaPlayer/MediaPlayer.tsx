@@ -175,7 +175,6 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                             <p>See on
                                 <img
                                     src={moreIcon}
-                                    alt={`See on ${playerMode}`}
                                     width="auto"
                                     height={dimensions.mediaPlayerHeight.mini - 30}
                                 />
