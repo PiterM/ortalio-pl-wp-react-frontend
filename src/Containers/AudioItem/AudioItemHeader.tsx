@@ -57,7 +57,7 @@ const AudioItemHeadlineBottom: React.FC<AudioItemHeadlineProps> = ({ index, chil
     display: block;
     margin: 0 auto;
     letter-spacing: 1px;
-    padding: 10px 10px 30px 10px;
+    padding: 15px 10px 30px 15px;
     font-family: ${textVariant.bottom.font};
     font-size: ${textVariant.bottom.fontSize}px;
     font-weight: ${textVariant.bottom.fontWeight};
