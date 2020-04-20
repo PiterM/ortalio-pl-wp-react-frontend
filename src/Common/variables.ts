@@ -146,8 +146,7 @@ export const audioItemHeaderTextVariants = [
   {
     top: {
       font: fonts.headline,
-      fontWeight: dimensions.fontWeight.bold,
-      fontSize: dimensions.fontSize.smallTitle,
+      fontSize: dimensions.fontSize.extraLarge,
       fontStyle: 'normal',
       textTransform: 'uppercase',
     },

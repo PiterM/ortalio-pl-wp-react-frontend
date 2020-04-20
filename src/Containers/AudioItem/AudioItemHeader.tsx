@@ -24,7 +24,7 @@ const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, childre
     box-sizing: border-box;
     display: block;
     margin: 0 auto;
-    padding: 10px 0 20px 0;
+    padding: 10px 10px 20px 10px;
     font-family: ${textVariant.top.font};
     font-size: ${textVariant.top.fontSize}px;
     font-weight: ${textVariant.top.fontWeight};
@@ -36,6 +36,10 @@ const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, childre
       text-decoration: none;
       color: ${colors.glitchyTitleEffect.main};
       z-index: 1;
+    }
+
+    .audio-item.selected & {
+      color: #7f1818;
     }
   }
 `;
