@@ -83,7 +83,6 @@ const StyledMediaPlayerMini = styled.div`
 
     & .timer {
         grid-column: 4;
-        border-left: 1px solid ${colors.newspaperText};
         border-right: 1px solid ${colors.newspaperText};
         font-family: ${fonts.monospace};
         font-weight: bold;

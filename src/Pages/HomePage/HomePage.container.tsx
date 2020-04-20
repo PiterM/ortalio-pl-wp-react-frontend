@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled'
+import ErrorPage from '../ErrorPage/ErrorPage';
 import GQL_QUERIES from './HomePage.gql';
 import HomePage from './HomePage';
 import { 
@@ -16,27 +17,6 @@ const LoaderScreen = styled.div`
     position: absolute;
 `;
 
-const ErrorScreen = styled.div`
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
-const ErrorMessage = styled.div`
-    background: url('/images/error-icon.svg') top center no-repeat #fff;
-    width: 200px;;
-    height: 100px;
-    & > p {
-        margin-top: 85px;
-        font-size: 16px;
-        text-align: center;
-        width: 100%;
-    }
-`;
-
 const HomePageContainer = () => {
     const globalData = useQuery(GQL_QUERIES.GET_SITE_GLOBAL_DATA_QUERY);
     const socialMediaData = useQuery(GQL_QUERIES.GET_SOCIAL_MEDIA_DATA_QUERY);
@@ -47,13 +27,7 @@ const HomePageContainer = () => {
     }
 
     if (globalData.error || socialMediaData.error || ortalioMediaData.error) {
-        return ( 
-            <ErrorScreen>
-                <ErrorMessage>
-                    <p>Sorry. Come back later.</p>
-                </ErrorMessage>
-            </ErrorScreen>
-        );
+        return <ErrorPage description="Sorry. Come back later" />;
     }
 
     return (

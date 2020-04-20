@@ -55,9 +55,6 @@ const StyledNotMediaPlayer = styled.div`
         font-family: ${fonts.monospace};
         font-size: ${dimensions.fontSize.regular}px;
         font-weight: bold;
-        display: flex;
-        flex-direction: row;
-        line
 
         & img {
             display: inline;
