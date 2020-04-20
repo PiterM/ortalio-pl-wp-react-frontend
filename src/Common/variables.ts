@@ -93,7 +93,7 @@ export const dimensions = {
     columnsNumber: 5,
   },
   mediaPlayerHeight: {
-    mini: 50,
+    mini: 30,
     small: 162,
     medium: 400
   },

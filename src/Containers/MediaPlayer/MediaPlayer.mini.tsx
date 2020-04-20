@@ -38,13 +38,11 @@ const StyledMediaPlayerMini = styled.div`
             padding: 0;
             
             &:hover img {
-                border-color: #fff;
                 opacity: 1;
             }
         }
 
         & img {
-            border: 4px solid transparent;
             opacity: 0.85;
             -webkit-transition: all 0s ease-in-out 0.1s;
             -moz-transition: all 0s ease-in-out 0.1s;

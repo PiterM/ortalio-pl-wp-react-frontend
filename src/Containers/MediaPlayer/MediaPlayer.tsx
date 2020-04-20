@@ -51,17 +51,16 @@ const StyledNotMediaPlayer = styled.div`
         height: 100%;
         pading: 0;
         margin: 0;
-        align-self: center;
         justify-self: right;
         font-family: ${fonts.monospace};
         font-size: ${dimensions.fontSize.regular}px;
         font-weight: bold;
-        display: grid;
-        grid-template-columns: 1f;
+        display: flex;
+        flex-direction: row;
+        line
 
-        & > img {
-            align-self: center;
-            justify-self: center;
+        & img {
+            display: inline;
         }
     }
 `;
@@ -172,11 +171,11 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
                         >
-                            <p>See on
+                            <p>
                                 <img
                                     src={moreIcon}
                                     width="auto"
-                                    height={dimensions.mediaPlayerHeight.mini - 30}
+                                    height={dimensions.mediaPlayerHeight.mini - 10}
                                 />
                             </p>
                         </StyledNotMediaPlayer>
