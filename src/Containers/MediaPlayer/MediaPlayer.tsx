@@ -297,7 +297,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private resetTrackProgress() {
         this.setState({
             progress: undefined,
-            duration: undefined
+            duration: undefined,
+            playing: true,
         });
     }
 
