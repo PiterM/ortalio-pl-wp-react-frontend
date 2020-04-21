@@ -5,6 +5,8 @@ import { colors, dimensions, fonts } from '../../Common/variables';
 import MediaPlayerMiniControls from './MediaPlayer.mini.controls';
 import { TimerMode, ProgressTime, LoopMode } from './MediaPlayer.constants';
 
+import './MediaPlayer.mini.css';
+
 const StyledMediaPlayerMiniContainer = styled.div`
     display: inline-block;
 `;
@@ -136,7 +138,9 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
         const { title, slug, url, visible, thumbnailUrl, playing, errorMessage } = this.props;
 
         return visible ? (
-            <StyledMediaPlayerMiniContainer>
+            <StyledMediaPlayerMiniContainer
+                className="media-player"
+            >
                 <StyledMediaPlayerMini>
                     <div
                         className="thumbnail"

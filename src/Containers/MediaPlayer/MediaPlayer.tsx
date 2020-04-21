@@ -35,7 +35,7 @@ const StyledMediaPlayer = styled.div`
     background: -ms-radial-gradient(center, ellipse cover, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
     background: radial-gradient(ellipse at center, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a', GradientType=1 );
-    background: url('/images/player-pattern.png') left top repeat rgba(249,247,241,0.9);
+    background: url('/images/player-pattern.png') left top repeat rgba(249,247,241,1);
 `;
 
 const StyledNotMediaPlayer = styled.div`
