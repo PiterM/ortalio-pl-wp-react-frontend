@@ -268,6 +268,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         this.setState({ playing: false }, () => {
             if (this.state.loopMode === LoopMode.NoLoop) {
                 this.props.selectNextMediaItem();
+            } else {
+                this.resetTrackProgress();
             }
         });
     }
