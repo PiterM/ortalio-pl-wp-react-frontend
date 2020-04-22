@@ -42,22 +42,35 @@ const StyledNotMediaPlayer = styled.div`
     height: ${dimensions.mediaPlayerHeight.mini}px;
     width: 100%;
     display: grid;
-    grid-template-columns: 10fr;
+    grid-template-columns: 8fr 1fr;
     height: 100%;
     padding: 10px 0;
     margin: 0 30px;
 
     & > p {
+        grid-column: 2;
         height: 100%;
         pading: 0;
         margin: 0;
-        justify-self: right;
+        justify-self: center;
         font-family: ${fonts.monospace};
         font-size: ${dimensions.fontSize.regular}px;
         font-weight: bold;
+    }
+
+    & > p.more-icon {
+        display: block;
+        position: relative;
+        height: 20px;
+        width: auto;
 
         & img {
-            display: inline;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: auto;
+            max-width: none;
         }
     }
 `;
@@ -117,6 +130,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     componentDidUpdate(prevProps: MediaPlayerProps, prevState: MediaPlayerState) {
         if (prevProps.selectedMediaId !== this.props.selectedMediaId) {
             this.resetTrackProgress();
+            this.setState({ playing: true });
         }
     }
 
@@ -168,7 +182,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
                         >
-                            <p>
+                            <p className="more-icon">
                                 <img
                                     src={moreIcon}
                                     width="auto"
@@ -255,7 +269,6 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             if (this.state.loopMode === LoopMode.NoLoop) {
                 this.props.selectNextMediaItem();
             }
-            this.setState({ playing: true });
         });
     }
 

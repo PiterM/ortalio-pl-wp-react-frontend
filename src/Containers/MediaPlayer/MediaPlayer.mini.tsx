@@ -29,7 +29,7 @@ const StyledMediaPlayerMini = styled.div`
     & > div {
         text-align: center;
         align-self: center;
-        justify-self: center;
+        justify-self: flex-start;
     }
 
     & > .thumbnail {
@@ -38,6 +38,10 @@ const StyledMediaPlayerMini = styled.div`
         & a {
             text-decoration: none;
             padding: 0;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            position: relative;
             
             &:hover img {
                 opacity: 1;
@@ -50,6 +54,11 @@ const StyledMediaPlayerMini = styled.div`
             -moz-transition: all 0s ease-in-out 0.1s;
             -o-transition: all 0s ease-in-out 0.1s;
             transition: all 0s ease-in-out 0.1;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
         }
     }
 
