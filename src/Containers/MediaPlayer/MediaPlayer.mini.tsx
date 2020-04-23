@@ -77,6 +77,7 @@ const StyledMediaPlayerMini = styled.div`
         font-size: ${dimensions.fontSize.regular}px;
         font-weight: bold;
         color: #444;
+        cursor: pointer;
 
         &:hover {
             color: #000;
