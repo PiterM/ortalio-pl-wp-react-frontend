@@ -256,10 +256,12 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private onPauseClick = () => this.trySetPlayingState(false);
 
     private onPreviousClick = () => {
+        this.setState({ playing: false });
         this.resetEroroMessage();
         this.props.selectPreviousMediaItem();
     }
     private onNextClick = () => {
+        this.setState({ playing: false });
         this.resetEroroMessage();
         this.props.selectNextMediaItem();
     }

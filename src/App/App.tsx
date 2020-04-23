@@ -10,7 +10,7 @@ import appResolvers from './App.resolvers';
 import Page404 from '../Pages/ErrorPage/Page404';
 
 const client = new ApolloClient({
-  uri: "http://ortl.net.pl/graphql",  // ortl.local for local
+  uri: "https://ortalio.website/graphql",  // ortl.local for local
   resolvers: appResolvers
 });
 
