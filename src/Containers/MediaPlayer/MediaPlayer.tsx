@@ -256,14 +256,16 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private onPauseClick = () => this.trySetPlayingState(false);
 
     private onPreviousClick = () => {
-        this.setState({ playing: false });
-        this.resetEroroMessage();
-        this.props.selectPreviousMediaItem();
+        this.resetErrorMessage();
+        this.setState({ playing: false }, () => {
+            this.props.selectPreviousMediaItem();
+        });
     }
     private onNextClick = () => {
-        this.setState({ playing: false });
-        this.resetEroroMessage();
-        this.props.selectNextMediaItem();
+        this.resetErrorMessage();
+        this.setState({ playing: false }, () => {
+            this.props.selectNextMediaItem();
+        });
     }
 
     private onEnded = () => {
@@ -282,7 +284,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         });
     }
 
-    private resetEroroMessage() {
+    private resetErrorMessage() {
         this.setState({ errorMessage: undefined });
     }
 
