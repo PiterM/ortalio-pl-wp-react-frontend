@@ -60,6 +60,12 @@ interface HomePageOwnProps {
 type HomePageProps = HomePageOwnProps & HomePageMappedProps & HomePageDispatchProps;
 
 export class HomePage extends React.Component<HomePageProps> {
+    shouldComponentUpdate(nextProps: HomePageProps) {
+        return nextProps.selectedMediaId !== this.props.selectedMediaId
+            ? false
+            : true;
+    }
+
     componentDidMount() {
         const reduxData: MediaState = this.props.data.map((item: OrtalioMedia, index: number) => (
             {
