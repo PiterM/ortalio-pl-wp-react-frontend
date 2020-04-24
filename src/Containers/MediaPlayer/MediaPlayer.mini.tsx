@@ -17,7 +17,7 @@ const StyledMediaPlayerMini = styled.div`
     text-align: center;
     height: 100%;
     padding: 0 30px;
-    min-width: 39.8vw;
+    min-width: 44.6vw;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */
