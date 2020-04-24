@@ -18,3 +18,10 @@ export enum LoopMode {
     NoLoop = 'NoLoop',
     LoopCurrent = 'LoopCurrent'
 }
+
+export enum KeyCodes {
+    ArrowRight = 39,
+    ArrowLeft = 37,
+    Space = 32,
+    Enter = 13
+}

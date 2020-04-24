@@ -70,7 +70,7 @@ const StyledMediaPlayerMini = styled.div`
         justify-self: center;
     }
 
-    & .title a {
+    & .title button {
         text-decoration: none;
         grid-column: 2;
         font-family: ${fonts.monospace};
@@ -78,6 +78,9 @@ const StyledMediaPlayerMini = styled.div`
         font-weight: bold;
         color: #444;
         cursor: pointer;
+        border: none;
+        background-color: transparent;
+        outline: none;
 
         &:hover {
             color: #000;
@@ -157,6 +160,7 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     >
                         <a href={url} target="_blank">
                             <img 
+                                alt={title}
                                 src={thumbnailUrl} 
                                 width={dimensions.mediaPlayerHeight.mini - 10}
                                 height={dimensions.mediaPlayerHeight.mini - 10}
@@ -170,11 +174,11 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     }
                     { !errorMessage && 
                         <p className="title">
-                            <a
+                            <button
                                 onClick={() => setWindowLocationHash(slug)}
                             >
                                 {title}
-                            </a>
+                            </button>
                         </p>
                     }
                     <div className="controls">

@@ -5,4 +5,5 @@ export interface StoreState {
   media: MediaState | null;
   selectedMediaId: string | null;
   errorMessage: string | null;
+  keyDownCode: number | null;
 }

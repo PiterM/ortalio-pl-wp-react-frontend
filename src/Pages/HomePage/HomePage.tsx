@@ -4,14 +4,17 @@ import { Dispatch } from 'redux';
 import styled from '@emotion/styled'
 import { colors, dimensions } from '../../Common/variables';
 import AudioItem from '../../Containers/AudioItem/AudioItem';
+import { KeyCodes } from '../../Containers/MediaPlayer/MediaPlayer.constants';
 import MediaPlayerContainer from '../../Containers/MediaPlayer/MediaPlayer.container';
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
 import { MediaState } from '../../Containers/Pages/HomePage/HomePage.state';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
 import {
-    SetAllMediaDataSuccessAction,
+    HomePageActions,
     setAllMediaDataSuccessAction,
+    setKeyDownInitAction
 } from '../../Containers/Pages/HomePage/HomePage.actions';
+import { StoreState } from '../../App/App.store.d';
 import { getRandomNumberFromString } from './HomePage.helpers';
 import {
     GlobalData,
@@ -39,8 +42,13 @@ const StyledPageColumn = styled.div`
     }
 `;
 
+interface HomePageMappedProps {
+    selectedMediaId?: string | null;
+}
+
 interface HomePageDispatchProps {
     saveAllMediaData: (mediaState: MediaState) => void;
+    setKeyDownCode: (keyCode: number) => void;
 }
 
 interface HomePageOwnProps {
@@ -49,7 +57,7 @@ interface HomePageOwnProps {
     data: OrtalioMedia[];
 }
 
-type HomePageProps = HomePageOwnProps & HomePageDispatchProps;
+type HomePageProps = HomePageOwnProps & HomePageMappedProps & HomePageDispatchProps;
 
 export class HomePage extends React.Component<HomePageProps> {
     componentDidMount() {
@@ -68,6 +76,12 @@ export class HomePage extends React.Component<HomePageProps> {
             }
         ));
         this.props.saveAllMediaData(reduxData);
+
+        document.addEventListener("keydown", this.onKeyDown);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.onKeyDown);
     }
 
     render() {
@@ -138,14 +152,28 @@ export class HomePage extends React.Component<HomePageProps> {
             />
         );
     }
+
+    private onKeyDown = (event: any) => { 
+        if (this.props.selectedMediaId && Object.values(KeyCodes).includes(event.keyCode)) {
+            event.preventDefault();
+        }
+        this.props.setKeyDownCode(event.keyCode);
+    }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<SetAllMediaDataSuccessAction>) => ({
-    saveAllMediaData: (mediaState: MediaState) => dispatch(setAllMediaDataSuccessAction(mediaState))
+const mapStateToProps: any = (store: StoreState): HomePageMappedProps => ({
+    selectedMediaId: store.selectedMediaId,
+});
+
+const mapDispatchToProps = (
+    dispatch: Dispatch<HomePageActions>
+    ) => ({
+    saveAllMediaData: (mediaState: MediaState) => dispatch(setAllMediaDataSuccessAction(mediaState)),
+    setKeyDownCode: (keyCode: number) => dispatch(setKeyDownInitAction(keyCode))
 });
   
-export default connect<{}, HomePageDispatchProps>(
-    null,
+export default connect<HomePageMappedProps, HomePageDispatchProps>(
+    mapStateToProps,
     mapDispatchToProps
 )(HomePage);
   

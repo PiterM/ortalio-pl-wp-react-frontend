@@ -10,7 +10,8 @@ import {
     MediaPlayerMode,
     TimerMode,
     ProgressTime,
-    LoopMode
+    LoopMode,
+    KeyCodes
 } from './MediaPlayer.constants';
 import {
     MediaPlayerActions,
@@ -92,6 +93,7 @@ interface MediaPlayerOwnProps {
 interface MediaPlayerMappedProps {
     errorMessage: string | null;
     selectedMediaId?: string | null;
+    keyDownCode?: number | null;
 }
 
 interface MediaPlayerDispatchProps {
@@ -131,6 +133,11 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         if (prevProps.selectedMediaId !== this.props.selectedMediaId) {
             this.resetTrackProgress();
             this.setState({ playing: true });
+        }
+
+        const { keyDownCode } = this.props;
+        if (keyDownCode && prevProps.keyDownCode !== keyDownCode) {
+            this.handleKeyDown(keyDownCode);
         }
     }
 
@@ -184,6 +191,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         >
                             <p className="more-icon">
                                 <img
+                                    alt={title}
                                     src={moreIcon}
                                     width="auto"
                                     height={dimensions.mediaPlayerHeight.mini - 10}
@@ -264,6 +272,30 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         this.props.selectNextMediaItem();
     }
 
+    private handleKeyDown(keyDownCode: number) {
+        const { playing } = this.state;
+        
+        switch (keyDownCode) {
+            case KeyCodes.Space:
+                if (playing) {
+                    this.onPauseClick();
+                } else {
+                    this.onPlayClick();
+                }
+                break;
+            case KeyCodes.ArrowRight: 
+                this.onNextClick();
+                break;
+            case KeyCodes.ArrowLeft:
+                this.onPreviousClick();
+                break;
+            case KeyCodes.Enter:
+                this.toggleLoopModeState();
+                break;
+            default:
+        }
+    }
+
     private onEnded = () => {
         this.setState({ playing: false }, () => {
             if (this.state.loopMode === LoopMode.NoLoop) {
@@ -322,7 +354,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
 
 const mapStateToProps: any = (store: StoreState, props: MediaPlayerProps): MediaPlayerMappedProps => ({
     errorMessage: store.errorMessage,
-    selectedMediaId: store.selectedMediaId
+    selectedMediaId: store.selectedMediaId,
+    keyDownCode: store.keyDownCode
 });
 
 const mapDispatchToProps: any = (dispatch: Dispatch<MediaPlayerActions>) => ({
