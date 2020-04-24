@@ -22,6 +22,8 @@ export enum LoopMode {
 export enum KeyCodes {
     ArrowRight = 39,
     ArrowLeft = 37,
+    ArrowUp = 38,
+    ArrowDown = 40,
     Space = 32,
     Enter = 13
 }

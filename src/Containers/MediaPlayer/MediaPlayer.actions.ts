@@ -81,6 +81,74 @@ export const setSelectedPreviousAudioItemErrorAction: setSelectedPreviousAudioIt
   };
 };
 
+export interface SetSelectedUpperAudioItemAction extends AnyAction {
+  type: ACTION_TYPE.SET_SELECTED_UPPER_AUDIO_ITEM;
+}
+export type setSelectedUpperAudioItemAction = () => SetSelectedUpperAudioItemAction;
+export const setSelectedUpperAudioItemAction: setSelectedUpperAudioItemAction = () => {
+  return {
+    type: ACTION_TYPE.SET_SELECTED_UPPER_AUDIO_ITEM
+  };
+};
+
+export interface SetSelectedUpperAudioItemSuccessAction extends AnyAction {
+  payload: string;
+  type: ACTION_TYPE.SET_SELECTED_UPPER_AUDIO_ITEM_SUCCESS;
+}
+export type setSelectedUpperAudioItemSuccessAction = (payload: string) => SetSelectedUpperAudioItemSuccessAction;
+export const setSelectedUpperAudioItemSuccessAction: setSelectedUpperAudioItemSuccessAction = (payload: string) => {
+  return {
+    payload,
+    type: ACTION_TYPE.SET_SELECTED_UPPER_AUDIO_ITEM_SUCCESS
+  };
+};
+
+export interface SetSelectedUpperAudioItemErrorAction extends AnyAction {
+  payload: string;
+  type: ACTION_TYPE.SET_SELECTED_UPPER_AUDIO_ITEM_ERROR;
+}
+export type setSelectedUpperAudioItemErrorAction = (payload: string) => SetSelectedUpperAudioItemErrorAction;
+export const setSelectedUpperAudioItemErrorAction: setSelectedUpperAudioItemErrorAction = (payload: string) => {
+  return {
+    payload,
+    type: ACTION_TYPE.SET_SELECTED_UPPER_AUDIO_ITEM_ERROR
+  };
+};
+
+export interface SetSelectedLowerAudioItemAction extends AnyAction {
+  type: ACTION_TYPE.SET_SELECTED_LOWER_AUDIO_ITEM;
+}
+export type setSelectedLowerAudioItemAction = () => SetSelectedLowerAudioItemAction;
+export const setSelectedLowerAudioItemAction: setSelectedLowerAudioItemAction = () => {
+  return {
+    type: ACTION_TYPE.SET_SELECTED_LOWER_AUDIO_ITEM
+  };
+};
+
+export interface SetSelectedLowerAudioItemSuccessAction extends AnyAction {
+  payload: string;
+  type: ACTION_TYPE.SET_SELECTED_LOWER_AUDIO_ITEM_SUCCESS;
+}
+export type setSelectedLowerAudioItemSuccessAction = (payload: string) => SetSelectedLowerAudioItemSuccessAction;
+export const setSelectedLowerAudioItemSuccessAction: setSelectedLowerAudioItemSuccessAction = (payload: string) => {
+  return {
+    payload,
+    type: ACTION_TYPE.SET_SELECTED_LOWER_AUDIO_ITEM_SUCCESS
+  };
+};
+
+export interface SetSelectedLowerAudioItemErrorAction extends AnyAction {
+  payload: string;
+  type: ACTION_TYPE.SET_SELECTED_LOWER_AUDIO_ITEM_ERROR;
+}
+export type setSelectedLowerAudioItemErrorAction = (payload: string) => SetSelectedLowerAudioItemErrorAction;
+export const setSelectedLowerAudioItemErrorAction: setSelectedLowerAudioItemErrorAction = (payload: string) => {
+  return {
+    payload,
+    type: ACTION_TYPE.SET_SELECTED_LOWER_AUDIO_ITEM_ERROR
+  };
+};
+
 export type MediaPlayerActions =
   | SetSelectedAudioItemAction
   | SetSelectedNextAudioItemAction
@@ -88,5 +156,11 @@ export type MediaPlayerActions =
   | SetSelectedPreviousAudioItemAction
   | SetSelectedPreviousAudioItemSuccessAction
   | SetSelectedNextAudioItemErrorAction
-  | SetSelectedPreviousAudioItemErrorAction;
+  | SetSelectedPreviousAudioItemErrorAction
+  | SetSelectedUpperAudioItemAction
+  | SetSelectedUpperAudioItemSuccessAction
+  | SetSelectedUpperAudioItemErrorAction
+  | SetSelectedLowerAudioItemAction
+  | SetSelectedLowerAudioItemSuccessAction
+  | SetSelectedLowerAudioItemErrorAction;
 

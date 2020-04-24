@@ -3,15 +3,17 @@ import { OrtalioMedia } from '../../Pages/HomePage/HomePage.models';
 import { StoreState } from '../../App/App.store.d'
 import { setWindowLocationHash } from '../../Common/CommonHelpers';
 import {
-    SetSelectedNextAudioItemSuccessAction,
+    MediaPlayerActions,
     setSelectedNextAudioItemSuccessAction,
     setSelectedNextAudioItemErrorAction,
-    SetSelectedNextAudioItemErrorAction,
     setSelectedPreviousAudioItemErrorAction,
-    SetSelectedPreviousAudioItemErrorAction,
-    SetSelectedPreviousAudioItemSuccessAction,
-    setSelectedPreviousAudioItemSuccessAction
+    setSelectedPreviousAudioItemSuccessAction,
+    setSelectedUpperAudioItemSuccessAction,
+    setSelectedUpperAudioItemErrorAction,
+    setSelectedLowerAudioItemSuccessAction,
+    setSelectedLowerAudioItemErrorAction
 } from './MediaPlayer.actions';
+import { dimensions } from '../../Common/variables';
 import ACTION_TYPES from './MediaPlayer.actionTypes';
 
 const getNextKey = (): any => ({ 
@@ -26,11 +28,20 @@ const getPreviousKey = (): any => ({
     actionError: setSelectedPreviousAudioItemErrorAction
 });
 
+const getUpperKey = (): any => ({ 
+    vector: -1 * dimensions.homePage.columnsNumber,
+    actionSuccess: setSelectedUpperAudioItemSuccessAction,
+    actionError: setSelectedUpperAudioItemErrorAction
+});
+
+const getLowerKey = (): any => ({ 
+    vector: dimensions.homePage.columnsNumber,
+    actionSuccess: setSelectedLowerAudioItemSuccessAction,
+    actionError: setSelectedLowerAudioItemErrorAction
+});
+
 type GetAllMediaDataIterator = IterableIterator<
-    PutEffect<
-    SetSelectedPreviousAudioItemSuccessAction | SetSelectedNextAudioItemSuccessAction
-    | SetSelectedNextAudioItemErrorAction | SetSelectedPreviousAudioItemErrorAction
-    > | SelectEffect
+    PutEffect<MediaPlayerActions> | SelectEffect
 >;
 
 export function selectNextAudioItem() {
@@ -39,6 +50,14 @@ export function selectNextAudioItem() {
 
 export function selectPreviousAudioItem() {
     return selectCurrentAudioItem(getPreviousKey()) ;
+}
+
+export function selectUpperAudioItem() {
+    return selectCurrentAudioItem(getUpperKey()) ;
+}
+
+export function selectLowerAudioItem() {
+    return selectCurrentAudioItem(getLowerKey()) ;
 }
 
 export function* selectCurrentAudioItem(getKey: any): GetAllMediaDataIterator {
@@ -66,4 +85,6 @@ export function* selectCurrentAudioItem(getKey: any): GetAllMediaDataIterator {
 export function* watchMediaPlayer() {
     yield takeLatest(ACTION_TYPES.SET_SELECTED_NEXT_AUDIO_ITEM, selectNextAudioItem);
     yield takeLatest(ACTION_TYPES.SET_SELECTED_PREVIOUS_AUDIO_ITEM, selectPreviousAudioItem);
+    yield takeLatest(ACTION_TYPES.SET_SELECTED_UPPER_AUDIO_ITEM, selectUpperAudioItem);
+    yield takeLatest(ACTION_TYPES.SET_SELECTED_LOWER_AUDIO_ITEM, selectLowerAudioItem);
 }

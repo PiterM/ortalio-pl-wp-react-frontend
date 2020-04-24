@@ -17,6 +17,8 @@ import {
     MediaPlayerActions,
     setSelectedNextAudioItemAction,
     setSelectedPreviousAudioItemAction,
+    setSelectedUpperAudioItemAction,
+    setSelectedLowerAudioItemAction
 } from './MediaPlayer.actions';
 
 const StyledMediaPlayer = styled.div`
@@ -99,6 +101,8 @@ interface MediaPlayerMappedProps {
 interface MediaPlayerDispatchProps {
     selectPreviousMediaItem: () => void;
     selectNextMediaItem: () => void;
+    selectUpperMediaItem: () => void;
+    selectLowerMediaItem: () => void;
 }
 
 type MediaPlayerProps = MediaPlayerOwnProps & MediaPlayerMappedProps & MediaPlayerDispatchProps;
@@ -272,6 +276,16 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         this.props.selectNextMediaItem();
     }
 
+    private onUpperClick = () => {
+        this.resetEroroMessage();
+        this.props.selectUpperMediaItem();
+    }
+
+    private onLowerClick = () => {
+        this.resetEroroMessage();
+        this.props.selectLowerMediaItem();
+    }
+
     private handleKeyDown(keyDownCode: number) {
         const { playing } = this.state;
         
@@ -288,6 +302,12 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                 break;
             case KeyCodes.ArrowLeft:
                 this.onPreviousClick();
+                break;
+            case KeyCodes.ArrowUp:
+                this.onUpperClick();
+                break;
+            case KeyCodes.ArrowDown:
+                this.onLowerClick();
                 break;
             case KeyCodes.Enter:
                 this.toggleLoopModeState();
@@ -360,7 +380,9 @@ const mapStateToProps: any = (store: StoreState, props: MediaPlayerProps): Media
 
 const mapDispatchToProps: any = (dispatch: Dispatch<MediaPlayerActions>) => ({
     selectPreviousMediaItem: () => dispatch(setSelectedPreviousAudioItemAction()),
-    selectNextMediaItem: () => dispatch(setSelectedNextAudioItemAction())
+    selectNextMediaItem: () => dispatch(setSelectedNextAudioItemAction()),
+    selectUpperMediaItem: () => dispatch(setSelectedUpperAudioItemAction()),
+    selectLowerMediaItem: () => dispatch(setSelectedLowerAudioItemAction()),
 });
 
 export default connect<MediaPlayerMappedProps, MediaPlayerDispatchProps>(
