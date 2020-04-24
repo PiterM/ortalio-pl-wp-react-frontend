@@ -216,7 +216,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         height={playerHeight}
                         soundcloudConfig={soundcloudConfig}
                         youtubeConfig={youtubeConfig}
-                        onReady={() => this.resetTrackProgress()}
+                        onReady={() => this.onPlay()}
                         onStart={() => this.onPlay()}
                         onPlay={() => this.onPlay()}
                         onProgress={(progress: any) => this.onProgress(progress)}
