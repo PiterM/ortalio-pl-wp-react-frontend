@@ -134,8 +134,6 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private player: any;
 
     componentDidUpdate(prevProps: MediaPlayerProps, prevState: MediaPlayerState) {
-        console.log('this.props', this.props);
-        console.log('this.state', this.state);
         if (prevProps.selectedMediaId !== this.props.selectedMediaId) {
             this.resetTrackProgress();
             this.setState({ playing: true });

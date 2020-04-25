@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect} from 'react-redux';
 import { Dispatch } from 'redux';
-import styled from '@emotion/styled'
+import styled, { StyledComponent } from '@emotion/styled'
 import { colors, dimensions } from '../../Common/variables';
 import AudioItem from '../../Containers/AudioItem/AudioItem';
 import { KeyCodes } from '../../Containers/MediaPlayer/MediaPlayer.constants';
@@ -9,6 +9,8 @@ import MediaPlayerContainer from '../../Containers/MediaPlayer/MediaPlayer.conta
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
 import { MediaState } from '../../Containers/Pages/HomePage/HomePage.state';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
+import { WindowResolution } from '../../Common/constants';
+import { getLayoutColumnsNumber } from '../../Common/CommonHelpers';
 import {
     HomePageActions,
     setAllMediaDataSuccessAction,
@@ -22,9 +24,13 @@ import {
     SocialMediaData
 } from './HomePage.models';
 
-const StyledPage = styled.div`
+interface StyledPageProps {
+    columnsNumber: number;
+}
+
+const StyledPage: StyledComponent<{}, StyledPageProps, {}> = styled.div`
   display: grid;
-  grid-template-columns: repeat(${dimensions.homePage.columnsNumber}, 2fr);
+  grid-template-columns: repeat(${props => props.columnsNumber}, 2fr);
   text-align: center;
   padding-bottom: ${dimensions.mediaPlayerHeight.mini}px;
   margin-top: 50px;
@@ -57,9 +63,22 @@ interface HomePageOwnProps {
     data: OrtalioMedia[];
 }
 
+interface HomePageState {
+    windowResolution: WindowResolution;
+}
+
+const initState = {
+    windowResolution: {
+        width: window.innerWidth,
+        height: window.innerHeight
+    }
+};
+
 type HomePageProps = HomePageOwnProps & HomePageMappedProps & HomePageDispatchProps;
 
-export class HomePage extends React.Component<HomePageProps> {
+export class HomePage extends React.Component<HomePageProps, HomePageState> {
+    public state: HomePageState = initState;
+
     shouldComponentUpdate(nextProps: HomePageProps) {
         return nextProps.selectedMediaId !== this.props.selectedMediaId
             ? false
@@ -84,10 +103,12 @@ export class HomePage extends React.Component<HomePageProps> {
         this.props.saveAllMediaData(reduxData);
 
         document.addEventListener("keydown", this.onKeyDown);
+        window.addEventListener("resize", this.onWindowResize)
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.onKeyDown);
+        window.removeEventListener('resize', this.onWindowResize);
     }
 
     render() {
@@ -100,7 +121,9 @@ export class HomePage extends React.Component<HomePageProps> {
                 <SocialIcons
                     socialMediaData={socialMediaData}
                 />
-                <StyledPage>
+                <StyledPage 
+                    columnsNumber={getLayoutColumnsNumber(this.state.windowResolution)}
+                >
                     {this.renderAudioItems(data)}
                 </StyledPage>
                 <MediaPlayerContainer />
@@ -113,7 +136,7 @@ export class HomePage extends React.Component<HomePageProps> {
             return null;
         }
 
-        const { columnsNumber } = dimensions.homePage;
+        const columnsNumber = getLayoutColumnsNumber(this.state.windowResolution);
 
         const rowsNumber = Math.floor(items.length / columnsNumber) + 1;
         let result: any[] = [];
@@ -164,6 +187,15 @@ export class HomePage extends React.Component<HomePageProps> {
             event.preventDefault();
         }
         this.props.setKeyDownCode(event.keyCode);
+    }
+
+    private onWindowResize = () => {
+        this.setState({
+            windowResolution: {
+                width: window.innerWidth,
+                height: window.innerHeight
+            }
+        });
     }
 }
 

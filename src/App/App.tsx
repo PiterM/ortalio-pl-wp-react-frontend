@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/react-hooks';
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { HttpLink } from 'apollo-boost';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -11,7 +11,15 @@ import Page404 from '../Pages/ErrorPage/Page404';
 
 const client = new ApolloClient({
   uri: "https://ortalio.website/graphql",  // ortl.local for local
-  resolvers: appResolvers
+  resolvers: appResolvers,
+  request: operation => {
+    operation.setContext({
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+  }
+  // fetchOptions: { mode: 'no-cors' } as HttpLink.Options
 });
 
 function App() {

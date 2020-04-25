@@ -18,8 +18,6 @@ export default `
   }
 
   body {
-    width: 100%;
-    overflow-x: hidden;
     overflow-y: scroll;
     font-family: ${fonts.serif};
     font-size: ${dimensions.fontSize.regular};
