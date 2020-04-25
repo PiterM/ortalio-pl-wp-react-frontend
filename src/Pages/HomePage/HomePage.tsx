@@ -30,7 +30,8 @@ interface StyledPageProps {
 
 const StyledPage: StyledComponent<{}, StyledPageProps, {}> = styled.div`
   display: grid;
-  grid-template-columns: repeat(${props => props.columnsNumber}, 2fr);
+  grid-template-columns: repeat(${(props: StyledPageProps) => 
+    props.columnsNumber ? props.columnsNumber: dimensions.homePage.columnsNumber}, 2fr);
   text-align: center;
   padding-bottom: ${dimensions.mediaPlayerHeight.mini}px;
   margin-top: 50px;
