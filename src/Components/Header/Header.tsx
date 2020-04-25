@@ -59,7 +59,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ description, intro, title }) => (
   <StyledHeaderDiv>
     <HeaderWrapperDiv>
-      <StyledHeaderWeatherForcastBox>
+      <StyledHeaderWeatherForcastBox
+        className="site-intro"
+      >
         <div dangerouslySetInnerHTML={{ __html: intro }} />
       </StyledHeaderWeatherForcastBox>
       <StyledHeaderTitle>

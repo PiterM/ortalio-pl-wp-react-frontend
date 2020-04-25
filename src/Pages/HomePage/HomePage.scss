@@ -1,0 +1,13 @@
+.columns4 #main-grid {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.columns3 #main-grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.layout-compact, .layout-mobile {
+    .audio-item .audio-content {
+        display: none;
+    }
+}

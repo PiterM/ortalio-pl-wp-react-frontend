@@ -1,4 +1,4 @@
-import { WindowResolution } from './constants';
+import { WindowResolution, LayoutModes } from './constants';
 import { dimensions } from './variables';
 
 export const setWindowLocationHash = (elementId: string) => {
@@ -11,11 +11,26 @@ export const getLayoutColumnsNumber = (resolution: WindowResolution) => {
         return dimensions.homePage.columnsNumber;
     }
 
-    if (resolution.width < 768) {
-        return dimensions.homePage.columnsNumber - 1;
-    } else if (resolution.width < 600) {
+    if (resolution.width <= 600) {
+        return dimensions.homePage.columnsNumber - 3;
+    } else if (resolution.width <= 960) {
         return dimensions.homePage.columnsNumber - 2;
+    } else if (resolution.width <= 1024) {
+        return dimensions.homePage.columnsNumber - 1;
     }
     
     return dimensions.homePage.columnsNumber;
+}
+
+export const getLayoutMode = (resolution: WindowResolution) => {
+    if (!resolution || !resolution.height || !resolution.width) {
+        return LayoutModes.Extended;
+    }
+
+    if (resolution.width <= 768) {
+        return LayoutModes.Mobile;
+    } else if (resolution.width <= 1024) {
+        return LayoutModes.Compact;
+    }
+    return LayoutModes.Extended;
 }

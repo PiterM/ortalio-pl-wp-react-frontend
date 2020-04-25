@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import ACTION_TYPE from './HomePage.actionTypes';
-import { MediaState } from './HomePage.state';
+import { MediaState, LayoutOptionsState } from './HomePage.state';
 
 export interface SetAllMediaDataSuccessAction extends AnyAction {
   payload: MediaState;
@@ -38,7 +38,20 @@ export const setKeyDownSuccessAction: setKeyDownSuccessAction = (payload: number
   };
 };
 
+export interface SetLayoutOptionsSuccessAction extends AnyAction {
+  payload: LayoutOptionsState;
+  type: ACTION_TYPE.SET_LAYOUT_OPTIONS_SUCCESS;
+}
+export type setLayoutOptionsSuccessAction = (payload: LayoutOptionsState) => SetLayoutOptionsSuccessAction;
+export const setLayoutOptionsSuccessAction: setLayoutOptionsSuccessAction = (payload: LayoutOptionsState) => {
+  return {
+    payload,
+    type: ACTION_TYPE.SET_LAYOUT_OPTIONS_SUCCESS
+  };
+};
+
 export type HomePageActions =
   | SetAllMediaDataSuccessAction
   | SetKeyDownInitAction
-  | SetKeyDownSuccessAction;
+  | SetKeyDownSuccessAction
+  | SetLayoutOptionsSuccessAction;

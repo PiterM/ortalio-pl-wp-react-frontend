@@ -1,20 +1,22 @@
 import React from 'react';
-import { connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import styled, { StyledComponent } from '@emotion/styled'
+import styled from '@emotion/styled'
 import { colors, dimensions } from '../../Common/variables';
+import { LayoutModes } from '../../Common/constants';
 import AudioItem from '../../Containers/AudioItem/AudioItem';
 import { KeyCodes } from '../../Containers/MediaPlayer/MediaPlayer.constants';
 import MediaPlayerContainer from '../../Containers/MediaPlayer/MediaPlayer.container';
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
-import { MediaState } from '../../Containers/Pages/HomePage/HomePage.state';
+import { MediaState, LayoutOptionsState } from '../../Containers/Pages/HomePage/HomePage.state';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
 import { WindowResolution } from '../../Common/constants';
-import { getLayoutColumnsNumber } from '../../Common/CommonHelpers';
+import { getLayoutColumnsNumber, getLayoutMode } from '../../Common/CommonHelpers';
 import {
     HomePageActions,
     setAllMediaDataSuccessAction,
-    setKeyDownInitAction
+    setKeyDownInitAction,
+    setLayoutOptionsSuccessAction,
 } from '../../Containers/Pages/HomePage/HomePage.actions';
 import { StoreState } from '../../App/App.store.d';
 import { getRandomNumberFromString } from './HomePage.helpers';
@@ -23,15 +25,11 @@ import {
     OrtalioMedia,
     SocialMediaData
 } from './HomePage.models';
+import './HomePage.scss';
 
-interface StyledPageProps {
-    columnsNumber: number;
-}
-
-const StyledPage: StyledComponent<{}, StyledPageProps, {}> = styled.div`
+const StyledPage = styled.div`
   display: grid;
-  grid-template-columns: repeat(${(props: StyledPageProps) => 
-    props.columnsNumber ? props.columnsNumber: dimensions.homePage.columnsNumber}, 2fr);
+  grid-template-columns: repeat(5, 2fr);
   text-align: center;
   padding-bottom: ${dimensions.mediaPlayerHeight.mini}px;
   margin-top: 50px;
@@ -42,7 +40,7 @@ const StyledPageColumn = styled.div`
     flex-wrap: wrap;
     align-items: flex-start;
     flex-direction: column;
-    width: 100%;
+    width: auto;
 
     & + & {
         border-left: 1px solid ${colors.newspaperText};
@@ -56,6 +54,7 @@ interface HomePageMappedProps {
 interface HomePageDispatchProps {
     saveAllMediaData: (mediaState: MediaState) => void;
     setKeyDownCode: (keyCode: number) => void;
+    setLayoutOptions: (options: LayoutOptionsState) => void;
 }
 
 interface HomePageOwnProps {
@@ -66,12 +65,17 @@ interface HomePageOwnProps {
 
 interface HomePageState {
     windowResolution: WindowResolution;
+    layoutOptions: LayoutOptionsState;
 }
 
 const initState = {
     windowResolution: {
         width: window.innerWidth,
         height: window.innerHeight
+    },
+    layoutOptions: {
+        columnsNumber: 5,
+        mode: LayoutModes.Extended,
     }
 };
 
@@ -114,16 +118,18 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
 
     render() {
         const { globalData, socialMediaData, data } = this.props;
+        const { mode, columnsNumber} = this.state.layoutOptions;
 
         return (
             <HomePageLayout
                 globalData={globalData}
+                className={`layout-${mode} columns${columnsNumber}`}
             >
                 <SocialIcons
                     socialMediaData={socialMediaData}
                 />
                 <StyledPage 
-                    columnsNumber={getLayoutColumnsNumber(this.state.windowResolution)}
+                    id="main-grid"
                 >
                     {this.renderAudioItems(data)}
                 </StyledPage>
@@ -146,7 +152,7 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
             let columnIndices: number[] = [];
             for (let i=0; i<rowsNumber; i++) {
                 if (items[j + i * columnsNumber] !== undefined) {
-                    columnIndices.push(j + i * 5);
+                    columnIndices.push(j + i * columnsNumber);
                 }
             }
 
@@ -191,12 +197,18 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
     }
 
     private onWindowResize = () => {
-        this.setState({
-            windowResolution: {
-                width: window.innerWidth,
-                height: window.innerHeight
-            }
+        const windowResolution = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+        const columnsNumber = getLayoutColumnsNumber(windowResolution);
+        const mode = getLayoutMode(windowResolution);
+
+        this.setState({ 
+            windowResolution,
+            layoutOptions: { columnsNumber, mode }
         });
+        this.props.setLayoutOptions({ columnsNumber, mode });
     }
 }
 
@@ -208,7 +220,8 @@ const mapDispatchToProps = (
     dispatch: Dispatch<HomePageActions>
     ) => ({
     saveAllMediaData: (mediaState: MediaState) => dispatch(setAllMediaDataSuccessAction(mediaState)),
-    setKeyDownCode: (keyCode: number) => dispatch(setKeyDownInitAction(keyCode))
+    setKeyDownCode: (keyCode: number) => dispatch(setKeyDownInitAction(keyCode)),
+    setLayoutOptions: (options: LayoutOptionsState) => dispatch(setLayoutOptionsSuccessAction(options))
 });
   
 export default connect<HomePageMappedProps, HomePageDispatchProps>(

@@ -1,6 +1,10 @@
 import { combineReducers, Reducer } from 'redux';
 import { StoreState } from './App.store.d';
-import { mediaReducer, keyDownReducer } from '../Containers/Pages/HomePage/HomePage.reducers';
+import { 
+  mediaReducer, 
+  keyDownReducer, 
+  layoutOptionsReducer 
+} from '../Containers/Pages/HomePage/HomePage.reducers';
 import errorMessageReducer from '../Containers/MediaPlayer/ErrorMessage.reducers';
 import mediaPlayerReducer from '../Containers/MediaPlayer/MediaPlayer.reducers';
 
@@ -10,6 +14,7 @@ const applicationReducers: Reducer<StoreState> =
     selectedMediaId: mediaPlayerReducer,
     errorMessage: errorMessageReducer,
     keyDownCode: keyDownReducer,
+    layoutOptions: layoutOptionsReducer,
   });
 
 export default applicationReducers;

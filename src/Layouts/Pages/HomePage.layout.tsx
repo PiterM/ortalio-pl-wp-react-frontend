@@ -1,20 +1,20 @@
 import * as React from 'react'
 import Helmet from 'react-helmet'
-// import AudioItemPlayer from '../components/AudioItemPlayer/AudioItemPlayer';
 import Header from '../../Components/Header/Header'
 import LayoutRoot from '../LayoutRoot'
 import LayoutMain from '../LayoutMain'
-// import SocialIcons from '../components/SocialIcons/SocialIcons';
 import 'modern-normalize'
 import '../../Common/normalize'
 import { GlobalData } from '../../Pages/HomePage/HomePage.models';
 
 interface IndexLayoutProps {
   globalData: GlobalData;
+  className: string;
 }
 
 const HomePageLayout: React.FC<IndexLayoutProps> = ({
     globalData,
+    className,
     children 
 }) => { 
     const description = globalData.siteDescription
@@ -26,7 +26,9 @@ const HomePageLayout: React.FC<IndexLayoutProps> = ({
     ));
 
     return (
-        <LayoutRoot>
+        <LayoutRoot
+            className={className}
+        >
             <Helmet
                 title={globalData.metaTitle}
                 meta={[
@@ -47,7 +49,6 @@ const HomePageLayout: React.FC<IndexLayoutProps> = ({
                 description={description}
             />
             <LayoutMain>{children}</LayoutMain>
-            {/* <AudioItemPlayer /> */}
         </LayoutRoot>
     )
 };

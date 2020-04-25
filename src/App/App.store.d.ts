@@ -1,4 +1,4 @@
-import { MediaState } from '../Containers/Pages/HomePage/HomePage.state';
+import { MediaState, LayoutOptionsState } from '../Containers/Pages/HomePage/HomePage.state';
 import { AudioItemState } from '../../AudioItem/AudioItem.state';
 
 export interface StoreState {
@@ -6,4 +6,5 @@ export interface StoreState {
   selectedMediaId: string | null;
   errorMessage: string | null;
   keyDownCode: number | null;
+  layoutOptions: LayoutOptionsState;
 }

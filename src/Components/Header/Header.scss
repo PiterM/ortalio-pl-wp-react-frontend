@@ -5,3 +5,9 @@
       @include textGlitch("title-glitch", 17, black, #f9f7f1, green, yellow, 0, 0);
     }
 }
+
+@media only screen and (max-width: 1024px) {
+  .site-intro {
+    display: none !important;
+  }
+}
