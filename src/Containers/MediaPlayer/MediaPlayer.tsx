@@ -169,16 +169,18 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             ? this.state.errorMessage
             : errorMessage;
 
-        if (minimalMode && this.miniPlayer) {
-            this.miniPlayer.focus();
+        if (minimalMode && this.miniPlayer && this.miniPlayer.current) {
+            this.miniPlayer.current.focus();
         }
+
+        console.log('this.state.playing', this.state.playing);
 
         return (
             <>
                 {minimalMode &&
                     <StyledMediaPlayer>
                         <MediaPlayerMini
-                            ref={this.miniPlayer}
+                            ref={this.miniPlayerRef}
                             errorMessage={activeErrorMessage}
                             visible={minimalMode}
                             title={title}
@@ -222,7 +224,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         height={playerHeight}
                         soundcloudConfig={soundcloudConfig}
                         youtubeConfig={youtubeConfig}
-                        onReady={() => this.onPlay()}
+                        onReady={() => this.onReady()}
                         onStart={() => this.onPlay()}
                         onPlay={() => this.onPlay()}
                         onProgress={(progress: any) => this.onProgress(progress)}
@@ -235,7 +237,15 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         );
     }
 
-    private onPlay = () => this.trySetPlayingState(true);
+    private onReady = () => {
+        console.log('onReady');
+        this.trySetPlayingState(true);
+    }
+
+    private onPlay = () => {
+        console.log('onPlay');
+        this.trySetPlayingState(true);
+    }
     private onPause = () => this.trySetPlayingState(false);
 
     private onProgress = (progress: any) => {
@@ -294,7 +304,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
 
     private handleKeyDown(keyDownCode: number) {
         const { playing } = this.state;
-        
+
         switch (keyDownCode) {
             case KeyCodes.Space:
                 if (playing) {
@@ -303,7 +313,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                     this.onPlayClick();
                 }
                 break;
-            case KeyCodes.ArrowRight: 
+            case KeyCodes.ArrowRight:
                 this.onNextClick();
                 break;
             case KeyCodes.ArrowLeft:
