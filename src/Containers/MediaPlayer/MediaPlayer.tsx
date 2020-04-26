@@ -131,7 +131,8 @@ const initState: MediaPlayerState = {
 
 export class MediaPlayer extends React.Component<MediaPlayerProps> {
     public state: MediaPlayerState = initState;
-    private player: any;
+    private reactPlayer: any;
+    private miniPlayer: any;
 
     componentDidUpdate(prevProps: MediaPlayerProps, prevState: MediaPlayerState) {
         if (prevProps.selectedMediaId !== this.props.selectedMediaId) {
@@ -168,11 +169,16 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             ? this.state.errorMessage
             : errorMessage;
 
+        if (minimalMode && this.miniPlayer) {
+            this.miniPlayer.focus();
+        }
+
         return (
             <>
                 {minimalMode &&
                     <StyledMediaPlayer>
                         <MediaPlayerMini
+                            ref={this.miniPlayer}
                             errorMessage={activeErrorMessage}
                             visible={minimalMode}
                             title={title}
@@ -208,7 +214,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                     onMouseOut={() => this.props.onMouseOut()}
                 >
                     <ReactPlayer
-                        ref={this.ref}
+                        ref={this.reactPlayerRef}
                         style={{ visibility: playerVisibility }}
                         url={url}
                         playing={this.state.playing}
@@ -233,9 +239,9 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private onPause = () => this.trySetPlayingState(false);
 
     private onProgress = (progress: any) => {
-        const duration = this.player.getDuration();
+        const duration = this.reactPlayer.getDuration();
         if (duration) {
-            const trackLength = Math.floor(this.player.getDuration());
+            const trackLength = Math.floor(this.reactPlayer.getDuration());
             const played = Math.floor(progress.playedSeconds);
 
             let minutes, seconds;
@@ -369,7 +375,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         });
     }
 
-    private ref = (player: any) => this.player = player;
+    private reactPlayerRef = (player: any) => this.reactPlayer = player;
+    private miniPlayerRef = (player: any) => this.miniPlayer = player;
 }
 
 const mapStateToProps: any = (store: StoreState, props: MediaPlayerProps): MediaPlayerMappedProps => ({

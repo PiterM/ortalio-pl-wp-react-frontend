@@ -1,6 +1,5 @@
 import { ApolloProvider } from '@apollo/react-hooks';
-import { createHttpLink, HttpLink } from 'apollo-link-http';
-import ApolloClient from 'apollo-client';
+import ApolloClient from 'apollo-boost';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -11,36 +10,36 @@ import store from './App.store';
 import appResolvers from './App.resolvers';
 import Page404 from '../Pages/ErrorPage/Page404';
 
-// const client = new ApolloClient({
-//   uri: "https://ortalio.website/graphql",  // ortl.local for local
-//   resolvers: appResolvers,
-//   request: operation => {
-//     operation.setContext({
-//       headers: {
-//         'content-type': 'application/json'
-//       }
-//     })
-//   },
-//   // fetchOptions: { mode: 'no-cors' } as HttpLink.Options
-// });
-
 const client = new ApolloClient({
-  link: createHttpLink({ 
-    uri: 'https://ortalio.website/graphql',
-    headers: {
-      'sec-fetch-dest': 'empty',
-      'sec-fetch-mode': 'cors',
-      'sec-fetch-site': 'cross-site',
-    },
-    // fetchOptions: { 
-    //   site: 'cross-site',
-    //   mode: 'cors',
-    //   dest: 'empty',
-    // } as HttpLink.Options
-  }),
-  cache: new InMemoryCache(),
+  uri: 'https://ortalio.website/graphql',
   resolvers: appResolvers,
+  cache: new InMemoryCache(),
+  request: operation => {
+    operation.setContext({
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+  },
 });
+
+// const client = new ApolloClient({
+//   link: createHttpLink({ 
+//     uri: 'https://ortalio.website/graphql',
+//     headers: {
+//       'sec-fetch-dest': 'empty',
+//       'sec-fetch-mode': 'cors',
+//       'sec-fetch-site': 'cross-site',
+//     },
+//     // fetchOptions: { 
+//     //   site: 'cross-site',
+//     //   mode: 'cors',
+//     //   dest: 'empty',
+//     // } as HttpLink.Options
+//   }),
+//   cache: new InMemoryCache(),
+//   resolvers: appResolvers,
+// });
 
 function App() {
   return (
