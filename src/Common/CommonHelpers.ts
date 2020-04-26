@@ -18,7 +18,7 @@ export const getLayoutColumnsNumber = (resolution: WindowResolution) => {
         return dimensions.homePage.columnsNumber - 3;
     } else if (resolution.width <= 960) {
         return dimensions.homePage.columnsNumber - 2;
-    } else if (resolution.width <= 1024) {
+    } else if (resolution.width <= 1280) {
         return dimensions.homePage.columnsNumber - 1;
     }
     
