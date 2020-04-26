@@ -158,7 +158,11 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     <div
                         className="thumbnail"
                     >
-                        <a href={url} target="_blank">
+                        <a 
+                            href={url} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <img 
                                 alt={title}
                                 src={thumbnailUrl} 

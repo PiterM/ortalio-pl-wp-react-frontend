@@ -56,7 +56,13 @@ const SocialIcons: React.FC<SocialIconsOwnProps> = ({ socialMediaData }) => (
 
 export function renderSocialIcon(key: number, item: SocialMediaData) {
   return (
-    <a href={item.url} target="_blank" key={key} className="social-icon">
+    <a 
+      href={item.url} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      key={key} 
+      className="social-icon"
+    >
       <img
         alt={`${item.imageAltText}`}
         title={`${item.imageAltText}`}

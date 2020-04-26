@@ -14,7 +14,6 @@ import {
     setSelectedLowerAudioItemErrorAction
 } from './MediaPlayer.actions';
 import ACTION_TYPES from './MediaPlayer.actionTypes';
-import { ItemsGraphState } from '../Pages/HomePage/HomePage.state';
 
 const getNextItem = (): any => ({ 
     direction: 'right',
