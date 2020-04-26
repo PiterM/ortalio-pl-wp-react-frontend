@@ -28,9 +28,7 @@ const client = new ApolloClient({
   link: createHttpLink({ 
     uri: 'https://ortalio.website/graphql',
     headers: {
-      'sec-fetch-dest': 'empty',
-      'sec-fetch-mode': 'cors',
-      'sec-fetch-site': 'cross-site',
+      'Content-Type': 'application/json; charset=UTF-8'
     },
     // fetchOptions: { 
     //   site: 'cross-site',
