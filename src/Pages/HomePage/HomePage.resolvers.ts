@@ -7,7 +7,7 @@ import {
 } from './HomePage.selectors';
 
 export const getAllOrtalioMediaDataResolver = (root: any) => {
-    return getOrtalioMediaItemsArray(root).map((media: any) => getOrtalioMediaItemData(media));
+    return getOrtalioMediaItemsArray(root).map((media: any) => getOrtalioMediaItemData(media.node));
 }
 
 export const getSiteGlobalDataResolver = (root: any) => {
@@ -15,5 +15,5 @@ export const getSiteGlobalDataResolver = (root: any) => {
 }
 
 export const getSocialMediaDataResolver = (root: any) => {
-    return getOrtalioSocialMediaArray(root).map((item: any) => getOrtalioSocialMediaData(item));
+    return getOrtalioSocialMediaArray(root).map((item: any) => getOrtalioSocialMediaData(item.node));
 }

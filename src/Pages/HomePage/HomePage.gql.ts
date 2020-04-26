@@ -3,20 +3,22 @@ export const GET_ORTALIO_MEDIA_QUERY = gql`
 {
     data @client
     ortalioMedia(first:100) {
-      nodes {
-        id
-        slug
-        ortalioMediaField {
-          title
-          content
-          fieldGroupName
-          shortDescription
-          soundcloudUrl
-          youtubeUrl
-        }
-        featuredImage {
-          altText
-          sourceUrl(size: THUMBNAIL)
+      edges {
+        node {
+          id
+          slug
+          ortalioMediaField {
+            title
+            content
+            fieldGroupName
+            shortDescription
+            soundcloudUrl
+            youtubeUrl
+          }
+          featuredImage {
+            altText
+            sourceUrl(size: THUMBNAIL)
+          }
         }
       }
     }
@@ -43,13 +45,15 @@ export const GET_SOCIAL_MEDIA_DATA_QUERY = gql`
 {
   socialMediaData @client
   ortalioSocialMedia(first:20) {
-    nodes {
-      ortalioSocialMediaField {
-        url
-      }
-      featuredImage {
-        altText
-        sourceUrl
+    edges {
+      node {
+        ortalioSocialMediaField {
+          url
+        }
+        featuredImage {
+          altText
+          sourceUrl
+        }
       }
     }
   }

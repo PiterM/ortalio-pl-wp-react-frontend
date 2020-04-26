@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 export const getOrtalioMediaItemsArray = (data: any) => 
-    data.ortalioMedia.nodes;
+    data.ortalioMedia.edges;
 
 export const getOrtalioMediaFieldData = (item: any) => item.ortalioMediaField;
 export const getOrtalioMediaFeatureImageData = (item: any) => item.featuredImage;
@@ -25,7 +25,7 @@ export const getGlobalDataItemsArray = (data: any) =>
     data.ortalioSettingBy.ortalioSettingsField;
 
 export const getOrtalioSocialMediaArray = (data: any) => 
-    data.ortalioSocialMedia.nodes;
+    data.ortalioSocialMedia.edges;
 
 export const getOrtalioSocialMediaFieldData = (node: any) => node.ortalioSocialMediaField;
 export const getOrtalioSocialMediaFeaturedImageData = (node: any) => node.featuredImage;
