@@ -11,13 +11,10 @@ const StyledAudioItemHeadline = styled.div`
 `;
 
 interface AudioItemHeadlineProps {
-  index: number;
+  textVariant: any;
 }
 
-const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, children }) => {
-  const textVariantIndex = index % audioItemHeaderTextVariants.length;
-  const textVariant = audioItemHeaderTextVariants[textVariantIndex];
-
+const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ textVariant, children }) => {
   const StyledHeader = styled.h2`
     text-align: center;
     line-height: normal;
@@ -47,9 +44,7 @@ const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ index, childre
   return <StyledHeader>{children}</StyledHeader>;
 };
 
-const AudioItemHeadlineBottom: React.FC<AudioItemHeadlineProps> = ({ index, children }) => {
-  const textVariantIndex = index % audioItemHeaderTextVariants.length;
-  const textVariant = audioItemHeaderTextVariants[textVariantIndex];
+const AudioItemHeadlineBottom: React.FC<AudioItemHeadlineProps> = ({ textVariant, children }) => {
   const StyledParagraph = styled.p`
     text-align: center;
     line-height: normal;
@@ -92,15 +87,43 @@ interface AudioItemHeaderProps {
   shortDescription: string;
 }
 
-const AudioItemHeader: React.FC<AudioItemHeaderProps> = ({ index, title, shortDescription }) => (
-  <StyledAudioItemHeadline>
-    <AudioItemHeadlineTop index={index}>
-      <span>{title}</span>
-    </AudioItemHeadlineTop>
-    <AudioItemHeadlineBottom index={index}>
-      <span dangerouslySetInnerHTML={{ __html: shortDescription }} />
-    </AudioItemHeadlineBottom>
-  </StyledAudioItemHeadline>
-);
+interface AudioItemHeaderState {
+  textVariant: any;
+}
+
+const initState = {
+  textVariant: audioItemHeaderTextVariants[0]
+};
+
+export class AudioItemHeader extends React.Component<AudioItemHeaderProps, AudioItemHeaderState> {
+  public state: AudioItemHeaderState = initState;
+
+  shouldComponentUpdate(nextProps: AudioItemHeaderProps) {
+    return nextProps.index !== this.props.index;
+  }
+
+  componentDidMount() {
+    const { index } = this.props;
+    const textVariantIndex = index % audioItemHeaderTextVariants.length;
+    const textVariant = audioItemHeaderTextVariants[textVariantIndex];
+    this.setState({ textVariant });
+  }
+
+  render() {
+    const { title, shortDescription } = this.props;
+    const { textVariant } = this.state;
+
+    return (
+      <StyledAudioItemHeadline>
+        <AudioItemHeadlineTop textVariant={textVariant}>
+          <span>{title}</span>
+        </AudioItemHeadlineTop>
+        <AudioItemHeadlineBottom textVariant={textVariant}>
+          <span dangerouslySetInnerHTML={{ __html: shortDescription }} />
+        </AudioItemHeadlineBottom>
+      </StyledAudioItemHeadline>
+    );
+  }
+}
 
 export default AudioItemHeader;
