@@ -14,27 +14,28 @@ import {
     setSelectedLowerAudioItemErrorAction
 } from './MediaPlayer.actions';
 import ACTION_TYPES from './MediaPlayer.actionTypes';
+import { ItemsGraphState } from '../Pages/HomePage/HomePage.state';
 
-const getNextKey = (): any => ({ 
-    vector: 1,
+const getNextItem = (): any => ({ 
+    direction: 'right',
     actionSuccess: setSelectedNextAudioItemSuccessAction,
     actionError: setSelectedNextAudioItemErrorAction
 });
 
-const getPreviousKey = (): any => ({ 
-    vector: -1,
+const getPreviousItem = (): any => ({ 
+    direction: 'left',
     actionSuccess: setSelectedPreviousAudioItemSuccessAction,
     actionError: setSelectedPreviousAudioItemErrorAction
 });
 
-const getUpperKey = (columnsNumber: number): any => ({ 
-    vector: -1 * columnsNumber,
+const getUpperItem = (): any => ({ 
+    direction: 'up',
     actionSuccess: setSelectedUpperAudioItemSuccessAction,
     actionError: setSelectedUpperAudioItemErrorAction
 });
 
-const getLowerKey = (columnsNumber: number): any => ({ 
-    vector: columnsNumber,
+const getLowerItem = (): any => ({ 
+    direction: 'down',
     actionSuccess: setSelectedLowerAudioItemSuccessAction,
     actionError: setSelectedLowerAudioItemErrorAction
 });
@@ -44,24 +45,22 @@ type GetAllMediaDataIterator = IterableIterator<
 >;
 
 export function selectNextAudioItem() {
-    return selectCurrentAudioItem(getNextKey()) ;
+    return selectCurrentAudioItem(getNextItem());
 }
 
 export function selectPreviousAudioItem() {
-    return selectCurrentAudioItem(getPreviousKey()) ;
+    return selectCurrentAudioItem(getPreviousItem()) ;
 }
 
 export function* selectUpperAudioItem() {
-    const columnsNumber: number = yield select((store: StoreState) => store.layoutOptions.columnsNumber);
-    yield selectCurrentAudioItem(getUpperKey(columnsNumber)) ;
+    yield selectCurrentAudioItem(getUpperItem());
 }
 
 export function* selectLowerAudioItem() {
-    const columnsNumber: number = yield select((store: StoreState) => store.layoutOptions.columnsNumber);
-    yield selectCurrentAudioItem(getLowerKey(columnsNumber)) ;
+    yield selectCurrentAudioItem(getLowerItem());
 }
 
-export function* selectCurrentAudioItem(getKey: any): GetAllMediaDataIterator {
+export function* selectCurrentAudioItem(getItem: any): GetAllMediaDataIterator {
     try {
         const mediaData: any = yield select((store: StoreState) => store.media);
 
@@ -71,17 +70,16 @@ export function* selectCurrentAudioItem(getKey: any): GetAllMediaDataIterator {
                 (key: string) => (mediaData[key] as OrtalioMedia).id === currentSelectedMediaId
             );
 
-            const itemsNumber = mediaData.length;
-            let newKey = parseInt(currentKey) + getKey.vector;
-            newKey = newKey < 0 ? itemsNumber + newKey : newKey;
-            newKey = newKey % itemsNumber;
-            
-            setWindowLocationHash(mediaData[newKey].slug);
-                        
-            yield put(getKey.actionSuccess(mediaData[newKey].id));
+            const itemsGraph: any = yield select((store: StoreState) => store.itemsGraph);
+            if (itemsGraph && itemsGraph.length) {
+                const newKey: any = itemsGraph[currentKey][getItem.direction];
+                
+                setWindowLocationHash(mediaData[newKey].slug);
+                yield put(getItem.actionSuccess(mediaData[newKey].id));
+            }
         }
     } catch (error) {
-        yield put(getKey.actionError(error.toString()))
+        yield put(getItem.actionError(error.toString()))
     }
 }
 

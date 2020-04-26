@@ -1,6 +1,7 @@
 import { LayoutModes } from '../../../Common/constants';
+import { GraphNode } from '../../../Common/models';
 import ACTION_TYPES from './HomePage.actionTypes';
-import { MediaState, LayoutOptionsState } from './HomePage.state';
+import { MediaState, LayoutOptionsState, ItemsGraphState } from './HomePage.state';
 import { AnyAction } from 'redux';
 
 export const mediaInitState: MediaState | null = null;
@@ -37,6 +38,19 @@ export const layoutOptionsReducer = (
   ): LayoutOptionsState => {
   switch (action.type) {
     case ACTION_TYPES.SET_LAYOUT_OPTIONS_SUCCESS:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const itemsGraphInitState: ItemsGraphState | GraphNode[] = [];
+
+export const itemsGraphReducer = (
+  state: ItemsGraphState | GraphNode[] = itemsGraphInitState, action: AnyAction
+  ): ItemsGraphState | GraphNode[] => {
+  switch (action.type) {
+    case ACTION_TYPES.SET_ITEMS_GRAPH_SUCCESS:
       return action.payload;
     default:
       return state;

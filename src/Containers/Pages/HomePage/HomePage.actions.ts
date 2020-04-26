@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import ACTION_TYPE from './HomePage.actionTypes';
-import { MediaState, LayoutOptionsState } from './HomePage.state';
+import { MediaState, LayoutOptionsState, ItemsGraphState } from './HomePage.state';
 
 export interface SetAllMediaDataSuccessAction extends AnyAction {
   payload: MediaState;
@@ -50,8 +50,21 @@ export const setLayoutOptionsSuccessAction: setLayoutOptionsSuccessAction = (pay
   };
 };
 
+export interface SetItemsGraphSuccessAction extends AnyAction {
+  payload: ItemsGraphState;
+  type: ACTION_TYPE.SET_ITEMS_GRAPH_SUCCESS;
+}
+export type setItemsGraphSuccessAction = (payload: ItemsGraphState) => SetItemsGraphSuccessAction;
+export const setItemsGraphSuccessAction: setItemsGraphSuccessAction = (payload: ItemsGraphState) => {
+  return {
+    payload,
+    type: ACTION_TYPE.SET_ITEMS_GRAPH_SUCCESS
+  };
+};
+
 export type HomePageActions =
   | SetAllMediaDataSuccessAction
   | SetKeyDownInitAction
   | SetKeyDownSuccessAction
-  | SetLayoutOptionsSuccessAction;
+  | SetLayoutOptionsSuccessAction
+  | SetItemsGraphSuccessAction;

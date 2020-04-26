@@ -4,20 +4,28 @@ import { Dispatch } from 'redux';
 import styled from '@emotion/styled'
 import { colors, dimensions } from '../../Common/variables';
 import { LayoutModes } from '../../Common/constants';
-import { GraphNode } from '../../Common/models';
 import AudioItem from '../../Containers/AudioItem/AudioItem';
 import { KeyCodes } from '../../Containers/MediaPlayer/MediaPlayer.constants';
 import MediaPlayerContainer from '../../Containers/MediaPlayer/MediaPlayer.container';
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
-import { MediaState, LayoutOptionsState } from '../../Containers/Pages/HomePage/HomePage.state';
+import { 
+    MediaState, 
+    LayoutOptionsState,
+    ItemsGraphState
+} from '../../Containers/Pages/HomePage/HomePage.state';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
 import { WindowResolution } from '../../Common/models';
-import { getLayoutColumnsNumber, getLayoutMode } from '../../Common/CommonHelpers';
+import { 
+    getLayoutColumnsNumber, 
+    getLayoutMode,
+    getItemsGraph,
+} from '../../Common/CommonHelpers';
 import {
     HomePageActions,
     setAllMediaDataSuccessAction,
     setKeyDownInitAction,
     setLayoutOptionsSuccessAction,
+    setItemsGraphSuccessAction,
 } from '../../Containers/Pages/HomePage/HomePage.actions';
 import { StoreState } from '../../App/App.store.d';
 import { getRandomNumberFromString } from './HomePage.helpers';
@@ -56,6 +64,7 @@ interface HomePageDispatchProps {
     saveAllMediaData: (mediaState: MediaState) => void;
     setKeyDownCode: (keyCode: number) => void;
     setLayoutOptions: (options: LayoutOptionsState) => void;
+    setItemsGraph: (graph: ItemsGraphState) => void;
 }
 
 interface HomePageOwnProps {
@@ -149,7 +158,7 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
 
         const rowsNumber = Math.floor(items.length / columnsNumber) + 1;
         let result: any[] = [];
-        // let itemsGraph: GraphNode[] = [];
+        let columns: any[] = [];
 
         for (let j=0; j<columnsNumber; j++) {
             let columnIndices: number[] = [];
@@ -159,7 +168,7 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
                 }
             }
 
-            console.log('columnIndices', columnIndices);
+            columns.push(columnIndices);
 
             const columnItems: OrtalioMedia[] = items.filter((item, index) => columnIndices.indexOf(index) !== -1)
             const columnItemsResult = (
@@ -170,6 +179,8 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
             result = result.concat(columnItemsResult);
             columnIndices = [];
         }
+
+        this.props.setItemsGraph(getItemsGraph(columns) as ItemsGraphState);
 
         return result;
     }
@@ -226,7 +237,8 @@ const mapDispatchToProps = (
     ) => ({
     saveAllMediaData: (mediaState: MediaState) => dispatch(setAllMediaDataSuccessAction(mediaState)),
     setKeyDownCode: (keyCode: number) => dispatch(setKeyDownInitAction(keyCode)),
-    setLayoutOptions: (options: LayoutOptionsState) => dispatch(setLayoutOptionsSuccessAction(options))
+    setLayoutOptions: (options: LayoutOptionsState) => dispatch(setLayoutOptionsSuccessAction(options)),
+    setItemsGraph: (graph: ItemsGraphState) => dispatch(setItemsGraphSuccessAction(graph))
 });
   
 export default connect<HomePageMappedProps, HomePageDispatchProps>(
