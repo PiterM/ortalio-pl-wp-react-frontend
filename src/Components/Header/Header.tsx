@@ -70,7 +70,7 @@ export class Header extends React.Component<HeaderProps> {
     let { intro, description } = this.props;
     const { title, layoutOptions } = this.props;
 
-    description = layoutOptions.columnsNumber < 5 
+    description = layoutOptions.columnsNumber < 4 
       ? intro
       : description;
       
