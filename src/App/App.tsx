@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/react-hooks';
-import { createHttpLink } from 'apollo-link-http';
+import { createHttpLink, HttpLink } from 'apollo-link-http';
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import React from 'react';
@@ -27,10 +27,16 @@ import Page404 from '../Pages/ErrorPage/Page404';
 const client = new ApolloClient({
   link: createHttpLink({ 
     uri: 'https://ortalio.website/graphql',
-    // headers: {
-    //   'Content-Type': 'application/json'
-    // },
-    // fetchOptions: { mode: 'no-cors' } as HttpLink.Options
+    headers: {
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'cross-site',
+    },
+    // fetchOptions: { 
+    //   site: 'cross-site',
+    //   mode: 'cors',
+    //   dest: 'empty',
+    // } as HttpLink.Options
   }),
   cache: new InMemoryCache(),
   resolvers: appResolvers,

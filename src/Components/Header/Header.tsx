@@ -1,6 +1,9 @@
 import * as React from 'react'
+import { connect } from 'react-redux';
 import styled from '@emotion/styled'
 import { colors, fonts } from '../../Common/variables';
+import { StoreState } from '../../App/App.store.d';
+import { LayoutOptionsState } from '../../Containers/Pages/HomePage/HomePage.state';
 import './Header.scss';
 
 const StyledHeaderDiv = styled.div`
@@ -12,10 +15,10 @@ const StyledHeaderDiv = styled.div`
 const HeaderWrapperDiv = styled.div``;
 
 const StyledHeaderWeatherForcastBox = styled.div`
-  position: relative;
+  position: absolute;
   width: 18%;
-  left: 10px;
-  padding: 10px 15px 10px 15px;
+  left: 40%;
+  top: 20%;
   line-height: 20px;
   display: inline-block;
   margin: 0 50px 20px -360px;
@@ -50,36 +53,57 @@ const StyledSubHeader = styled.div`
   padding: 12px 0 12px 0;
 `;
 
-interface HeaderProps {
+interface HeaderOwnProps {
   intro: string;
   title: string;
   description: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ description, intro, title }) => (
-  <StyledHeaderDiv>
-    <HeaderWrapperDiv>
-      <StyledHeaderWeatherForcastBox
-        className="site-intro"
-      >
-        <div dangerouslySetInnerHTML={{ __html: intro }} />
-      </StyledHeaderWeatherForcastBox>
-      <StyledHeaderTitle>
-        <h1>
-          <StyledHomePageLink 
-            href="/" 
-            className="site-header"
-            data-text={title}
-          >
-            {title}
-          </StyledHomePageLink>
-        </h1>
-      </StyledHeaderTitle>
-    </HeaderWrapperDiv>
-    <StyledSubHeader>
-      <div dangerouslySetInnerHTML={{ __html: description }} />
-    </StyledSubHeader>
-  </StyledHeaderDiv>
-)
+interface HeaderMappedProps {
+  layoutOptions: LayoutOptionsState;
+}
 
-export default Header
+type HeaderProps = HeaderOwnProps & HeaderMappedProps;
+
+export class Header extends React.Component<HeaderProps> {
+  render() {
+    let { intro, description } = this.props;
+    const { title, layoutOptions } = this.props;
+
+    description = layoutOptions.columnsNumber < 5 
+      ? intro
+      : description;
+      
+    return (
+      <StyledHeaderDiv>
+        <HeaderWrapperDiv>
+          <StyledHeaderWeatherForcastBox
+            className="site-intro"
+          >
+            <div dangerouslySetInnerHTML={{ __html: intro }} />
+          </StyledHeaderWeatherForcastBox>
+          <StyledHeaderTitle>
+            <h1>
+              <StyledHomePageLink 
+                href="/" 
+                className="site-header"
+                data-text={title}
+              >
+                {title}
+              </StyledHomePageLink>
+            </h1>
+          </StyledHeaderTitle>
+        </HeaderWrapperDiv>
+        <StyledSubHeader>
+          <div dangerouslySetInnerHTML={{ __html: description }} />
+        </StyledSubHeader>
+      </StyledHeaderDiv>
+    );
+  }
+}
+
+const mapStateToProps: any = (store: StoreState): HeaderMappedProps => ({
+  layoutOptions: store.layoutOptions,
+});
+
+export default connect<HeaderMappedProps>(mapStateToProps)(Header);

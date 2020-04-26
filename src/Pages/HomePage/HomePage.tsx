@@ -4,13 +4,14 @@ import { Dispatch } from 'redux';
 import styled from '@emotion/styled'
 import { colors, dimensions } from '../../Common/variables';
 import { LayoutModes } from '../../Common/constants';
+import { GraphNode } from '../../Common/models';
 import AudioItem from '../../Containers/AudioItem/AudioItem';
 import { KeyCodes } from '../../Containers/MediaPlayer/MediaPlayer.constants';
 import MediaPlayerContainer from '../../Containers/MediaPlayer/MediaPlayer.container';
 import SocialIcons from '../../Components/SocialIcons/SocialIcons';
 import { MediaState, LayoutOptionsState } from '../../Containers/Pages/HomePage/HomePage.state';
 import HomePageLayout from '../../Layouts/Pages/HomePage.layout';
-import { WindowResolution } from '../../Common/constants';
+import { WindowResolution } from '../../Common/models';
 import { getLayoutColumnsNumber, getLayoutMode } from '../../Common/CommonHelpers';
 import {
     HomePageActions,
@@ -109,6 +110,7 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
 
         document.addEventListener("keydown", this.onKeyDown);
         window.addEventListener("resize", this.onWindowResize)
+        this.onWindowResize();
     }
 
     componentWillUnmount() {
@@ -147,6 +149,7 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
 
         const rowsNumber = Math.floor(items.length / columnsNumber) + 1;
         let result: any[] = [];
+        // let itemsGraph: GraphNode[] = [];
 
         for (let j=0; j<columnsNumber; j++) {
             let columnIndices: number[] = [];
@@ -155,6 +158,8 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
                     columnIndices.push(j + i * columnsNumber);
                 }
             }
+
+            console.log('columnIndices', columnIndices);
 
             const columnItems: OrtalioMedia[] = items.filter((item, index) => columnIndices.indexOf(index) !== -1)
             const columnItemsResult = (

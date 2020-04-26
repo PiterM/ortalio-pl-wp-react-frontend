@@ -1,4 +1,5 @@
-import { WindowResolution, LayoutModes } from './constants';
+import { LayoutModes } from './constants';
+import { WindowResolution } from './models';
 import { dimensions } from './variables';
 
 export const setWindowLocationHash = (elementId: string) => {

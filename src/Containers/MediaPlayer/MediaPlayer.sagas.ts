@@ -13,7 +13,6 @@ import {
     setSelectedLowerAudioItemSuccessAction,
     setSelectedLowerAudioItemErrorAction
 } from './MediaPlayer.actions';
-import { dimensions } from '../../Common/variables';
 import ACTION_TYPES from './MediaPlayer.actionTypes';
 
 const getNextKey = (): any => ({ 
@@ -28,14 +27,14 @@ const getPreviousKey = (): any => ({
     actionError: setSelectedPreviousAudioItemErrorAction
 });
 
-const getUpperKey = (): any => ({ 
-    vector: -1 * dimensions.homePage.columnsNumber,
+const getUpperKey = (columnsNumber: number): any => ({ 
+    vector: -1 * columnsNumber,
     actionSuccess: setSelectedUpperAudioItemSuccessAction,
     actionError: setSelectedUpperAudioItemErrorAction
 });
 
-const getLowerKey = (): any => ({ 
-    vector: dimensions.homePage.columnsNumber,
+const getLowerKey = (columnsNumber: number): any => ({ 
+    vector: columnsNumber,
     actionSuccess: setSelectedLowerAudioItemSuccessAction,
     actionError: setSelectedLowerAudioItemErrorAction
 });
@@ -52,17 +51,20 @@ export function selectPreviousAudioItem() {
     return selectCurrentAudioItem(getPreviousKey()) ;
 }
 
-export function selectUpperAudioItem() {
-    return selectCurrentAudioItem(getUpperKey()) ;
+export function* selectUpperAudioItem() {
+    const columnsNumber: number = yield select((store: StoreState) => store.layoutOptions.columnsNumber);
+    yield selectCurrentAudioItem(getUpperKey(columnsNumber)) ;
 }
 
-export function selectLowerAudioItem() {
-    return selectCurrentAudioItem(getLowerKey()) ;
+export function* selectLowerAudioItem() {
+    const columnsNumber: number = yield select((store: StoreState) => store.layoutOptions.columnsNumber);
+    yield selectCurrentAudioItem(getLowerKey(columnsNumber)) ;
 }
 
 export function* selectCurrentAudioItem(getKey: any): GetAllMediaDataIterator {
     try {
         const mediaData: any = yield select((store: StoreState) => store.media);
+
         if (mediaData) {
             const currentSelectedMediaId = yield select((store: StoreState) => store.selectedMediaId);
             const currentKey: any = Object.keys(mediaData).find(
@@ -73,6 +75,7 @@ export function* selectCurrentAudioItem(getKey: any): GetAllMediaDataIterator {
             let newKey = parseInt(currentKey) + getKey.vector;
             newKey = newKey < 0 ? itemsNumber + newKey : newKey;
             newKey = newKey % itemsNumber;
+            
             setWindowLocationHash(mediaData[newKey].slug);
                         
             yield put(getKey.actionSuccess(mediaData[newKey].id));
