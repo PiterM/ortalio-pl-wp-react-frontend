@@ -11,30 +11,9 @@ import store from './App.store';
 import appResolvers from './App.resolvers';
 import Page404 from '../Pages/ErrorPage/Page404';
 
-// const client = new ApolloClient({
-//   uri: "https://ortalio.website/graphql",  // ortl.local for local
-//   resolvers: appResolvers,
-//   request: operation => {
-//     operation.setContext({
-//       headers: {
-//         'content-type': 'application/json'
-//       }
-//     })
-//   },
-//   // fetchOptions: { mode: 'no-cors' } as HttpLink.Options
-// });
-
 const client = new ApolloClient({
   link: createHttpLink({ 
     uri: 'https://ortalio.website/graphql',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8'
-    },
-    // fetchOptions: { 
-    //   site: 'cross-site',
-    //   mode: 'cors',
-    //   dest: 'empty',
-    // } as HttpLink.Options
   }),
   cache: new InMemoryCache(),
   resolvers: appResolvers,
