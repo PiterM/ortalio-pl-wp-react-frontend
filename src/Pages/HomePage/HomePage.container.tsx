@@ -42,7 +42,6 @@ class HomePageContainer extends React.Component {
                             if (LoadingOrErrorScreen !== null) {
                                 return LoadingOrErrorScreen;
                             }
-                            console.log('ile razy');
 
                             return <Query query={GQL_QUERIES.GET_SOCIAL_MEDIA_DATA_QUERY}>
                                 {
