@@ -69,7 +69,7 @@ export function* selectCurrentAudioItem(getItem: any): GetAllMediaDataIterator {
     try {
         const mediaData: any = yield select((store: StoreState) => store.media);
 
-        if (mediaData) {
+        if (mediaData && mediaData.length) {
             const itemsGraph: any = yield select((store: StoreState) => store.itemsGraph);
             if (itemsGraph && itemsGraph.length) {
                 const currentSelectedMediaId: any = yield select((store: StoreState) => store.selectedMediaId);
