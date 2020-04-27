@@ -59,19 +59,32 @@ export function* selectLowerAudioItem() {
     yield selectCurrentAudioItem(getLowerItem());
 }
 
+const getItemKeyById = (mediaData: any, id: string): any => {
+    return Object.keys(mediaData).find(
+        (key: string) => (mediaData[key] as OrtalioMedia).id === id
+    );
+}
+
 export function* selectCurrentAudioItem(getItem: any): GetAllMediaDataIterator {
     try {
         const mediaData: any = yield select((store: StoreState) => store.media);
 
         if (mediaData) {
-            const currentSelectedMediaId = yield select((store: StoreState) => store.selectedMediaId);
-            const currentKey: any = Object.keys(mediaData).find(
-                (key: string) => (mediaData[key] as OrtalioMedia).id === currentSelectedMediaId
-            );
-
             const itemsGraph: any = yield select((store: StoreState) => store.itemsGraph);
             if (itemsGraph && itemsGraph.length) {
-                const newKey: any = itemsGraph[currentKey][getItem.direction];
+                const currentSelectedMediaId: any = yield select((store: StoreState) => store.selectedMediaId);
+                const currentKey = getItemKeyById(mediaData, currentSelectedMediaId as string);
+                const firstItemId: string = (mediaData[0] as OrtalioMedia).id;
+                const lastItemId: string = (mediaData[mediaData.length - 1] as OrtalioMedia).id;
+    
+                let newKey;
+                if (getItem.direction === 'left' && currentSelectedMediaId === firstItemId) {
+                    newKey = getItemKeyById(mediaData, lastItemId);
+                } else if (getItem.direction === 'right' && currentSelectedMediaId === lastItemId) {
+                    newKey = getItemKeyById(mediaData, firstItemId);
+                } else {
+                    newKey = itemsGraph[currentKey][getItem.direction];
+                }
                 
                 setWindowLocationHash(mediaData[newKey].slug);
                 yield put(getItem.actionSuccess(mediaData[newKey].id));

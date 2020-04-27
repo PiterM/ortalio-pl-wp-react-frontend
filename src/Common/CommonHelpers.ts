@@ -45,14 +45,15 @@ export const getItemsGraph = (columns: any[]): ItemsGraphState | GraphNode[] => 
             const columnRightKey = i + 1 >= columns.length
                 ? 0 
                 : i + 1;
-            const rowRightKey = columnRightKey === 0
+            let rowRightKey = columnRightKey === 0
                 ? j + 1
                 : j;
 
             const columnLeftKey = i - 1 < 0 
                 ? columns.length - 1 
                 : i - 1;
-            const rowLeftKey = columnRightKey === columns.length - 1
+            
+            let rowLeftKey = columnLeftKey === columns.length - 1
                 ? j - 1
                 : j;
 
