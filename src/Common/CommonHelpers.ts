@@ -45,23 +45,32 @@ export const getItemsGraph = (columns: any[]): ItemsGraphState | GraphNode[] => 
             const columnRightKey = i + 1 >= columns.length
                 ? 0 
                 : i + 1;
+            const rowRightKey = columnRightKey === 0
+                ? j + 1
+                : j;
+
             const columnLeftKey = i - 1 < 0 
                 ? columns.length - 1 
                 : i - 1;
+            const rowLeftKey = columnRightKey === columns.length - 1
+                ? j - 1
+                : j;
+
             const itemDownKey = j + 1 >= columns[i].length
                 ? 0
                 : j + 1;
+
             const itemUpKey = j - 1 < 0
                 ? columns[i].length - 1
                 : j - 1;
 
-            const itemRight = columns[columnRightKey][j] === undefined
+            const itemRight = columns[columnRightKey][rowRightKey] === undefined
                 ? columns[columnRightKey][columns[columnRightKey].length - 1]
-                : columns[columnRightKey][j];
+                : columns[columnRightKey][rowRightKey];
 
-            const itemLeft = columns[columnLeftKey][j] === undefined
+            const itemLeft = columns[columnLeftKey][rowLeftKey] === undefined
                 ? columns[columnLeftKey][columns[columnLeftKey].length - 1]
-                : columns[columnLeftKey][j];
+                : columns[columnLeftKey][rowLeftKey];
 
             const graphNode: GraphNode = {
                 right: itemRight,
