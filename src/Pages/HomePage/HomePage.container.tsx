@@ -2,7 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import styled from '@emotion/styled'
 import ErrorPage from '../ErrorPage/ErrorPage';
-import GQL_QUERIES from './HomePage.gql';
+import { GET_ORTALO_FULL_DATA_QUERY } from './HomePage.gql';
 import HomePage from './HomePage';
 import { 
     GlobalData, 
@@ -34,47 +34,24 @@ class HomePageContainer extends React.Component {
     
     render() {
         return (
-            <>
-                <Query query={GQL_QUERIES.GET_SITE_GLOBAL_DATA_QUERY}>
-                    {
-                        (globalData: any) => {
-                            const LoadingOrErrorScreen: any = renderLoadingOrErrorScreen(globalData);
-                            if (LoadingOrErrorScreen !== null) {
-                                return LoadingOrErrorScreen;
-                            }
-
-                            return <Query query={GQL_QUERIES.GET_SOCIAL_MEDIA_DATA_QUERY}>
-                                {
-                                    (socialMediaData: any) => {
-                                        const LoadingOrErrorScreen: any = renderLoadingOrErrorScreen(socialMediaData);
-                                        if (LoadingOrErrorScreen !== null) {
-                                            return LoadingOrErrorScreen;
-                                        }
-                
-                                        return <Query query={GQL_QUERIES.GET_ORTALIO_MEDIA_QUERY}>
-                                            {
-                                                (ortalioMediaData: any) => {
-                                                    const LoadingOrErrorScreen: any = renderLoadingOrErrorScreen(ortalioMediaData);
-                                                    if (LoadingOrErrorScreen !== null) {
-                                                        return LoadingOrErrorScreen;
-                                                    }
-                                                    return (
-                                                        <HomePage 
-                                                            globalData={globalData.data.globalData as GlobalData}
-                                                            socialMediaData={socialMediaData.data.socialMediaData as SocialMediaData[]}
-                                                            data={ortalioMediaData.data.data as OrtalioMedia[]}
-                                                        />
-                                                    );
-                                                }
-                                            }
-                                        </Query>
-                                    }
-                                }
-                            </Query>
+            <Query query={GET_ORTALO_FULL_DATA_QUERY}>
+                {
+                    (fullData: any) => {
+                        const LoadingOrErrorScreen: any = renderLoadingOrErrorScreen(fullData);
+                        if (LoadingOrErrorScreen !== null) {
+                            return LoadingOrErrorScreen;
                         }
+
+                        return (
+                            <HomePage 
+                                globalData={fullData.data.globalData as GlobalData}
+                                socialMediaData={fullData.data.socialMediaData as SocialMediaData[]}
+                                data={fullData.data.data as OrtalioMedia[]}
+                            />
+                        );
                     }
-                </Query>
-            </>
+                }
+            </Query>
         );
     }
 }
