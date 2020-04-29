@@ -245,7 +245,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         ref={this.reactPlayerRef}
                         style={{ visibility: playerVisibility }}
                         url={url}
-                        autoPlay
+                        muted
                         playing={this.state.playing}
                         width="100%"
                         height={playerHeight}
