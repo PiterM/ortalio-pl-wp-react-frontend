@@ -127,8 +127,8 @@ interface MediaPlayerState {
 
 const initProgressState = {
     dashCharacter: '&nbsp;',
-    minutesDisplayed: '--',
-    secondsDisplayed: '--'
+    minutesDisplayed: '&nbsp;&nbsp;',
+    secondsDisplayed: '&nbsp;&nbsp;'
 };
 
 const initState: MediaPlayerState = {

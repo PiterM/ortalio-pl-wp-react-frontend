@@ -260,10 +260,10 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     dangerouslySetInnerHTML={{__html: '&nbsp;'}} 
                 ></span>
                 <span
-                    dangerouslySetInnerHTML={{__html: '--'}} 
+                    dangerouslySetInnerHTML={{__html: '&nbsp;&nbsp;'}} 
                 ></span>:
                 <span
-                    dangerouslySetInnerHTML={{__html: '--'}} 
+                    dangerouslySetInnerHTML={{__html: '&nbsp;&nbsp;'}} 
                 ></span>
             </p>
         );
