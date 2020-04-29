@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { StoreState } from '../../App/App.store.d';
 import { colors, dimensions, fonts } from '../../Common/variables';
+import { LayoutOptionsState } from '../Pages/HomePage/HomePage.state.d';
 import MediaPlayerMini from './MediaPlayer.mini';
 import {
     MediaPlayerMode,
@@ -20,6 +21,7 @@ import {
     setSelectedUpperAudioItemAction,
     setSelectedLowerAudioItemAction
 } from './MediaPlayer.actions';
+import { LayoutModes } from '../../Common/constants';
 
 const StyledMediaPlayer = styled.div`
     position: fixed;
@@ -41,14 +43,20 @@ const StyledMediaPlayer = styled.div`
     background: url('/images/player-pattern.png') left top repeat rgba(249,247,241,1);
 `;
 
+interface StyledNotMediaPlayerProps {
+    mediaPlayerHeight: number;
+    moreIconHeight: number
+}
+
 const StyledNotMediaPlayer = styled.div`
-    height: ${dimensions.mediaPlayerHeight.mini}px;
     width: 100%;
     display: grid;
     grid-template-columns: 8fr 1fr;
-    height: 100%;
-    padding: 10px 0;
     margin: 0 30px;
+    
+    .layout-extended & {
+        padding: 7px 0;
+    }
 
     & > p {
         grid-column: 2;
@@ -62,18 +70,18 @@ const StyledNotMediaPlayer = styled.div`
     }
 
     & > p.more-icon {
-        display: block;
-        position: relative;
-        height: 20px;
+        height: 100%;
         width: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         & img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 20px;
+            
+            height: ${(props: StyledNotMediaPlayerProps) => props.moreIconHeight}px;
             width: auto;
             max-width: none;
+            background-color: ${colors.mediaPlayer}
         }
     }
 `;
@@ -96,6 +104,7 @@ interface MediaPlayerMappedProps {
     errorMessage: string | null;
     selectedMediaId?: string | null;
     keyDownCode?: number | null;
+    layoutOptions?: LayoutOptionsState | null;
 }
 
 interface MediaPlayerDispatchProps {
@@ -156,7 +165,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             youtubeConfig,
             minimalMode,
             playerMode,
-            errorMessage
+            errorMessage,
+            layoutOptions
         } = this.props;
 
         const playerVisibility = minimalMode ? 'hidden' : 'visible';
@@ -168,10 +178,23 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         const activeErrorMessage = this.state.errorMessage
             ? this.state.errorMessage
             : errorMessage;
+        
 
         if (minimalMode && this.miniPlayer && this.miniPlayer.current) {
             this.miniPlayer.current.focus();
         }
+
+        const displayMode = layoutOptions
+            ? layoutOptions.mode
+            : LayoutModes.Extended;
+
+        const mediaPlayerHeight = displayMode === LayoutModes.Compact
+            ? dimensions.mediaPlayerHeight.compact
+            : dimensions.mediaPlayerHeight.mini;
+
+        const moreIconHeight = displayMode === LayoutModes.Compact
+            ? dimensions.mediaPlayerHeight.compact - 30
+            : dimensions.mediaPlayerHeight.mini - 10;
 
         console.log('this.state.playing', this.state.playing);
 
@@ -191,6 +214,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                             progress={this.state.progress}
                             timerMode={this.state.timerMode}
                             loopMode={this.state.loopMode}
+                            displayMode={displayMode}
                             onPlayClick={this.onPlayClick}
                             onPauseClick={this.onPauseClick}
                             onPreviousClick={this.onPreviousClick}
@@ -200,6 +224,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         />
                         <StyledNotMediaPlayer
                             onMouseOver={() => this.props.onMouseOver()}
+                            mediaPlayerHeight={mediaPlayerHeight}
+                            moreIconHeight={moreIconHeight}
                         >
                             <p className="more-icon">
                                 <img
@@ -392,7 +418,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
 const mapStateToProps: any = (store: StoreState, props: MediaPlayerProps): MediaPlayerMappedProps => ({
     errorMessage: store.errorMessage,
     selectedMediaId: store.selectedMediaId,
-    keyDownCode: store.keyDownCode
+    keyDownCode: store.keyDownCode,
+    layoutOptions: store.layoutOptions,
 });
 
 const mapDispatchToProps: any = (dispatch: Dispatch<MediaPlayerActions>) => ({

@@ -95,10 +95,14 @@ export const dimensions = {
   mediaPlayerHeight: {
     mini: 30,
     small: 162,
-    medium: 400
+    medium: 400,
+    compact: 90,
   },
   mediaPlayer: {
-    playPauseControlSize: 20
+    playPauseControlExtendedSize: 20,
+    playPauseControlCompactSize: 40,
+    buttonsMarginExtended: 10,
+    buttonsMarginCompact: 20,
   }
 }
 

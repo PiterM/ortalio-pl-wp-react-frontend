@@ -4,12 +4,23 @@ import { setWindowLocationHash } from '../../Common/CommonHelpers';
 import { colors, dimensions, fonts } from '../../Common/variables';
 import MediaPlayerMiniControls from './MediaPlayer.mini.controls';
 import { TimerMode, ProgressTime, LoopMode } from './MediaPlayer.constants';
+import { LayoutModes } from '../../Common/constants';
 
 import './MediaPlayer.mini.css';
 
 const StyledMediaPlayerMiniContainer = styled.div`
     display: inline-block;
+    
+    .layout-extended & {
+        padding: 7px 0;
+    }
 `;
+
+interface StyledMediaPlayerMiniProps {
+    mediaPlayerHeight: number;
+    mediaPlayerFontSize: number;
+    mediaPlayerButtonsMargin: number;
+}
 
 const StyledMediaPlayerMini = styled.div`
     display: grid;
@@ -26,6 +37,10 @@ const StyledMediaPlayerMini = styled.div`
     user-select: none; /* Non-prefixed version, currently
                           supported by Chrome, Opera and Firefox */
 
+    .layout-compact & {
+        padding-left: 0;
+    }
+
     & > div {
         text-align: center;
         align-self: center;
@@ -34,14 +49,14 @@ const StyledMediaPlayerMini = styled.div`
 
     & > .thumbnail {
         grid-column: 1;
-        height: ${dimensions.mediaPlayerHeight.mini}px;
+        height: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerHeight  }px;
 
         & a {
             text-decoration: none;
             padding: 0;
             display: inline-block;
-            width: ${dimensions.mediaPlayerHeight.mini}px;
-            height: ${dimensions.mediaPlayerHeight.mini}px;
+            width: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerHeight}px;
+            height: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerHeight}px;
             position: relative;
             
             &:hover img {
@@ -59,8 +74,8 @@ const StyledMediaPlayerMini = styled.div`
             position: absolute;
             left: 0;
             top: 0;
-            width: ${dimensions.mediaPlayerHeight.mini}px;
-            height: ${dimensions.mediaPlayerHeight.mini}px;
+            width: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerHeight}px;
+            height: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerHeight}px;
             border: 2px solid transparent;
         }
     }
@@ -77,7 +92,7 @@ const StyledMediaPlayerMini = styled.div`
         text-decoration: none;
         grid-column: 2;
         font-family: ${fonts.monospace};
-        font-size: ${dimensions.fontSize.regular}px;
+        font-size: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerFontSize}px;
         font-weight: bold;
         color: #444;
         cursor: pointer;
@@ -105,6 +120,7 @@ const StyledMediaPlayerMini = styled.div`
         font-family: ${fonts.monospace};
         font-weight: bold;
         padding: 0 20px;
+        margin-left: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerButtonsMargin}px;
 
         & > p {
             padding: 0;
@@ -112,10 +128,14 @@ const StyledMediaPlayerMini = styled.div`
         }
     }
 
+    .layout-compact & .timer {
+        font-size: ${dimensions.fontSize.large}px;
+    }
+
     & .error-message {
         grid-column: 2;
         font-family: ${fonts.monospace};
-        font-size: ${dimensions.fontSize.regular}px;
+        font-size: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerFontSize}px;
         font-weight: bold;
         color: darkred;
         background: white;
@@ -141,6 +161,7 @@ interface MediaPlayerMiniOwnProps {
     timerMode: TimerMode;
     loopMode: LoopMode;
     errorMessage: string | null;
+    displayMode?: LayoutModes;
     onPlayClick: () => void;
     onPauseClick: () => void;
     onPreviousClick: () => void;
@@ -151,13 +172,29 @@ interface MediaPlayerMiniOwnProps {
 
 export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
     render() {
-        const { title, slug, url, visible, thumbnailUrl, playing, errorMessage } = this.props;
+        const { title, slug, url, visible, thumbnailUrl, playing, errorMessage, displayMode } = this.props;
+
+        const mediaPlayerHeight = displayMode === LayoutModes.Compact
+            ? dimensions.mediaPlayerHeight.compact
+            : dimensions.mediaPlayerHeight.mini;
+
+        const mediaPlayerFontSize = displayMode === LayoutModes.Compact
+            ? dimensions.fontSize.large
+            : dimensions.fontSize.regular;
+        
+        const mediaPlayerButtonsMargin = displayMode === LayoutModes.Compact
+            ? dimensions.mediaPlayer.buttonsMarginCompact
+            : dimensions.mediaPlayer.buttonsMarginExtended;
 
         return visible ? (
             <StyledMediaPlayerMiniContainer
                 className="media-player"
             >
-                <StyledMediaPlayerMini>
+                <StyledMediaPlayerMini
+                    mediaPlayerHeight={mediaPlayerHeight}
+                    mediaPlayerFontSize={mediaPlayerFontSize}
+                    mediaPlayerButtonsMargin={mediaPlayerButtonsMargin}
+                >
                     <div
                         className="thumbnail"
                     >
@@ -197,6 +234,7 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                             onNextClick={this.props.onNextClick}
                             toggleLoopMode={this.props.toggleLoopMode}
                             loopMode={this.props.loopMode}
+                            displayMode={this.props.displayMode}
                         />
                     </div>
                     <div className="timer">

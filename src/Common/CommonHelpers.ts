@@ -30,9 +30,9 @@ export const getLayoutMode = (resolution: WindowResolution) => {
         return LayoutModes.Extended;
     }
 
-    if (resolution.width <= 768) {
-        return LayoutModes.Mobile;
-    } else if (resolution.width <= 1024) {
+    // if (resolution.width <= 768) {
+    //     return LayoutModes.Mobile;
+    if (resolution.width <= 1024) {
         return LayoutModes.Compact;
     }
     return LayoutModes.Extended;
