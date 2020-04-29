@@ -103,6 +103,8 @@ export const dimensions = {
     playPauseControlCompactSize: 40,
     buttonsMarginExtended: 10,
     buttonsMarginCompact: 20,
+    timerMinWidthCompact: 105,
+    timerMinWidthExtended: 51,
   }
 }
 

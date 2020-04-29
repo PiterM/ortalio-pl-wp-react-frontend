@@ -20,6 +20,7 @@ interface StyledMediaPlayerMiniProps {
     mediaPlayerHeight: number;
     mediaPlayerFontSize: number;
     mediaPlayerButtonsMargin: number;
+    mediaPlayerTimerMinWidth: number;
 }
 
 const StyledMediaPlayerMini = styled.div`
@@ -121,6 +122,7 @@ const StyledMediaPlayerMini = styled.div`
         font-weight: bold;
         padding: 0 20px;
         margin-left: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerButtonsMargin}px;
+        min-width: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerTimerMinWidth}px;
 
         & > p {
             padding: 0;
@@ -186,6 +188,11 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
             ? dimensions.mediaPlayer.buttonsMarginCompact
             : dimensions.mediaPlayer.buttonsMarginExtended;
 
+        const mediaPlayerTimerMinWidth = displayMode === LayoutModes.Compact
+            ? dimensions.mediaPlayer.timerMinWidthCompact
+            : dimensions.mediaPlayer.timerMinWidthExtended;
+
+
         return visible ? (
             <StyledMediaPlayerMiniContainer
                 className="media-player"
@@ -194,6 +201,7 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     mediaPlayerHeight={mediaPlayerHeight}
                     mediaPlayerFontSize={mediaPlayerFontSize}
                     mediaPlayerButtonsMargin={mediaPlayerButtonsMargin}
+                    mediaPlayerTimerMinWidth={mediaPlayerTimerMinWidth}
                 >
                     <div
                         className="thumbnail"
