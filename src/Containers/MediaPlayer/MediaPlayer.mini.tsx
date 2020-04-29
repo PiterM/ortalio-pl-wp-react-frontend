@@ -34,17 +34,19 @@ const StyledMediaPlayerMini = styled.div`
 
     & > .thumbnail {
         grid-column: 1;
+        height: ${dimensions.mediaPlayerHeight.mini}px;
 
         & a {
             text-decoration: none;
             padding: 0;
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: ${dimensions.mediaPlayerHeight.mini}px;
+            height: ${dimensions.mediaPlayerHeight.mini}px;
             position: relative;
             
             &:hover img {
                 opacity: 1;
+                border: none;
             }
         }
 
@@ -57,8 +59,9 @@ const StyledMediaPlayerMini = styled.div`
             position: absolute;
             left: 0;
             top: 0;
-            width: 20px;
-            height: 20px;
+            width: ${dimensions.mediaPlayerHeight.mini}px;
+            height: ${dimensions.mediaPlayerHeight.mini}px;
+            border: 2px solid transparent;
         }
     }
 
@@ -166,8 +169,8 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                             <img 
                                 alt={title}
                                 src={thumbnailUrl} 
-                                width={dimensions.mediaPlayerHeight.mini - 10}
-                                height={dimensions.mediaPlayerHeight.mini - 10}
+                                width={dimensions.mediaPlayerHeight.mini}
+                                height={dimensions.mediaPlayerHeight.mini}
                             />
                         </a>
                     </div>
