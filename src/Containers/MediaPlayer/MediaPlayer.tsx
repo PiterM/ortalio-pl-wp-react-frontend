@@ -247,7 +247,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         soundcloudConfig={soundcloudConfig}
                         youtubeConfig={youtubeConfig}
                         onReady={() => this.onReady()}
-                        onStart={() => this.onPlay()}
+                        // onStart={() => this.onPlay()}
                         onProgress={(progress: any) => this.onProgress(progress)}
                         onEnded={() => this.onEnded()}
                         onError={() => this.onError()}
@@ -258,7 +258,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     }
 
     private onReady = () => this.trySetPlayingState(true);
-    private onPlay = () => this.trySetPlayingState(true);
+    // private onPlay = () => this.trySetPlayingState(true);
 
     private onProgress = (progress: any) => {
         const duration = this.reactPlayer.getDuration();
@@ -346,9 +346,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
 
     private onEnded = () => {
         this.setState({ playing: false }, () => {
+            const { layoutOptions } = this.props;
             if (this.state.loopMode === LoopMode.NoLoop) {
                 this.props.selectNextMediaItem();
-            } else {
+            } else if (layoutOptions && layoutOptions.mode !== LayoutModes.Mobile) {
                 this.resetTrackProgress();
             }
         });
