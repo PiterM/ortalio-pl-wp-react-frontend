@@ -1,5 +1,6 @@
 import { put, takeLatest, PutEffect, select, SelectEffect } from 'redux-saga/effects';
 import { OrtalioMedia } from '../../Pages/HomePage/HomePage.models';
+import { LayoutModes } from '../../Common/constants';
 import { StoreState } from '../../App/App.store.d'
 import { setWindowLocationHash } from '../../Common/CommonHelpers';
 import {
@@ -87,7 +88,7 @@ export function* selectCurrentAudioItem(getItem: any): GetAllMediaDataIterator {
                     newKey = itemsGraph[currentKey][getItem.direction];
                 }
                 
-                if (layoutOptions.columnsNumber > 2) {
+                if (layoutOptions.mode === LayoutModes.Extended) {
                     setWindowLocationHash(mediaData[newKey].slug);
                 }
                 yield put(getItem.actionSuccess(mediaData[newKey].id));

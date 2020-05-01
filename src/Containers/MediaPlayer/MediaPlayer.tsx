@@ -127,11 +127,11 @@ interface MediaPlayerState {
 const initProgressState = {
     dashCharacter: '&nbsp;',
     minutesDisplayed: '&nbsp;&nbsp;',
-    secondsDisplayed: '&nbsp;&nbsp;'
+    secondsDisplayed: '&nbsp;&nbsp;',
 };
 
 const initState: MediaPlayerState = {
-    playing: true,
+    playing: false,
     timerMode: TimerMode.RemainingTime,
     progress: initProgressState,
     loopMode: LoopMode.NoLoop
