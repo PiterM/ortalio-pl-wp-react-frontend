@@ -159,7 +159,7 @@ interface MediaPlayerMiniOwnProps {
     thumbnailUrl: string;
     visible: boolean;
     playing: boolean;
-    progress: ProgressTime;
+    progress?: ProgressTime;
     timerMode: TimerMode;
     loopMode: LoopMode;
     errorMessage: string | null;

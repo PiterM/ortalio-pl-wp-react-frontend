@@ -153,18 +153,16 @@ export default class MediaPlayerMiniControls extends React.Component<MediaPlayer
         return (
             <StyledControlsWrapper
                 buttonsMargin={buttonsMargin}
-            >
-                {!isMobileMode &&
-                    <StyledPlayerLoopModeControlImage
-                            className={LoopModeClassName}
-                            src={'/images/loop-icon.svg'} 
-                            width={buttonsSize}
-                            height={buttonsSize}
-                            playPauseControlSize={buttonsSize}
-                            buttonsMargin={buttonsMargin}
-                            onClick={() => this.props.toggleLoopMode()}
-                    />
-                }
+            >   
+                <StyledPlayerLoopModeControlImage
+                        className={LoopModeClassName}
+                        src={'/images/loop-icon.svg'} 
+                        width={buttonsSize}
+                        height={buttonsSize}
+                        playPauseControlSize={buttonsSize}
+                        buttonsMargin={buttonsMargin}
+                        onClick={() => this.props.toggleLoopMode()}
+                />
                 {!isCompactMode && !isMobileMode &&
                     <StyledPlayerSimpleControlImage 
                             src={'/images/arrow-left-icon.svg'} 

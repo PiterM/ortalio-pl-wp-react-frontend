@@ -117,7 +117,7 @@ type MediaPlayerProps = MediaPlayerOwnProps & MediaPlayerMappedProps & MediaPlay
 
 interface MediaPlayerState {
     playing: boolean;
-    progress: ProgressTime;
+    progress?: ProgressTime;
     duration?: number;
     timerMode: TimerMode;
     loopMode: LoopMode;
@@ -137,7 +137,7 @@ const initState: MediaPlayerState = {
     loopMode: LoopMode.NoLoop
 };
 
-export class MediaPlayer extends React.Component<MediaPlayerProps> {
+export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerState> {
     public state: MediaPlayerState = initState;
     private reactPlayer: any;
     private miniPlayer: any;
@@ -145,7 +145,6 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     componentDidUpdate(prevProps: MediaPlayerProps) {
         if (prevProps.selectedMediaId !== this.props.selectedMediaId) {
             this.resetTrackProgress();
-            this.trySetPlayingState(true);
         }
 
         const { keyDownCode } = this.props;
@@ -345,9 +344,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
 
     private onEnded = () => {
         this.setState({ playing: false }, () => {
-            const { layoutOptions } = this.props;
-            if (this.state.loopMode === LoopMode.NoLoop ||
-                (layoutOptions && layoutOptions.mode !== LayoutModes.Mobile)) {
+            if (this.state.loopMode === LoopMode.NoLoop) {
                 this.props.selectNextMediaItem();
             } else {
                 this.resetTrackProgress();
@@ -386,26 +383,24 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
 
     private trySetPlayingState(playing: boolean) {
         if (playing !== this.state.playing) {
-            this.setState({ playing }, () => {
+            this.setState({ playing });
 
-                const internalPlayer = this.reactPlayer.getInternalPlayer();
-                if (internalPlayer && internalPlayer.play) {
-                    if (playing) {
-                        internalPlayer.play();
-                    } else {
-                        internalPlayer.pause();
-                    }
+            const internalPlayer = this.reactPlayer.getInternalPlayer();
+            if (internalPlayer && internalPlayer.play) {
+                if (playing) {
+                    internalPlayer.play();
+                } else {
+                    internalPlayer.pause();
                 }
+            }
 
-                if (internalPlayer && internalPlayer.playVideo) {
-                    if (playing) {
-                        internalPlayer.playVideo();
-                    } else {
-                        internalPlayer.pauseVideo();
-                    }
+            if (internalPlayer && internalPlayer.playVideo) {
+                if (playing) {
+                    internalPlayer.playVideo();
+                } else {
+                    internalPlayer.pauseVideo();
                 }
-
-            });
+            }
         }
     }
 
