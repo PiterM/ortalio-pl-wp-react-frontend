@@ -39,6 +39,7 @@ const HomePageLayout: React.FC<IndexLayoutProps> = ({
                     { property: 'og:image', content: 'https://ortalio.pl/images/ortalio.pl.jpg' },
                     { property: 'og:url', content: 'https://ortalio.pl' },
                     { property: 'og:site_name', content: globalData.metaDescription },
+                    { property: 'og:type', content: 'website' },
                     { name: 'twitter:card', content: 'summary_large_image' },
                     { name: 'twitter:image', content: 'https://ortalio.pl/images/ortalio.pl.jpg' },
                     { name: 'twitter:image:alt', content: globalData.siteTitle },
