@@ -8,7 +8,7 @@ const StyledSocialIconsSection = styled.section`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 0 0 3vh 0;
+  padding: 0 20px 3vh 20px;
   margin: auto;
   text-align: center;
 

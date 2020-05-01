@@ -6,6 +6,10 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
+.columns2 #main-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
 .layout-compact, .layout-mobile {
     .audio-item .audio-content {
         display: none;

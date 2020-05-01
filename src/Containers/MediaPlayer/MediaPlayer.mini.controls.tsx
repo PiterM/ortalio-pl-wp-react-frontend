@@ -140,12 +140,13 @@ export default class MediaPlayerMiniControls extends React.Component<MediaPlayer
             : { display: 'none' };
 
         const isCompactMode = displayMode === LayoutModes.Compact;
+        const isMobileMode = displayMode === LayoutModes.Mobile;
 
-        const buttonsSize = isCompactMode
+        const buttonsSize = isCompactMode || isMobileMode
             ? dimensions.mediaPlayer.playPauseControlCompactSize
             : dimensions.mediaPlayer.playPauseControlExtendedSize;
 
-        const buttonsMargin = isCompactMode
+        const buttonsMargin = isCompactMode || isMobileMode
             ? dimensions.mediaPlayer.buttonsMarginCompact
             : dimensions.mediaPlayer.buttonsMarginExtended;
 
@@ -153,16 +154,18 @@ export default class MediaPlayerMiniControls extends React.Component<MediaPlayer
             <StyledControlsWrapper
                 buttonsMargin={buttonsMargin}
             >
-                <StyledPlayerLoopModeControlImage
-                        className={LoopModeClassName}
-                        src={'/images/loop-icon.svg'} 
-                        width={buttonsSize}
-                        height={buttonsSize}
-                        playPauseControlSize={buttonsSize}
-                        buttonsMargin={buttonsMargin}
-                        onClick={() => this.props.toggleLoopMode()}
-                />
-                {!isCompactMode && 
+                {!isMobileMode &&
+                    <StyledPlayerLoopModeControlImage
+                            className={LoopModeClassName}
+                            src={'/images/loop-icon.svg'} 
+                            width={buttonsSize}
+                            height={buttonsSize}
+                            playPauseControlSize={buttonsSize}
+                            buttonsMargin={buttonsMargin}
+                            onClick={() => this.props.toggleLoopMode()}
+                    />
+                }
+                {!isCompactMode && !isMobileMode &&
                     <StyledPlayerSimpleControlImage 
                             src={'/images/arrow-left-icon.svg'} 
                             width={buttonsSize}
@@ -191,7 +194,7 @@ export default class MediaPlayerMiniControls extends React.Component<MediaPlayer
                         onClick={() => this.props.onPlayClick()}
                     />
                 </span>
-                {!isCompactMode && 
+                {!isCompactMode && !isMobileMode &&
                     <StyledPlayerSimpleControlImage 
                             src={'/images/arrow-right-icon.svg'} 
                             width={buttonsSize}

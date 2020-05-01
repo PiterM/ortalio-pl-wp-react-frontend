@@ -6,7 +6,7 @@ import MediaPlayerMiniControls from './MediaPlayer.mini.controls';
 import { TimerMode, ProgressTime, LoopMode } from './MediaPlayer.constants';
 import { LayoutModes } from '../../Common/constants';
 
-import './MediaPlayer.mini.css';
+import './MediaPlayer.mini.scss';
 
 const StyledMediaPlayerMiniContainer = styled.div`
     display: inline-block;
@@ -176,21 +176,23 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
     render() {
         const { title, slug, url, visible, thumbnailUrl, playing, errorMessage, displayMode } = this.props;
 
-        const mediaPlayerHeight = displayMode === LayoutModes.Compact
+        const mediaPlayerHeight = [LayoutModes.Compact, LayoutModes.Mobile].includes(displayMode!)
             ? dimensions.mediaPlayerHeight.compact
             : dimensions.mediaPlayerHeight.mini;
 
-        const mediaPlayerFontSize = displayMode === LayoutModes.Compact
+        const mediaPlayerFontSize = [LayoutModes.Compact, LayoutModes.Mobile].includes(displayMode!)
             ? dimensions.fontSize.large
             : dimensions.fontSize.regular;
         
-        const mediaPlayerButtonsMargin = displayMode === LayoutModes.Compact
+        const mediaPlayerButtonsMargin = [LayoutModes.Compact, LayoutModes.Mobile].includes(displayMode!)
             ? dimensions.mediaPlayer.buttonsMarginCompact
             : dimensions.mediaPlayer.buttonsMarginExtended;
 
-        const mediaPlayerTimerMinWidth = displayMode === LayoutModes.Compact
+        const mediaPlayerTimerMinWidth = [LayoutModes.Compact, LayoutModes.Mobile].includes(displayMode!)
             ? dimensions.mediaPlayer.timerMinWidthCompact
             : dimensions.mediaPlayer.timerMinWidthExtended;
+
+        const isPlayerDisplayMobile = displayMode === LayoutModes.Mobile;
 
 
         return visible ? (
@@ -203,35 +205,39 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     mediaPlayerButtonsMargin={mediaPlayerButtonsMargin}
                     mediaPlayerTimerMinWidth={mediaPlayerTimerMinWidth}
                 >
-                    <div
-                        className="thumbnail"
-                    >
-                        <a 
-                            href={url} 
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <div
+                            className="thumbnail"
                         >
-                            <img 
-                                alt={title}
-                                src={thumbnailUrl} 
-                                width={dimensions.mediaPlayerHeight.mini}
-                                height={dimensions.mediaPlayerHeight.mini}
-                            />
-                        </a>
-                    </div>
-                    { errorMessage && 
-                        <p className="error-message">
-                            {errorMessage}
-                        </p>
-                    }
-                    { !errorMessage && 
-                        <p className="title">
-                            <button
-                                onClick={() => setWindowLocationHash(slug)}
+                            <a 
+                                href={url} 
+                                target="_blank"
+                                rel="noopener noreferrer"
                             >
-                                {title}
-                            </button>
-                        </p>
+                                <img 
+                                    alt={title}
+                                    src={thumbnailUrl} 
+                                    width={dimensions.mediaPlayerHeight.mini}
+                                    height={dimensions.mediaPlayerHeight.mini}
+                                />
+                            </a>
+                        </div>
+                    { !isPlayerDisplayMobile &&
+                        <>                            
+                            { errorMessage &&
+                                <p className="error-message">
+                                    {errorMessage}
+                                </p>
+                            }
+                            { !errorMessage &&
+                                <p className="title">
+                                    <button
+                                        onClick={() => setWindowLocationHash(slug)}
+                                    >
+                                        {title}
+                                    </button>
+                                </p>
+                            }
+                        </>
                     }
                     <div className="controls">
                         <MediaPlayerMiniControls 

@@ -1,0 +1,43 @@
+@media only screen and (max-width: 1600px) {
+    .media-player {
+        min-width: 50vw;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .media-player {
+        min-width: 75vw;
+    }
+}
+
+.layout-mobile {
+    .media-player {
+        height: 90px;
+        width: 100%;
+
+        & > div {
+            grid-template-columns: 3fr 2fr 5fr;
+            padding: 0;
+
+            .thumbnail {
+                grid-column: 1;
+            }
+
+            .controls {
+                grid-column: 2;
+
+                & .play-pause-control {
+                    height: auto;
+                    width: auto;
+                }
+            }
+
+            .timer {
+                grid-column: 3;
+                border: none;
+                margin: 0;
+                font-size: 20px;
+            }
+        }
+    }
+}

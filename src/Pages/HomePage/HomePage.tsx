@@ -173,7 +173,10 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
 
             const columnItems: OrtalioMedia[] = items.filter((item, index) => columnIndices.indexOf(index) !== -1)
             const columnItemsResult = (
-                <StyledPageColumn key={columnIndices.reduce((a: number, b: number) => a * b)}>
+                <StyledPageColumn 
+                    key={columnIndices.reduce((a: number, b: number) => a * b)} 
+                    className="grid-flex"
+                >
                     {this.renderAudioItemsColumn(columnItems)}
                 </StyledPageColumn>
             );

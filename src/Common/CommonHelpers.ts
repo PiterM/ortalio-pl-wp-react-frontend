@@ -15,7 +15,9 @@ export const getLayoutColumnsNumber = (resolution: WindowResolution) => {
     }
 
     if (resolution.width <= 600) {
-        return dimensions.homePage.columnsNumber - 3;
+        return 1;
+    } else if (resolution.width <= 768) {
+        return 2;
     } else if (resolution.width <= 960) {
         return dimensions.homePage.columnsNumber - 2;
     } else if (resolution.width <= 1280) {
@@ -30,9 +32,9 @@ export const getLayoutMode = (resolution: WindowResolution) => {
         return LayoutModes.Extended;
     }
 
-    // if (resolution.width <= 768) {
-    //     return LayoutModes.Mobile;
-    if (resolution.width <= 1024) {
+    if (resolution.width <= 600) {
+        return LayoutModes.Mobile;
+    } else if (resolution.width <= 1024) {
         return LayoutModes.Compact;
     }
     return LayoutModes.Extended;

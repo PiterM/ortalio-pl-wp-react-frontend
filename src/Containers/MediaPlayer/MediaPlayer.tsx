@@ -44,7 +44,6 @@ const StyledMediaPlayer = styled.div`
 `;
 
 interface StyledNotMediaPlayerProps {
-    mediaPlayerHeight: number;
     moreIconHeight: number
 }
 
@@ -143,10 +142,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private reactPlayer: any;
     private miniPlayer: any;
 
-    componentDidUpdate(prevProps: MediaPlayerProps, prevState: MediaPlayerState) {
+    componentDidUpdate(prevProps: MediaPlayerProps) {
         if (prevProps.selectedMediaId !== this.props.selectedMediaId) {
             this.resetTrackProgress();
-            this.setState({ playing: true });
+            this.trySetPlayingState(true);
         }
 
         const { keyDownCode } = this.props;
@@ -188,15 +187,11 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             ? layoutOptions.mode
             : LayoutModes.Extended;
 
-        const mediaPlayerHeight = displayMode === LayoutModes.Compact
-            ? dimensions.mediaPlayerHeight.compact
-            : dimensions.mediaPlayerHeight.mini;
-
         const moreIconHeight = displayMode === LayoutModes.Compact
             ? dimensions.mediaPlayerHeight.compact - 30
             : dimensions.mediaPlayerHeight.mini - 10;
 
-        console.log('this.state.playing', this.state.playing);
+        const isMobileMode = displayMode === LayoutModes.Mobile;
 
         return (
             <>
@@ -222,20 +217,21 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                             toggleTimerMode={() => this.toggleTimerModeState()}
                             toggleLoopMode={() => this.toggleLoopModeState()}
                         />
-                        <StyledNotMediaPlayer
-                            onMouseOver={() => this.props.onMouseOver()}
-                            mediaPlayerHeight={mediaPlayerHeight}
-                            moreIconHeight={moreIconHeight}
-                        >
-                            <p className="more-icon">
-                                <img
-                                    alt={title}
-                                    src={moreIcon}
-                                    width="auto"
-                                    height={dimensions.mediaPlayerHeight.mini - 10}
-                                />
-                            </p>
-                        </StyledNotMediaPlayer>
+                        { !isMobileMode && 
+                            <StyledNotMediaPlayer
+                                onMouseOver={() => this.props.onMouseOver()}
+                                moreIconHeight={moreIconHeight}
+                            >
+                                <p className="more-icon">
+                                    <img
+                                        alt={title}
+                                        src={moreIcon}
+                                        width="auto"
+                                        height={dimensions.mediaPlayerHeight.mini - 10}
+                                    />
+                                </p>
+                            </StyledNotMediaPlayer>
+                        }
                     </StyledMediaPlayer>
                 }
                 <StyledMediaPlayer
@@ -245,7 +241,6 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         ref={this.reactPlayerRef}
                         style={{ visibility: playerVisibility }}
                         url={url}
-                        muted
                         playing={this.state.playing}
                         width="100%"
                         height={playerHeight}
@@ -253,9 +248,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         youtubeConfig={youtubeConfig}
                         onReady={() => this.onReady()}
                         onStart={() => this.onPlay()}
-                        onPlay={() => this.onPlay()}
                         onProgress={(progress: any) => this.onProgress(progress)}
-                        onPause={() => this.onPause()}
                         onEnded={() => this.onEnded()}
                         onError={() => this.onError()}
                     />
@@ -264,16 +257,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         );
     }
 
-    private onReady = () => {
-        console.log('onReady');
-        this.trySetPlayingState(true);
-    }
-
-    private onPlay = () => {
-        console.log('onPlay');
-        this.trySetPlayingState(true);
-    }
-    private onPause = () => this.trySetPlayingState(false);
+    private onReady = () => this.trySetPlayingState(true);
+    private onPlay = () => this.trySetPlayingState(true);
 
     private onProgress = (progress: any) => {
         const duration = this.reactPlayer.getDuration();
@@ -400,7 +385,16 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
 
     private trySetPlayingState(playing: boolean) {
         if (playing !== this.state.playing) {
-            this.setState({ playing });
+            this.setState({ playing }, () => {
+                const internalPlayer = this.reactPlayer.getInternalPlayer();
+                if (playing && internalPlayer && internalPlayer.play) {
+                    internalPlayer.play();
+                } 
+    
+                if (!playing && internalPlayer && internalPlayer.pause) {
+                    internalPlayer.pause();
+                } 
+            });
         }
     }
 
