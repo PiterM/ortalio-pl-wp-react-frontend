@@ -34,6 +34,14 @@ const HomePageLayout: React.FC<IndexLayoutProps> = ({
                 meta={[
                     { name: 'description', content: globalData.metaDescription },
                     { name: 'keywords', content: globalData.metaKeywords },
+                    { property: 'og:title', content: globalData.metaDescription },
+                    { property: 'og:description', content: globalData.siteTitle },
+                    { property: 'og:image', content: 'images/ortalio-logo.jpg' },
+                    { property: 'og:url', content: 'https://ortalio.pl' },
+                    { property: 'og:site_name', content: globalData.metaDescription },
+                    { name: 'twitter:card', content: 'images/ortalio-logo.jpgf' },
+                    { name: 'twitter:image:alt', content: globalData.metaDescription },
+                    { name: 'twitter:site', content: '@ortalio.pl' },
                 ]}
                 link={[
                 {
