@@ -73,6 +73,7 @@ export function* selectCurrentAudioItem(getItem: any): GetAllMediaDataIterator {
             const itemsGraph: any = yield select((store: StoreState) => store.itemsGraph);
             if (itemsGraph && itemsGraph.length) {
                 const currentSelectedMediaId: any = yield select((store: StoreState) => store.selectedMediaId);
+                const layoutOptions: any = yield select((store: StoreState) => store.layoutOptions);
                 const currentKey = getItemKeyById(mediaData, currentSelectedMediaId as string);
                 const firstItemId: string = (mediaData[0] as OrtalioMedia).id;
                 const lastItemId: string = (mediaData[mediaData.length - 1] as OrtalioMedia).id;
@@ -86,7 +87,9 @@ export function* selectCurrentAudioItem(getItem: any): GetAllMediaDataIterator {
                     newKey = itemsGraph[currentKey][getItem.direction];
                 }
                 
-                setWindowLocationHash(mediaData[newKey].slug);
+                if (layoutOptions.columnsNumber > 2) {
+                    setWindowLocationHash(mediaData[newKey].slug);
+                }
                 yield put(getItem.actionSuccess(mediaData[newKey].id));
             }
         }

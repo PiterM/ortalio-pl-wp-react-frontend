@@ -177,7 +177,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
         const activeErrorMessage = this.state.errorMessage
             ? this.state.errorMessage
             : errorMessage;
-        
+
 
         if (minimalMode && this.miniPlayer && this.miniPlayer.current) {
             this.miniPlayer.current.focus();
@@ -217,7 +217,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                             toggleTimerMode={() => this.toggleTimerModeState()}
                             toggleLoopMode={() => this.toggleLoopModeState()}
                         />
-                        { !isMobileMode && 
+                        {!isMobileMode &&
                             <StyledNotMediaPlayer
                                 onMouseOver={() => this.props.onMouseOver()}
                                 moreIconHeight={moreIconHeight}
@@ -386,14 +386,24 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private trySetPlayingState(playing: boolean) {
         if (playing !== this.state.playing) {
             this.setState({ playing }, () => {
+
                 const internalPlayer = this.reactPlayer.getInternalPlayer();
-                if (playing && internalPlayer && internalPlayer.play) {
-                    internalPlayer.play();
-                } 
-    
-                if (!playing && internalPlayer && internalPlayer.pause) {
-                    internalPlayer.pause();
-                } 
+                if (internalPlayer && internalPlayer.play) {
+                    if (playing) {
+                        internalPlayer.play();
+                    } else {
+                        internalPlayer.pause();
+                    }
+                }
+
+                if (internalPlayer && internalPlayer.playVideo) {
+                    if (playing) {
+                        internalPlayer.playVideo();
+                    } else {
+                        internalPlayer.pauseVideo();
+                    }
+                }
+
             });
         }
     }
