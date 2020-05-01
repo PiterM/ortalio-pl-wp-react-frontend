@@ -178,7 +178,6 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             ? this.state.errorMessage
             : errorMessage;
 
-
         if (minimalMode && this.miniPlayer && this.miniPlayer.current) {
             this.miniPlayer.current.focus();
         }
@@ -191,7 +190,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
             ? dimensions.mediaPlayerHeight.compact - 30
             : dimensions.mediaPlayerHeight.mini - 10;
 
-        const isMobileMode = displayMode === LayoutModes.Mobile;
+        const showMoreIcon = layoutOptions && layoutOptions.columnsNumber > 3;
 
         return (
             <>
@@ -217,7 +216,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                             toggleTimerMode={() => this.toggleTimerModeState()}
                             toggleLoopMode={() => this.toggleLoopModeState()}
                         />
-                        {!isMobileMode &&
+                        {showMoreIcon &&
                             <StyledNotMediaPlayer
                                 onMouseOver={() => this.props.onMouseOver()}
                                 moreIconHeight={moreIconHeight}
@@ -247,7 +246,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
                         soundcloudConfig={soundcloudConfig}
                         youtubeConfig={youtubeConfig}
                         onReady={() => this.onReady()}
-                        // onStart={() => this.onPlay()}
+                        onStart={() => this.onPlay()}
                         onProgress={(progress: any) => this.onProgress(progress)}
                         onEnded={() => this.onEnded()}
                         onError={() => this.onError()}
@@ -258,7 +257,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     }
 
     private onReady = () => this.trySetPlayingState(true);
-    // private onPlay = () => this.trySetPlayingState(true);
+    private onPlay = () => this.trySetPlayingState(true);
 
     private onProgress = (progress: any) => {
         const duration = this.reactPlayer.getDuration();
@@ -347,9 +346,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps> {
     private onEnded = () => {
         this.setState({ playing: false }, () => {
             const { layoutOptions } = this.props;
-            if (this.state.loopMode === LoopMode.NoLoop) {
+            if (this.state.loopMode === LoopMode.NoLoop ||
+                (layoutOptions && layoutOptions.mode !== LayoutModes.Mobile)) {
                 this.props.selectNextMediaItem();
-            } else if (layoutOptions && layoutOptions.mode !== LayoutModes.Mobile) {
+            } else {
                 this.resetTrackProgress();
             }
         });
