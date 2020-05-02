@@ -100,7 +100,7 @@ interface MediaPlayerOwnProps {
 }
 
 interface MediaPlayerMappedProps {
-    errorMessage: string | null;
+    errorMessage?: string;
     selectedMediaId?: string | null;
     keyDownCode?: number | null;
     layoutOptions?: LayoutOptionsState | null;
@@ -167,15 +167,11 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             layoutOptions
         } = this.props;
 
-        const playerVisibility = minimalMode ? 'hidden' : 'visible';
+        const playerDisplayCss = minimalMode ? 'none' : 'block';
         const playerHeight = minimalMode ? 0 : this.props.playerHeight;
         const moreIcon = playerMode === MediaPlayerMode.Soundcloud
             ? '/images/soundcloud200-logo.png'
             : '/images/youtube200-logo.png';
-
-        const activeErrorMessage = this.state.errorMessage
-            ? this.state.errorMessage
-            : errorMessage;
 
         if (minimalMode && this.miniPlayer && this.miniPlayer.current) {
             this.miniPlayer.current.focus();
@@ -197,7 +193,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                     <StyledMediaPlayer>
                         <MediaPlayerMini
                             ref={this.miniPlayerRef}
-                            errorMessage={activeErrorMessage}
+                            errorMessage={errorMessage}
                             visible={minimalMode}
                             title={title}
                             slug={slug}
@@ -237,7 +233,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 >
                     <ReactPlayer
                         ref={this.reactPlayerRef}
-                        style={{ visibility: playerVisibility }}
+                        style={{ display: playerDisplayCss }}
                         url={url}
                         playing={this.state.playing}
                         width="100%"
@@ -276,9 +272,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 seconds = played - minutes * 60;
             }
 
-            const dashCharacter = timerMode === TimerMode.RemainingTime
-                ? '-'
-                : '&nbsp;';
+            const dashCharacter = 
+                minutes && seconds && timerMode === TimerMode.RemainingTime
+                    ? '-'
+                    : '&nbsp;';
 
             this.setState({
                 progress: {
@@ -294,21 +291,21 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
     private onPauseClick = () => this.trySetPlayingState(false);
 
     private onPreviousClick = () => {
-        this.resetEroroMessage();
+        this.resetErrorMessage();
         this.props.selectPreviousMediaItem();
     }
     private onNextClick = () => {
-        this.resetEroroMessage();
+        this.resetErrorMessage();
         this.props.selectNextMediaItem();
     }
 
     private onUpperClick = () => {
-        this.resetEroroMessage();
+        this.resetErrorMessage();
         this.props.selectUpperMediaItem();
     }
 
     private onLowerClick = () => {
-        this.resetEroroMessage();
+        this.resetErrorMessage();
         this.props.selectLowerMediaItem();
     }
 
@@ -358,7 +355,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
         });
     }
 
-    private resetEroroMessage() {
+    private resetErrorMessage() {
         this.setState({ errorMessage: undefined });
     }
 
@@ -409,6 +406,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             progress: undefined,
             duration: undefined,
             playing: true,
+            errorMessage: undefined,
         });
     }
 
@@ -417,7 +415,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
 }
 
 const mapStateToProps: any = (store: StoreState, props: MediaPlayerProps): MediaPlayerMappedProps => ({
-    errorMessage: store.errorMessage,
+    errorMessage: store.errorMessage ? store.errorMessage : undefined,
     selectedMediaId: store.selectedMediaId,
     keyDownCode: store.keyDownCode,
     layoutOptions: store.layoutOptions,

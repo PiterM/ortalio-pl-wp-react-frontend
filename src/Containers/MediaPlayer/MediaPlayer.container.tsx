@@ -67,7 +67,6 @@ export class MediaPlayerContainer extends React.Component<MediaPlayerContainerPr
                     title={title}
                     thumbnailUrl={featuredImage.sourceUrl}
                     playerMode={playerMode}
-                    errorMessage={null}
                     onMouseOver={() => this.onMouseOver()}
                     onMouseOut={() => this.onMouseOut()}
                 />                   

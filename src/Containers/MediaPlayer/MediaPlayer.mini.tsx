@@ -162,7 +162,7 @@ interface MediaPlayerMiniOwnProps {
     progress?: ProgressTime;
     timerMode: TimerMode;
     loopMode: LoopMode;
-    errorMessage: string | null;
+    errorMessage?: string;
     displayMode?: LayoutModes;
     onPlayClick: () => void;
     onPauseClick: () => void;
