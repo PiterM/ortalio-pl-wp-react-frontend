@@ -187,8 +187,6 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
 
         const showMoreIcon = layoutOptions && layoutOptions.columnsNumber > 3;
 
-        console.log('render playing', this.state.playing);
-
         return (
             <>
                 {minimalMode &&
@@ -242,9 +240,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                         height={playerHeight}
                         soundcloudConfig={soundcloudConfig}
                         youtubeConfig={youtubeConfig}
-                        onReady={() => this.onPlay()}
-                        onStart={() => this.onPlay()}
-                        onPlay={() => this.onPlay()}
+                        onReady={() => this.onReady()}
                         onProgress={(progress: any) => this.onProgress(progress)}
                         onEnded={() => this.onEnded()}
                         onError={() => this.onError()}
@@ -254,7 +250,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
         );
     }
 
-    private onPlay = () => this.trySetPlayingState(true);
+    private onReady = () => this.trySetPlayingState(true);
 
     private onProgress = (progress: any) => {
         const duration = this.reactPlayer.getDuration();
@@ -384,24 +380,19 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
         if (playing !== this.state.playing) {
             this.setState({ playing }, () => {
                 const internalPlayer = this.reactPlayer.getInternalPlayer();
-                console.log('internalPlayer', internalPlayer);
                 if (internalPlayer && internalPlayer.play) {
                     if (playing) {
                         internalPlayer.play();
-                        console.log('internalPlayer.play()');
                     } else {
                         internalPlayer.pause();
-                        console.log('internalPlayer.pause()');
                     }
                 }
     
                 if (internalPlayer && internalPlayer.playVideo) {
                     if (playing) {
                         internalPlayer.playVideo();
-                        console.log('internalPlayer.playVideo()');
                     } else {
                         internalPlayer.pauseVideo();
-                        console.log('internalPlayer.pauseVideo()');
                     }
                 }
             });
