@@ -20,6 +20,7 @@ const StyledAudioItem = styled.section`
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
   width: 100%;
+  position: relative;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -27,13 +28,30 @@ const StyledAudioItem = styled.section`
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
                         supported by Chrome, Opera and Firefox */
-
+  
   &:hover {
     background-color ${colors.newspaperPaperHovered};
     border-top: 1px solid ${colors.newspaperText};
     border-bottom: 1px solid ${colors.newspaperText};
     color: #000;
     cursor: pointer;
+  }
+
+  &:hover .play-icon, &:active .play-icon, &.selected .play-icon {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 10px;
+      height: 10px;
+      animation: blinking 1.5s infinite;
+      @keyframes blinking {
+          0% { opacity: 0.8; };
+          49% { opacity: 0.8; };
+          60% { opacity: 0; };
+          99% { opacity: 0; }
+          100% { opacity: 0.8; }
+      }
+      background: url('/images/play-icon.svg') top left no-repeat;
   }
 
   &:active, &.selected {
@@ -48,6 +66,7 @@ const StyledAudioItem = styled.section`
     -ms-user-select: auto; /* Internet Explorer/Edge */
     user-select: auto; /* Non-prefixed version, currently
                           supported by Chrome, Opera and Firefox */
+
   }
 
   &.selected {
@@ -91,6 +110,7 @@ export class AudioItem extends React.Component<AudioItemProps> {
         onClick={() => this.onClick()}
         id={slug}
       >
+        <span className="play-icon"></span>
         <AudioItemHeader
           index={index}
           title={title}
