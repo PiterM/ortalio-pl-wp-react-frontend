@@ -100,7 +100,7 @@ const StyledPlayerLoopModeControlImage = styled.img`
     cursor: pointer;
 
     &.looped {
-        opacity: 0.85;
+        opacity: 0.65;
     }
 
     &:active {

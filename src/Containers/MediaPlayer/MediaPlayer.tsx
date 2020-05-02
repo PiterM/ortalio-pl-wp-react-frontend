@@ -41,6 +41,14 @@ const StyledMediaPlayer = styled.div`
     background: radial-gradient(ellipse at center, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a', GradientType=1 );
     background: url('/images/player-pattern.png') left top repeat rgba(249,247,241,1);
+
+    & .player-loader {
+        margin: 10px auto;
+    }
+
+    .layout-extended & .player-loader {
+        margin: 7px 20% 7px;
+    }
 `;
 
 interface StyledNotMediaPlayerProps {
@@ -117,6 +125,7 @@ type MediaPlayerProps = MediaPlayerOwnProps & MediaPlayerMappedProps & MediaPlay
 
 interface MediaPlayerState {
     playing: boolean;
+    loading: boolean;
     progress?: ProgressTime;
     duration?: number;
     timerMode: TimerMode;
@@ -132,6 +141,7 @@ const initProgressState = {
 
 const initState: MediaPlayerState = {
     playing: false,
+    loading: true,
     timerMode: TimerMode.RemainingTime,
     progress: initProgressState,
     loopMode: LoopMode.NoLoop
@@ -187,44 +197,61 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
 
         const showMoreIcon = layoutOptions && layoutOptions.columnsNumber > 3;
 
+        const mediaPlayerHeight = [LayoutModes.Compact, LayoutModes.Mobile].includes(displayMode!)
+            ? dimensions.mediaPlayerHeight.compact - 20
+            : dimensions.mediaPlayerHeight.mini;
+
         return (
             <>
                 {minimalMode &&
                     <StyledMediaPlayer>
-                        <MediaPlayerMini
-                            ref={this.miniPlayerRef}
-                            errorMessage={errorMessage}
-                            visible={minimalMode}
-                            title={title}
-                            slug={slug}
-                            url={url}
-                            thumbnailUrl={thumbnailUrl}
-                            playing={this.state.playing}
-                            progress={this.state.progress}
-                            timerMode={this.state.timerMode}
-                            loopMode={this.state.loopMode}
-                            displayMode={displayMode}
-                            onPlayClick={this.onPlayClick}
-                            onPauseClick={this.onPauseClick}
-                            onPreviousClick={this.onPreviousClick}
-                            onNextClick={this.onNextClick}
-                            toggleTimerMode={() => this.toggleTimerModeState()}
-                            toggleLoopMode={() => this.toggleLoopModeState()}
-                        />
-                        {showMoreIcon &&
-                            <StyledNotMediaPlayer
-                                onMouseOver={() => this.props.onMouseOver()}
-                                moreIconHeight={moreIconHeight}
-                            >
-                                <p className="more-icon">
-                                    <img
-                                        alt={title}
-                                        src={moreIcon}
-                                        width="auto"
-                                        height={dimensions.mediaPlayerHeight.mini - 10}
-                                    />
-                                </p>
-                            </StyledNotMediaPlayer>
+                        { this.state.loading &&
+                            <img
+                                alt="Loading player..."
+                                src="/images/audio-loader.svg"
+                                width="auto"
+                                height={mediaPlayerHeight}
+                                className="player-loader"
+                            />
+                        }
+                        { !this.state.loading &&
+                            <>
+                                <MediaPlayerMini
+                                    ref={this.miniPlayerRef}
+                                    errorMessage={errorMessage}
+                                    visible={minimalMode}
+                                    title={title}
+                                    slug={slug}
+                                    url={url}
+                                    thumbnailUrl={thumbnailUrl}
+                                    playing={this.state.playing}
+                                    progress={this.state.progress}
+                                    timerMode={this.state.timerMode}
+                                    loopMode={this.state.loopMode}
+                                    displayMode={displayMode}
+                                    onPlayClick={this.onPlayClick}
+                                    onPauseClick={this.onPauseClick}
+                                    onPreviousClick={this.onPreviousClick}
+                                    onNextClick={this.onNextClick}
+                                    toggleTimerMode={() => this.toggleTimerModeState()}
+                                    toggleLoopMode={() => this.toggleLoopModeState()}
+                                />
+                                {showMoreIcon &&
+                                    <StyledNotMediaPlayer
+                                        onMouseOver={() => this.props.onMouseOver()}
+                                        moreIconHeight={moreIconHeight}
+                                    >
+                                        <p className="more-icon">
+                                            <img
+                                                alt={title}
+                                                src={moreIcon}
+                                                width="auto"
+                                                height={dimensions.mediaPlayerHeight.mini - 10}
+                                            />
+                                        </p>
+                                    </StyledNotMediaPlayer>
+                                }
+                            </>
                         }
                     </StyledMediaPlayer>
                 }
@@ -378,7 +405,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
 
     private trySetPlayingState(playing: boolean) {
         if (playing !== this.state.playing) {
-            this.setState({ playing }, () => {
+            this.setState({ 
+                playing,
+                loading: false,
+            }, () => {
                 const internalPlayer = this.reactPlayer.getInternalPlayer();
                 if (internalPlayer && internalPlayer.play) {
                     if (playing) {
@@ -405,6 +435,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             duration: undefined,
             playing: false,
             errorMessage: undefined,
+            loading: true,
         });
     }
 
