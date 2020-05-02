@@ -242,8 +242,9 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                         height={playerHeight}
                         soundcloudConfig={soundcloudConfig}
                         youtubeConfig={youtubeConfig}
-                        onReady={() => this.onReady()}
+                        onReady={() => this.onPlay()}
                         onStart={() => this.onPlay()}
+                        onPlay={() => this.onPlay()}
                         onProgress={(progress: any) => this.onProgress(progress)}
                         onEnded={() => this.onEnded()}
                         onError={() => this.onError()}
@@ -253,8 +254,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
         );
     }
 
-    private onReady = () => this.setPlayingState(true);
-    private onPlay = () => this.setPlayingState(true);
+    private onPlay = () => this.trySetPlayingState(true);
 
     private onProgress = (progress: any) => {
         const duration = this.reactPlayer.getDuration();
@@ -284,13 +284,13 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                     dashCharacter,
                     minutesDisplayed: `${minutes}`.padStart(2, '0'),
                     secondsDisplayed: `${seconds}`.padStart(2, '0')
-                }
+                },
             });
         }
     }
 
-    private onPlayClick = () => this.setPlayingState(true);
-    private onPauseClick = () => this.setPlayingState(false);
+    private onPlayClick = () => this.trySetPlayingState(true);
+    private onPauseClick = () => this.trySetPlayingState(false);
 
     private onPreviousClick = () => {
         this.resetErrorMessage();
@@ -380,29 +380,31 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
         this.setState({ loopMode });
     }
 
-    private setPlayingState(playing: boolean) {
-        this.setState({ playing });
-
-        const internalPlayer = this.reactPlayer.getInternalPlayer();
-        console.log('internalPlayer', internalPlayer);
-        if (internalPlayer && internalPlayer.play) {
-            if (playing) {
-                internalPlayer.play();
-                console.log('internalPlayer.play()');
-            } else {
-                internalPlayer.pause();
-                console.log('internalPlayer.pause()');
-            }
-        }
-
-        if (internalPlayer && internalPlayer.playVideo) {
-            if (playing) {
-                internalPlayer.playVideo();
-                console.log('internalPlayer.playVideo()');
-            } else {
-                internalPlayer.pauseVideo();
-                console.log('internalPlayer.pauseVideo()');
-            }
+    private trySetPlayingState(playing: boolean) {
+        if (playing !== this.state.playing) {
+            this.setState({ playing }, () => {
+                const internalPlayer = this.reactPlayer.getInternalPlayer();
+                console.log('internalPlayer', internalPlayer);
+                if (internalPlayer && internalPlayer.play) {
+                    if (playing) {
+                        internalPlayer.play();
+                        console.log('internalPlayer.play()');
+                    } else {
+                        internalPlayer.pause();
+                        console.log('internalPlayer.pause()');
+                    }
+                }
+    
+                if (internalPlayer && internalPlayer.playVideo) {
+                    if (playing) {
+                        internalPlayer.playVideo();
+                        console.log('internalPlayer.playVideo()');
+                    } else {
+                        internalPlayer.pauseVideo();
+                        console.log('internalPlayer.pauseVideo()');
+                    }
+                }
+            });
         }
     }
 
