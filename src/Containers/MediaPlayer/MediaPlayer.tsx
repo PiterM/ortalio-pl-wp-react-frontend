@@ -44,10 +44,29 @@ const StyledMediaPlayer = styled.div`
 
     & .player-loader {
         margin: 10px auto;
+        display: flex;
+        align-items: center;
+
+        & p {
+            font-family: ${fonts.monospace};
+            font-size: ${dimensions.fontSize.regular}px;
+            font-weight: bold;
+            color: #444;
+            padding-left: 10px;
+            margin: 0;
+            animation: blinking 1.5s infinite;
+            @keyframes blinking {
+                0% { opacity: 0.8; };
+                49% { opacity: 0.8; };
+                60% { opacity: 0; };
+                99% { opacity: 0; }
+                100% { opacity: 0.8; }
+            }
+        }
     }
 
     .layout-extended & .player-loader {
-        margin: 7px 20% 7px;
+        margin: 7px auto 7px auto;
     }
 `;
 
@@ -206,13 +225,12 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 {minimalMode &&
                     <StyledMediaPlayer>
                         { this.state.loading &&
-                            <img
-                                alt="Loading player..."
-                                src="/images/audio-loader.svg"
-                                width="auto"
-                                height={mediaPlayerHeight}
+                            <div 
                                 className="player-loader"
-                            />
+                                style={{height: mediaPlayerHeight}}
+                            >
+                                <p>Loading track...</p>
+                            </div>
                         }
                         { !this.state.loading &&
                             <>
