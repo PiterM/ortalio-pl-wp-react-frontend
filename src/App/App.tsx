@@ -25,7 +25,7 @@ function App() {
       <Provider store={store}>
         <Router>
           <Switch>
-            <Route exact path="/asdfasdf10" component={HomePage} />
+            <Route exact path="/" component={HomePage} />
             <Route component={Page404} />
           </Switch>
         </Router>
