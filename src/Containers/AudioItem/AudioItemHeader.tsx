@@ -15,7 +15,7 @@ interface AudioItemHeadlineProps {
 }
 
 const AudioItemHeadlineTop: React.FC<AudioItemHeadlineProps> = ({ textVariant, children }) => {
-  const StyledHeader = styled.h2`
+  const StyledHeader = styled.h3`
     text-align: center;
     line-height: normal;
     box-sizing: border-box;

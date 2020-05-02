@@ -15,3 +15,28 @@
         display: none;
     }
 }
+
+.columns3, .columns4, .columns5 {
+    .listen-header {
+      display: none !important;
+    }
+}
+
+.columns1, .columns2 {
+    .listen-header {
+        display: inline-block;
+        letter-spacing: 6px;
+        font-family: "Playfair Display", "Droid Serif", Georgia, "Times New Roman", Times, serif;
+        font-weight: 900;
+        font-size: 35px;
+        text-transform: uppercase;
+        text-align: center;
+        width: 100%;
+        margin-bottom: 30px;
+    }
+}
+
+.columns2 .listen-header {
+    margin-bottom: 0;
+}
+  

@@ -35,6 +35,7 @@ const StyledHeaderTitle = styled.header`
     font-size: 80px;
     text-transform: uppercase;
   }
+}
 `;
 
 const StyledHomePageLink = styled.a`
