@@ -37,9 +37,28 @@ class HomePageContainer extends React.Component {
             <Query query={GET_ORTALO_FULL_DATA_QUERY}>
                 {
                     (fullData: any) => {
-                        const LoadingOrErrorScreen: any = renderLoadingOrErrorScreen(fullData);
-                        if (LoadingOrErrorScreen !== null) {
-                            return LoadingOrErrorScreen;
+                        if (!fullData || fullData.loading) {
+                            return <LoaderScreen />;
+                        }
+                        if (fullData.error) {
+                            return <Query query={GET_ORTALO_FULL_DATA_QUERY}>
+                                {
+                                    (fullData: any) => {
+                                        const LoadingOrErrorScreen: any = renderLoadingOrErrorScreen(fullData);
+                                        if (LoadingOrErrorScreen !== null) {
+                                            return LoadingOrErrorScreen;
+                                        }
+
+                                        return (
+                                            <HomePage 
+                                                globalData={fullData.data.globalData as GlobalData}
+                                                socialMediaData={fullData.data.socialMediaData as SocialMediaData[]}
+                                                data={fullData.data.data as OrtalioMedia[]}
+                                            />
+                                        );
+                                    }
+                                }
+                            </Query>
                         }
 
                         return (
