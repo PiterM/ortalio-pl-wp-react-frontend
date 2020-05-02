@@ -81,6 +81,10 @@ const StyledMediaPlayerMini = styled.div`
         }
     }
 
+    .media-player.loading & .thumbnail img {
+        opacity: 0.3;
+    }
+
     & p {
         margin: 0;
         margin-left: 10px;
@@ -89,7 +93,7 @@ const StyledMediaPlayerMini = styled.div`
         justify-self: center;
     }
 
-    & .title button {
+    & .title button, .title.loader {
         text-decoration: none;
         grid-column: 2;
         font-family: ${fonts.monospace};
@@ -100,22 +104,40 @@ const StyledMediaPlayerMini = styled.div`
         border: none;
         background-color: transparent;
         outline: none;
+    }
 
-        &:hover {
-            color: #000;
-            background-color: #fff;
-            -webkit-transition: all 0s ease-in-out 0.1s;
-            -moz-transition: all 0s ease-in-out 0.1s;
-            -o-transition: all 0s ease-in-out 0.1s;
-            transition: all 0s ease-in-out 0.1;
+    & .title button:hover {
+        color: #000;
+        background-color: #fff;
+        -webkit-transition: all 0s ease-in-out 0.1s;
+        -moz-transition: all 0s ease-in-out 0.1s;
+        -o-transition: all 0s ease-in-out 0.1s;
+        transition: all 0s ease-in-out 0.1;
+    }
+
+    & .title.loader {
+        color: #444;
+        animation: blinking 1.5s infinite;
+        @keyframes blinking {
+            0% { opacity: 0.8; };
+            49% { opacity: 0.8; };
+            60% { opacity: 0; };
+            99% { opacity: 0; }
+            100% { opacity: 0.8; }
         }
+        cursor: auto;
     }
 
     & .controls {
         grid-column: 3;
     }
 
+    .media-player.loading & .controls {
+        opacity: 0.3;
+    }
+
     & .timer {
+        display; none;
         grid-column: 4;
         border-right: 1px solid ${colors.newspaperText};
         font-family: ${fonts.monospace};
@@ -159,6 +181,7 @@ interface MediaPlayerMiniOwnProps {
     thumbnailUrl: string;
     visible: boolean;
     playing: boolean;
+    loading: boolean;
     progress?: ProgressTime;
     timerMode: TimerMode;
     loopMode: LoopMode;
@@ -174,7 +197,17 @@ interface MediaPlayerMiniOwnProps {
 
 export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
     render() {
-        const { title, slug, url, visible, thumbnailUrl, playing, errorMessage, displayMode } = this.props;
+        const { 
+            title, 
+            slug, 
+            url, 
+            visible, 
+            thumbnailUrl, 
+            playing, 
+            errorMessage, 
+            displayMode,
+            loading,
+        } = this.props;
 
         const mediaPlayerHeight = [LayoutModes.Compact, LayoutModes.Mobile].includes(displayMode!)
             ? dimensions.mediaPlayerHeight.compact
@@ -194,10 +227,11 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
 
         const isPlayerDisplayMobile = displayMode === LayoutModes.Mobile;
 
-
+        const mediaPlayerClass = `media-player${loading ? ' loading' : ' loaded'}`;
+        
         return visible ? (
             <StyledMediaPlayerMiniContainer
-                className="media-player"
+                className={mediaPlayerClass}
             >
                 <StyledMediaPlayerMini
                     mediaPlayerHeight={mediaPlayerHeight}
@@ -228,7 +262,12 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                                     {errorMessage}
                                 </p>
                             }
-                            { !errorMessage &&
+                            { loading && 
+                                <p className="title loader">
+                                   Loading track...
+                                </p>
+                            }
+                            { !errorMessage && !loading &&
                                 <p className="title">
                                     <button
                                         onClick={() => setWindowLocationHash(slug)}
@@ -242,11 +281,11 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     <div className="controls">
                         <MediaPlayerMiniControls 
                             playing={playing}
-                            onPlayClick={this.props.onPlayClick}
-                            onPauseClick={this.props.onPauseClick}
-                            onPreviousClick={this.props.onPreviousClick}
-                            onNextClick={this.props.onNextClick}
-                            toggleLoopMode={this.props.toggleLoopMode}
+                            onPlayClick={() => !loading && this.props.onPlayClick()}
+                            onPauseClick={() => !loading && this.props.onPauseClick()}
+                            onPreviousClick={() => !loading && this.props.onPreviousClick()}
+                            onNextClick={() => !loading && this.props.onNextClick()}
+                            toggleLoopMode={() => !loading && this.props.toggleLoopMode()}
                             loopMode={this.props.loopMode}
                             displayMode={this.props.displayMode}
                         />

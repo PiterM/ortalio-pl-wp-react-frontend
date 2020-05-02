@@ -45,3 +45,11 @@
         }
     }
 }
+
+.media-player.loading .timer {
+    opacity: 0.3;
+}
+
+.media-player.loaded .timer {
+    opacity: 1;
+}

@@ -40,13 +40,17 @@ const StyledPlayerPauseControlImage = styled.img`
         100% { opacity: 0.8; }
     }
 
-    &:hover {
+    .media-player.loaded &:hover {
         animation: none;
     }
 
-    &:active {
+    .media-player.loaded &:active {
         border: 2px solid transparent;
         opacity: 1;
+    }
+
+    .media-player.loading & {
+        cursor: auto;
     }
 `;
 
@@ -61,9 +65,13 @@ const StyledPlayerPlayControlImage = styled.img`
     display: inline-block;
     cursor: pointer;
 
-    &:active {
+    .media-player.loaded &:active {
         border: 2px solid transparent;
         opacity: 1;
+    }
+
+    .media-player.loading & {
+        cursor: auto;
     }
 `;
 
@@ -80,9 +88,13 @@ const StyledPlayerSimpleControlImage = styled.img`
     margin-left: ${(props: StyledPlayerSimpleControlImageProps) => props.buttonsMargin}px;
     cursor: pointer;
 
-    &:active {
+    .media-player.loaded &:active {
         border: 2px solid transparent;
         opacity: 1;
+    }
+
+    .media-player.loading & {
+        cursor: auto;
     }
 `;
 
@@ -99,12 +111,16 @@ const StyledPlayerLoopModeControlImage = styled.img`
     display: inline-block;
     cursor: pointer;
 
-    &.looped {
+    .media-player.loaded &.looped {
         opacity: 0.65;
     }
 
-    &:active {
+    .media-player.loaded &:active {
         border: 2px solid transparent;
+    }
+
+    .media-player.loading & {
+        cursor: auto;
     }
 `;
 
