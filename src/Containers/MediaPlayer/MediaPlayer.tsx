@@ -346,6 +346,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 this.props.selectNextMediaItem();
             } else {
                 this.resetTrackProgress();
+                this.trySetPlayingState(true);
             }
         });
     }
