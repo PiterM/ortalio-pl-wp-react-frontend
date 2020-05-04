@@ -140,7 +140,7 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
                 <SocialIcons
                     socialMediaData={socialMediaData}
                 />
-                <h2 className="listen-header">Listen:</h2>
+                <h2 className="listen-header">Click to play:</h2>
                 <StyledPage 
                     id="main-grid"
                 >
