@@ -93,7 +93,6 @@ type HomePageProps = HomePageOwnProps & HomePageMappedProps & HomePageDispatchPr
 
 export class HomePage extends React.Component<HomePageProps, HomePageState> {
     public state: HomePageState = initState;
-    private renderedColumns: any = null;
 
     shouldComponentUpdate(nextProps: HomePageProps) {
         return nextProps.selectedMediaId !== this.props.selectedMediaId
@@ -130,7 +129,10 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
 
     render() {
         const { globalData, socialMediaData, data } = this.props;
-        const { mode, columnsNumber} = this.state.layoutOptions;
+        let { mode, columnsNumber} = this.state.layoutOptions;
+        
+        mode = mode ? mode : LayoutModes.Extended;
+        columnsNumber = columnsNumber ? columnsNumber : 5;
 
         return (
             <HomePageLayout
