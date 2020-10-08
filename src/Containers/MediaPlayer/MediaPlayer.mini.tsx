@@ -248,7 +248,7 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                                 rel="noopener noreferrer"
                             >
                                 <img 
-                                    alt={title}
+                                    alt={''}
                                     src={thumbnailUrl} 
                                     width={dimensions.mediaPlayerHeight.mini}
                                     height={dimensions.mediaPlayerHeight.mini}

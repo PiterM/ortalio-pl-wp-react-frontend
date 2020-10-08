@@ -76,6 +76,7 @@ interface HomePageOwnProps {
 interface HomePageState {
     windowResolution: WindowResolution;
     layoutOptions: LayoutOptionsState;
+    keyPressed: boolean;
 }
 
 const initState = {
@@ -86,7 +87,8 @@ const initState = {
     layoutOptions: {
         columnsNumber: 5,
         mode: LayoutModes.Extended,
-    }
+    },
+    keyPressed: false,
 };
 
 type HomePageProps = HomePageOwnProps & HomePageMappedProps & HomePageDispatchProps;
@@ -118,12 +120,14 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
         this.props.saveAllMediaData(reduxData);
 
         document.addEventListener("keydown", this.onKeyDown);
+        document.addEventListener("keyup", this.onKeyUp);
         window.addEventListener("resize", this.onWindowResize)
         this.onWindowResize();
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.onKeyDown);
+        document.removeEventListener('keyup', this.onKeyUp);
         window.removeEventListener('resize', this.onWindowResize);
     }
 
@@ -216,7 +220,14 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
         if (this.props.selectedMediaId && Object.values(KeyCodes).includes(event.keyCode)) {
             event.preventDefault();
         }
-        this.props.setKeyDownCode(event.keyCode);
+        if (!this.state.keyPressed) {
+            this.props.setKeyDownCode(event.keyCode);
+            this.setState({ keyPressed: true });
+        }
+    }
+
+    private onKeyUp = () => { 
+        this.state.keyPressed && this.setState({ keyPressed: false });
     }
 
     private onWindowResize = () => {
