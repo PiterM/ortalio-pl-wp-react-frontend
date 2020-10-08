@@ -162,8 +162,16 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             layoutOptions
         } = this.props;
 
-        const playerDisplayCss = minimalMode ? 'hidden' : 'visible';
-        const playerHeight = minimalMode ? 0 : this.props.playerHeight;
+        const playerDisplayVisibilityStyle = minimalMode ? 'hidden' : 'visible';
+        const playerDisplayOpacityStyle = minimalMode ? 0 : 1;
+        const playerDisplayBottomStyle = minimalMode ? -1 * this.props.playerHeight : 0;
+        const playerDisplayStyles = {
+            visibility: playerDisplayVisibilityStyle,
+            opacity: playerDisplayOpacityStyle,
+            position: 'absolute',
+            bottom: playerDisplayBottomStyle
+        };
+
         const moreIcon = playerMode === MediaPlayerMode.Soundcloud
             ? '/images/soundcloud200-logo.png'
             : '/images/youtube200-logo.png';
@@ -234,11 +242,11 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 >
                     <ReactPlayer
                         ref={this.reactPlayerRef}
-                        style={{ visibility: playerDisplayCss }}
+                        style={playerDisplayStyles}
                         url={url}
                         playing={this.state.playing}
-                        width="100%"
-                        height={playerHeight}
+                        width="100vw"
+                        height={this.props.playerHeight}
                         config={config}
                         onReady={() => this.onReady()}
                         onProgress={(progress: any) => this.onProgress(progress)}

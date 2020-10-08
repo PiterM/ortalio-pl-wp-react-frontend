@@ -1,6 +1,5 @@
 export const soundcloudConfig = {
     options: {
-        auto_play: true,
         single_active: true,
         liking: true,
         sharing: true,
