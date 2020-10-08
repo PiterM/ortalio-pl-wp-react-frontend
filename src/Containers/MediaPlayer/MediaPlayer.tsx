@@ -33,14 +33,7 @@ const StyledMediaPlayer = styled.div`
     display: flex;
     border-top: 2px solid ${colors.white};
 
-    background: -moz-radial-gradient(center, ellipse cover, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(255,175,75,1)), color-stop(100%, rgba(255,146,10,0.52)));
-    background: -webkit-radial-gradient(center, ellipse cover, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
-    background: -o-radial-gradient(center, ellipse cover, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
-    background: -ms-radial-gradient(center, ellipse cover, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
-    background: radial-gradient(ellipse at center, rgba(255,175,75,1) 0%, rgba(255,146,10,0.52) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a', GradientType=1 );
-    background: url('/images/player-pattern.png') left top repeat rgba(249,247,241,1);
+    background-color: rgba(249,247,241,1);
 `;
 
 interface StyledNotMediaPlayerProps {
@@ -169,7 +162,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             layoutOptions
         } = this.props;
 
-        const playerDisplayCss = minimalMode ? 'none' : 'block';
+        const playerDisplayCss = minimalMode ? 'hidden' : 'visible';
         const playerHeight = minimalMode ? 0 : this.props.playerHeight;
         const moreIcon = playerMode === MediaPlayerMode.Soundcloud
             ? '/images/soundcloud200-logo.png'
@@ -241,7 +234,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 >
                     <ReactPlayer
                         ref={this.reactPlayerRef}
-                        style={{ display: playerDisplayCss }}
+                        style={{ visibility: playerDisplayCss }}
                         url={url}
                         playing={this.state.playing}
                         width="100%"
