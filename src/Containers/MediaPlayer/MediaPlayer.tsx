@@ -189,6 +189,11 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
 
         const showMoreIcon = layoutOptions && layoutOptions.columnsNumber > 3;
 
+        const config = {
+            youtube: youtubeConfig,
+            soundcloud: soundcloudConfig
+        };
+
         return (
             <>
                 {minimalMode &&
@@ -221,7 +226,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                             >
                                 <p className="more-icon">
                                     <img
-                                        alt={title}
+                                        alt={''}
                                         src={moreIcon}
                                         width="auto"
                                         height={dimensions.mediaPlayerHeight.mini - 10}
@@ -241,8 +246,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                         playing={this.state.playing}
                         width="100%"
                         height={playerHeight}
-                        soundcloudConfig={soundcloudConfig}
-                        youtubeConfig={youtubeConfig}
+                        config={config}
                         onReady={() => this.onReady()}
                         onProgress={(progress: any) => this.onProgress(progress)}
                         onEnded={() => this.onEnded()}
