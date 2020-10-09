@@ -354,7 +354,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             if (this.state.loopMode === LoopMode.NoLoop) {
                 this.props.selectNextMediaItem();
             } else {
-                this.resetTrackProgress();
+                this.resetTrackProgress(true);
                 this.trySetPlayingState(true);
             }
         });
@@ -395,34 +395,36 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 playing,
                 loading: false,
             }, () => {
-                const internalPlayer = this.reactPlayer.getInternalPlayer();
-                if (internalPlayer && internalPlayer.play) {
-                    if (playing) {
-                        internalPlayer.play();
-                    } else {
-                        internalPlayer.pause();
+                if (this.reactPlayer) {
+                    const internalPlayer = this.reactPlayer.getInternalPlayer();
+                    if (internalPlayer && internalPlayer.play) {
+                        if (playing) {
+                            internalPlayer.play();
+                        } else {
+                            internalPlayer.pause();
+                        }
                     }
-                }
-    
-                if (internalPlayer && internalPlayer.playVideo) {
-                    if (playing) {
-                        internalPlayer.playVideo();
-                    } else {
-                        internalPlayer.pauseVideo();
+        
+                    if (internalPlayer && internalPlayer.playVideo) {
+                        if (playing) {
+                            internalPlayer.playVideo();
+                        } else {
+                            internalPlayer.pauseVideo();
+                        }
                     }
                 }
             });
         }
     }
 
-    private resetTrackProgress() {
+    private resetTrackProgress(reactPlayerLoaded: boolean = false) {
         this.setState({
             progress: undefined,
             duration: undefined,
             playing: false,
             errorMessage: undefined,
             loading: true,
-            reactPlayerLoaded: false,
+            reactPlayerLoaded,
         });
     }
 
