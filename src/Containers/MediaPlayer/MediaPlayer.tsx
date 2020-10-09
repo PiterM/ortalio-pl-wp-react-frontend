@@ -283,7 +283,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             }
 
             const dashCharacter = 
-                minutes && seconds && timerMode === TimerMode.RemainingTime
+                minutes !== undefined && seconds !== undefined && timerMode === TimerMode.RemainingTime
                     ? '-'
                     : '&nbsp;';
 
