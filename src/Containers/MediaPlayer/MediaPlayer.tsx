@@ -116,6 +116,7 @@ interface MediaPlayerState {
     timerMode: TimerMode;
     loopMode: LoopMode;
     errorMessage?: string;
+    reactPlayerLoaded: boolean;
 }
 
 const initProgressState = {
@@ -129,7 +130,8 @@ const initState: MediaPlayerState = {
     loading: true,
     timerMode: TimerMode.RemainingTime,
     progress: initProgressState,
-    loopMode: LoopMode.NoLoop
+    loopMode: LoopMode.NoLoop,
+    reactPlayerLoaded: false,
 };
 
 export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerState> {
@@ -137,9 +139,14 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
     private reactPlayer: any;
     private miniPlayer: any;
 
+    componentDidMount() {
+        this.postponeReactPlayerLoading();
+    }
+
     componentDidUpdate(prevProps: MediaPlayerProps) {
         if (prevProps.selectedMediaId !== this.props.selectedMediaId) {
             this.resetTrackProgress();
+            this.postponeReactPlayerLoading();
         }
 
         const { keyDownCode } = this.props;
@@ -163,13 +170,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
         } = this.props;
 
         const playerDisplayVisibilityStyle = minimalMode ? 'hidden' : 'visible';
-        const playerDisplayOpacityStyle = minimalMode ? 0 : 1;
-        const playerDisplayBottomStyle = minimalMode ? -1 * this.props.playerHeight : 0;
         const playerDisplayStyles = {
             visibility: playerDisplayVisibilityStyle,
-            opacity: playerDisplayOpacityStyle,
-            position: 'absolute',
-            bottom: playerDisplayBottomStyle
         };
 
         const moreIcon = playerMode === MediaPlayerMode.Soundcloud
@@ -239,20 +241,22 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 }
                 <StyledMediaPlayer
                     onMouseOut={() => this.props.onMouseOut()}
+                    style={playerDisplayStyles as any}
                 >
-                    <ReactPlayer
-                        ref={this.reactPlayerRef}
-                        style={playerDisplayStyles}
-                        url={url}
-                        playing={this.state.playing}
-                        width="100vw"
-                        height={this.props.playerHeight}
-                        config={config}
-                        onReady={() => this.onReady()}
-                        onProgress={(progress: any) => this.onProgress(progress)}
-                        onEnded={() => this.onEnded()}
-                        onError={() => this.onError()}
-                    />
+                    { this.state.reactPlayerLoaded && 
+                        <ReactPlayer
+                            ref={this.reactPlayerRef}
+                            url={url}
+                            playing={this.state.playing}
+                            width="100%"
+                            height={this.props.playerHeight}
+                            config={config}
+                            onReady={() => this.onReady()}
+                            onProgress={(progress: any) => this.onProgress(progress)}
+                            onEnded={() => this.onEnded()}
+                            onError={() => this.onError()}
+                        />
+                    }
                 </StyledMediaPlayer>
             </>
         );
@@ -418,7 +422,14 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             playing: false,
             errorMessage: undefined,
             loading: true,
+            reactPlayerLoaded: false,
         });
+    }
+
+    private postponeReactPlayerLoading() {
+        setTimeout(() => {
+            this.setState({ reactPlayerLoaded: true });
+        }, 2000);
     }
 
     private reactPlayerRef = (player: any) => this.reactPlayer = player;
