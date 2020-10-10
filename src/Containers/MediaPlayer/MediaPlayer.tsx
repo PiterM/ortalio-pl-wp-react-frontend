@@ -197,6 +197,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             soundcloud: soundcloudConfig
         };
 
+        const { loading } = this.state;
+
         return (
             <>
                 {minimalMode &&
@@ -224,7 +226,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                         />
                         {showMoreIcon &&
                             <StyledNotMediaPlayer
-                                onMouseOver={() => this.props.onMouseOver()}
+                                onMouseOver={() => !loading && this.props.onMouseOver()}
                                 moreIconHeight={moreIconHeight}
                             >
                                 <p className="more-icon">
@@ -240,7 +242,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                     </StyledMediaPlayer>
                 }
                 <StyledMediaPlayer
-                    onMouseOut={() => this.props.onMouseOut()}
+                    onMouseOut={() => !loading && this.props.onMouseOut()}
                     style={playerDisplayStyles as any}
                 >
                     { this.state.reactPlayerLoaded && 
