@@ -96,7 +96,7 @@ const StyledMediaPlayerMini = styled.div`
     & .title button, .title.loader {
         text-decoration: none;
         grid-column: 2;
-        font-family: ${fonts.monospace};
+        font-family: ${fonts.sansSerif};
         font-size: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerFontSize}px;
         font-weight: bold;
         color: #444;
@@ -140,7 +140,7 @@ const StyledMediaPlayerMini = styled.div`
         display; none;
         grid-column: 4;
         border-right: 1px solid ${colors.newspaperText};
-        font-family: ${fonts.monospace};
+        font-family: ${fonts.sansSerif};
         font-weight: bold;
         padding: 0 20px;
         margin-left: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerButtonsMargin}px;
@@ -158,7 +158,7 @@ const StyledMediaPlayerMini = styled.div`
 
     & .error-message {
         grid-column: 2;
-        font-family: ${fonts.monospace};
+        font-family: ${fonts.sansSerif};
         font-size: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerFontSize}px;
         font-weight: bold;
         color: darkred;
@@ -325,7 +325,7 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     onClick={() => this.props.toggleTimerMode()}
                 >
                     <span 
-                        dangerouslySetInnerHTML={{__html: dashCharacter}} 
+                        dangerouslySetInnerHTML={{__html: `${dashCharacter}&nbsp;`}} 
                     ></span>
                     <span
                         dangerouslySetInnerHTML={{__html: minutesDisplayed}} 
