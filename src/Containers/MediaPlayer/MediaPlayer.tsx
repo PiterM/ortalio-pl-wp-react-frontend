@@ -255,6 +255,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                             onProgress={(progress: any) => this.onProgress(progress)}
                             onEnded={() => this.onEnded()}
                             onError={() => this.onError()}
+                            onPause={() => this.adjustPlayingState(false)}
+                            onPlay={() => this.adjustPlayingState(true)}
                         />
                     }
                 </StyledMediaPlayer>
@@ -262,7 +264,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
         );
     }
 
-    private onReady = () => this.trySetPlayingState(true);
+    private onReady = () => this.trySetPlayPause(true);
 
     private onProgress = (progress: any) => {
         const duration = this.reactPlayer.getDuration();
@@ -297,8 +299,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
         }
     }
 
-    private onPlayClick = () => this.trySetPlayingState(true);
-    private onPauseClick = () => this.trySetPlayingState(false);
+    private onPlayClick = () => this.trySetPlayPause(true);
+    private onPauseClick = () => this.trySetPlayPause(false);
 
     private onPreviousClick = () => {
         this.resetErrorMessage();
@@ -355,7 +357,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 this.props.selectNextMediaItem();
             } else {
                 this.resetTrackProgress(true);
-                this.trySetPlayingState(true);
+                this.trySetPlayPause(true);
             }
         });
     }
@@ -389,7 +391,13 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
         this.setState({ loopMode });
     }
 
-    private trySetPlayingState(playing: boolean) {
+    private adjustPlayingState(playing: boolean) {
+        if (playing !== this.state.playing) {
+            this.setState({ playing });
+        }
+    }
+
+    private trySetPlayPause(playing: boolean) {
         if (playing !== this.state.playing) {
             this.setState({ 
                 playing,
