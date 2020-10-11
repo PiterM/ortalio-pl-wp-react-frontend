@@ -148,8 +148,12 @@ const StyledMediaPlayerMini = styled.div`
     & .timer {
         font-family: ${fonts.sansSerif};
         font-weight: bold;
-        &.blinking {
+        &.blinking p, &.loading p {
             animation: blinking 1.5s infinite;
+        }
+
+        &.loading {
+            opacity: 0.3;
         }
 
         & > p {
@@ -234,6 +238,10 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
         const isPlayerDisplayMobile = displayMode === LayoutModes.Mobile;
 
         const mediaPlayerClass = `media-player${loading ? ' loading' : ' loaded'}`;
+
+        const timerClass = loading 
+            ? 'timer loading'
+            : (playing ? 'timer' : 'timer blinking');
         
         return visible ? (
             <StyledMediaPlayerMiniContainer
@@ -298,7 +306,7 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     </div>
 
                     <div className="timer-wrapper">
-                        <div className={`timer${!this.props.playing ? ' blinking' : ''}`}>
+                        <div className={timerClass}>
                             {this.renderPlayerTimer()}
                         </div>
                     </div>
