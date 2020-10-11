@@ -11,6 +11,7 @@ import {
     MediaPlayerMode,
     TimerMode,
     ProgressTime,
+    ProgressTimeFormat,
     LoopMode,
     KeyCodes
 } from './MediaPlayer.constants';
@@ -119,10 +120,15 @@ interface MediaPlayerState {
     reactPlayerLoaded: boolean;
 }
 
-const initProgressState = {
+const emptyProgress = {
     dashCharacter: '&nbsp;',
     minutesDisplayed: '&nbsp;&nbsp;',
     secondsDisplayed: '&nbsp;&nbsp;',
+};
+
+const initProgressState: ProgressTime = {
+    remainingTime: emptyProgress,
+    elapsedTime: emptyProgress
 };
 
 const initState: MediaPlayerState = {
@@ -166,7 +172,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             minimalMode,
             playerMode,
             errorMessage,
-            layoutOptions
+            layoutOptions,
         } = this.props;
 
         const playerDisplayVisibilityStyle = minimalMode ? 'hidden' : 'visible';
@@ -199,6 +205,10 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
 
         const { loading } = this.state;
 
+        const progress = this.state.timerMode === TimerMode.RemainingTime
+            ? this.state.progress?.remainingTime
+            : this.state.progress?.elapsedTime;
+
         return (
             <>
                 {minimalMode &&
@@ -213,7 +223,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                             thumbnailUrl={thumbnailUrl}
                             playing={this.state.playing}
                             loading={this.state.loading}
-                            progress={this.state.progress}
+                            progress={progress}
                             timerMode={this.state.timerMode}
                             loopMode={this.state.loopMode}
                             displayMode={displayMode}
@@ -274,31 +284,30 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             const trackLength = Math.floor(this.reactPlayer.getDuration());
             const played = Math.floor(progress.playedSeconds);
 
-            let minutes, seconds;
-            const { timerMode } = this.state;
+            let secondsDisplayed = trackLength - played;
+            let minutesDisplayed = Math.floor(secondsDisplayed / 60);
+            secondsDisplayed = secondsDisplayed - minutesDisplayed * 60;
+            const remainingTime: ProgressTimeFormat = {
+                dashCharacter: '-&nbsp;',
+                minutesDisplayed: this.formatProgressDigits(minutesDisplayed), 
+                secondsDisplayed: this.formatProgressDigits(secondsDisplayed),
+            };
 
-            if (timerMode === TimerMode.RemainingTime) {
-                seconds = trackLength - played;
-                minutes = Math.floor(seconds / 60);
-                seconds = seconds - minutes * 60;
-            } else {
-                minutes = Math.floor(played / 60);
-                seconds = played - minutes * 60;
+            minutesDisplayed = Math.floor(played / 60);
+            secondsDisplayed = played - minutesDisplayed * 60;
+
+            const elapsedTime: ProgressTimeFormat = {
+                dashCharacter: '&nbsp;&nbsp;',
+                minutesDisplayed: this.formatProgressDigits(minutesDisplayed), 
+                secondsDisplayed: this.formatProgressDigits(secondsDisplayed),
             }
 
-            const dashCharacter = 
-                minutes !== undefined && seconds !== undefined && timerMode === TimerMode.RemainingTime
-                    ? '-'
-                    : '&nbsp;';
-
-            this.setState({
-                progress: {
-                    dashCharacter,
-                    minutesDisplayed: `${minutes}`.padStart(2, '0'),
-                    secondsDisplayed: `${seconds}`.padStart(2, '0')
-                },
-            });
+            this.setState({ progress: { remainingTime, elapsedTime }});
         }
+    }
+
+    private formatProgressDigits(time: number): string {
+        return `${time}`.padStart(2, '0');
     }
 
     private onPlayClick = () => this.trySetPlayPause(true);
@@ -379,10 +388,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             ? TimerMode.PlayedTime
             : TimerMode.RemainingTime;
 
-        this.setState({
-            timerMode,
-            progress: initProgressState
-        });
+        this.setState({ timerMode });
     }
 
     private toggleLoopModeState = () => {

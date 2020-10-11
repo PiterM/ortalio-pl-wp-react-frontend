@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { setWindowLocationHash } from '../../Common/CommonHelpers';
 import { colors, dimensions, fonts } from '../../Common/variables';
 import MediaPlayerMiniControls from './MediaPlayer.mini.controls';
-import { TimerMode, ProgressTime, LoopMode } from './MediaPlayer.constants';
+import { TimerMode, ProgressTimeFormat, LoopMode } from './MediaPlayer.constants';
 import { LayoutModes } from '../../Common/constants';
 
 import './MediaPlayer.mini.scss';
@@ -136,15 +136,21 @@ const StyledMediaPlayerMini = styled.div`
         opacity: 0.3;
     }
 
-    & .timer {
+    & .timer-wrapper {
+        border-right: 1px solid ${colors.newspaperText};
         display; none;
         grid-column: 4;
-        border-right: 1px solid ${colors.newspaperText};
-        font-family: ${fonts.sansSerif};
-        font-weight: bold;
         padding: 0 20px;
         margin-left: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerButtonsMargin}px;
         min-width: ${(props: StyledMediaPlayerMiniProps) => props.mediaPlayerTimerMinWidth}px;
+    }
+
+    & .timer {
+        font-family: ${fonts.sansSerif};
+        font-weight: bold;
+        &.blinking {
+            animation: blinking 1.5s infinite;
+        }
 
         & > p {
             padding: 0;
@@ -182,7 +188,7 @@ interface MediaPlayerMiniOwnProps {
     visible: boolean;
     playing: boolean;
     loading: boolean;
-    progress?: ProgressTime;
+    progress?: ProgressTimeFormat;
     timerMode: TimerMode;
     loopMode: LoopMode;
     errorMessage?: string;
@@ -290,8 +296,11 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                             displayMode={this.props.displayMode}
                         />
                     </div>
-                    <div className="timer">
-                        {this.renderPlayerTimer()}
+
+                    <div className="timer-wrapper">
+                        <div className={`timer${!this.props.playing ? ' blinking' : ''}`}>
+                            {this.renderPlayerTimer()}
+                        </div>
                     </div>
                 </StyledMediaPlayerMini>
             </StyledMediaPlayerMiniContainer>
@@ -302,7 +311,7 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
         const emptyTimer = (
             <p>
                 <span
-                    dangerouslySetInnerHTML={{__html: '&nbsp;'}} 
+                    dangerouslySetInnerHTML={{__html: '&nbsp;&nbsp'}} 
                 ></span>
                 <span
                     dangerouslySetInnerHTML={{__html: '&nbsp;&nbsp;'}} 
@@ -325,7 +334,7 @@ export class MediaPlayerMini extends React.Component<MediaPlayerMiniOwnProps> {
                     onClick={() => this.props.toggleTimerMode()}
                 >
                     <span 
-                        dangerouslySetInnerHTML={{__html: `${dashCharacter}&nbsp;`}} 
+                        dangerouslySetInnerHTML={{__html: `${dashCharacter}`}} 
                     ></span>
                     <span
                         dangerouslySetInnerHTML={{__html: minutesDisplayed}} 

@@ -33,11 +33,10 @@ const StyledPlayerPauseControlImage = styled.img`
     cursor: pointer;
     animation: blinking 1.5s infinite;
     @keyframes blinking {
-        0% { opacity: 0.8; };
-        49% { opacity: 0.8; };
+        49% { opacity: 1; };
         60% { opacity: 0; };
         99% { opacity: 0; }
-        100% { opacity: 0.8; }
+        100% { opacity: 1; }
     }
 
     .media-player.loaded &:hover {

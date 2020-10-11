@@ -104,7 +104,7 @@ export const dimensions = {
     buttonsMarginExtended: 10,
     buttonsMarginCompact: 20,
     timerMinWidthCompact: 105,
-    timerMinWidthExtended: 51,
+    timerMinWidthExtended: 100,
   }
 }
 

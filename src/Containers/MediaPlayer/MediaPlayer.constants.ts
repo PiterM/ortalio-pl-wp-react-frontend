@@ -8,10 +8,15 @@ export enum TimerMode {
     PlayedTime = 'PlayedTime'
 }
 
-export interface ProgressTime {
+export interface ProgressTimeFormat {
     dashCharacter: string;
     minutesDisplayed: string;
     secondsDisplayed: string;
+}
+
+export interface ProgressTime {
+    remainingTime: ProgressTimeFormat;
+    elapsedTime: ProgressTimeFormat
 }
 
 export enum LoopMode {
