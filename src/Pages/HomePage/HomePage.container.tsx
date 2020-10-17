@@ -11,7 +11,7 @@ import {
 } from './HomePage.models';
 
 const LoaderScreen = styled.div`
-    background: url('/images/audio-loader.svg') center center no-repeat #f9f7f1;
+    background: url('/images/audio-loader-black.svg') center center no-repeat #f9f7f1;
     width: 100%;
     height: 100%;
     position: absolute;
