@@ -17,6 +17,8 @@ import {
 } from './MediaPlayer.constants';
 import {
     MediaPlayerActions,
+    SetLoadingTrackId,
+    setLoadingTrackId,
     setSelectedNextAudioItemAction,
     setSelectedPreviousAudioItemAction,
     setSelectedUpperAudioItemAction,
@@ -105,6 +107,7 @@ interface MediaPlayerDispatchProps {
     selectNextMediaItem: () => void;
     selectUpperMediaItem: () => void;
     selectLowerMediaItem: () => void;
+    setLoadingTrackId: (trackId: string) => void;
 }
 
 type MediaPlayerProps = MediaPlayerOwnProps & MediaPlayerMappedProps & MediaPlayerDispatchProps;
@@ -146,6 +149,8 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
     private miniPlayer: any;
 
     componentDidMount() {
+        const { selectedMediaId, setLoadingTrackId } = this.props;
+        selectedMediaId && setLoadingTrackId(selectedMediaId);
         this.postponeReactPlayerLoading();
     }
 
@@ -412,6 +417,7 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
                 loading: false,
             }, () => {
                 if (this.reactPlayer) {
+                    this.props.setLoadingTrackId('');
                     const internalPlayer = this.reactPlayer.getInternalPlayer();
                     if (internalPlayer && internalPlayer.play) {
                         if (playing) {
@@ -441,13 +447,16 @@ export class MediaPlayer extends React.Component<MediaPlayerProps, MediaPlayerSt
             errorMessage: undefined,
             loading: true,
             reactPlayerLoaded,
-        });
+        }, () => {
+            const { selectedMediaId, setLoadingTrackId } = this.props;
+            selectedMediaId && setLoadingTrackId(selectedMediaId);
+        });        
     }
 
     private postponeReactPlayerLoading() {
         setTimeout(() => {
             this.setState({ reactPlayerLoaded: true });
-        }, 2000);
+        }, 800);
     }
 
     private reactPlayerRef = (player: any) => this.reactPlayer = player;
@@ -461,11 +470,12 @@ const mapStateToProps: any = (store: StoreState, props: MediaPlayerProps): Media
     layoutOptions: store.layoutOptions,
 });
 
-const mapDispatchToProps: any = (dispatch: Dispatch<MediaPlayerActions>) => ({
+const mapDispatchToProps: any = (dispatch: Dispatch<MediaPlayerActions | SetLoadingTrackId>) => ({
     selectPreviousMediaItem: () => dispatch(setSelectedPreviousAudioItemAction()),
     selectNextMediaItem: () => dispatch(setSelectedNextAudioItemAction()),
     selectUpperMediaItem: () => dispatch(setSelectedUpperAudioItemAction()),
     selectLowerMediaItem: () => dispatch(setSelectedLowerAudioItemAction()),
+    setLoadingTrackId: (trackId: string) => dispatch(setLoadingTrackId(trackId)),
 });
 
 export default connect<MediaPlayerMappedProps, MediaPlayerDispatchProps>(

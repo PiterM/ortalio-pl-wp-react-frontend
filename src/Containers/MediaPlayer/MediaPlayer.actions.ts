@@ -149,6 +149,18 @@ export const setSelectedLowerAudioItemErrorAction: setSelectedLowerAudioItemErro
   };
 };
 
+export interface SetLoadingTrackId extends AnyAction {
+  payload: string;
+  type: ACTION_TYPE.SET_LOADING_TRACK_ID;
+}
+export type setLoadingTrackId = (payload: string) => SetLoadingTrackId;
+export const setLoadingTrackId: setLoadingTrackId = (payload: string) => {
+  return {
+    payload,
+    type: ACTION_TYPE.SET_LOADING_TRACK_ID
+  };
+};
+
 export type MediaPlayerActions =
   | SetSelectedAudioItemAction
   | SetSelectedNextAudioItemAction

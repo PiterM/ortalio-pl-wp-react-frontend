@@ -37,21 +37,28 @@ const StyledAudioItem = styled.section`
     cursor: pointer;
   }
 
+  .play-icon {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    animation: blinking 1.5s infinite;
+    @keyframes blinking {
+        0% { opacity: 0.8; };
+        49% { opacity: 0.8; };
+        60% { opacity: 0; };
+        99% { opacity: 0; }
+        100% { opacity: 0.8; }
+    }
+  }
+
   &:hover .play-icon, &:active .play-icon, &.selected .play-icon {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      width: 10px;
-      height: 10px;
-      animation: blinking 1.5s infinite;
-      @keyframes blinking {
-          0% { opacity: 0.8; };
-          49% { opacity: 0.8; };
-          60% { opacity: 0; };
-          99% { opacity: 0; }
-          100% { opacity: 0.8; }
-      }
       background: url('/images/play-icon.svg') top left no-repeat;
+  }
+
+  &.loading .play-icon {    
+    background: url('/images/sand-clock.svg') top left no-repeat;
   }
 
   &:active, &.selected {
@@ -85,6 +92,7 @@ interface AudioItemOwnProps {
 
 interface AudioItemMappedProps {
   selected?: boolean;
+  loadingTrackId?: string;
 }
 
 interface AudioItemDispatchProps {
@@ -96,17 +104,23 @@ type AudioItemProps = AudioItemOwnProps & AudioItemMappedProps & AudioItemDispat
 export class AudioItem extends React.Component<AudioItemProps> {
   render() {
     const { 
+      id,
       index, 
       title, 
       slug,
       shortDescription, 
       content, 
-      selected 
+      selected,
+      loadingTrackId 
     } = this.props;
+
+    const audioItemClass = selected && !loadingTrackId 
+      ? ' selected' 
+      : (loadingTrackId === id ? ' loading' : '');
     
     return (
       <StyledAudioItem
-        className={`audio-item${selected ? ' selected' : ''}`}
+        className={`audio-item${audioItemClass}`}
         onClick={() => this.onClick()}
         id={slug}
       >
@@ -131,7 +145,9 @@ const mapStateToProps: any = (store: StoreState, props: AudioItemOwnProps): Audi
       ? !!Object.keys(store.media).find((key: any) => props.id === store.selectedMediaId)
       : false;
 
-  return { selected };
+  const loadingTrackId = store.loadingTrackId;
+
+  return { loadingTrackId, selected };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<SetSelectedAudioItemAction>) => ({
