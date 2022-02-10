@@ -12,7 +12,7 @@
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
     "modern-normalize": "^0.6.0",
-    "node-sass": "^4.14.0",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-apollo": "^3.1.5",
     "react-dom": "^16.13.1",
